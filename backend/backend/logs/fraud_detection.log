@@ -1,0 +1,129 @@
+2025-11-04 12:47:45,658 - ERROR - Please make sure you have trained the model first.
+2025-11-04 12:48:14,369 - ERROR - Please make sure you have trained the model first.
+2025-11-04 12:48:50,186 - ERROR - Please make sure you have trained the model first.
+2025-11-04 12:56:37,847 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-11-04 12:56:37,848 - INFO - [33mPress CTRL+C to quit[0m
+2025-11-04 12:56:52,948 - INFO - 127.0.0.1 - - [04/Nov/2025 12:56:52] "[33mGET / HTTP/1.1[0m" 404 -
+2025-11-04 12:56:58,014 - INFO - 192.168.0.101 - - [04/Nov/2025 12:56:58] "[33mGET / HTTP/1.1[0m" 404 -
+2025-11-04 12:58:38,854 - INFO - 127.0.0.1 - - [04/Nov/2025 12:58:38] "GET /health HTTP/1.1" 200 -
+2025-11-04 12:58:39,259 - INFO - 127.0.0.1 - - [04/Nov/2025 12:58:39] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-11-04 12:59:40,065 - INFO - 127.0.0.1 - - [04/Nov/2025 12:59:40] "GET /predict/wallet/0x1234567890123456789012345678901234567890 HTTP/1.1" 200 -
+2025-11-04 13:00:07,719 - INFO - 127.0.0.1 - - [04/Nov/2025 13:00:07] "GET /health HTTP/1.1" 200 -
+2025-11-04 13:01:06,062 - INFO - Starting batch processing...
+2025-11-04 13:01:06,062 - INFO - 127.0.0.1 - - [04/Nov/2025 13:01:06] "POST /batch/start HTTP/1.1" 200 -
+2025-11-04 13:01:06,498 - INFO - Fetching 50 latest transactions...
+2025-11-04 13:01:44,951 - INFO - Successfully fetched 50 transactions
+2025-11-04 13:01:44,951 - INFO - Fetched 50 transactions
+2025-11-04 13:01:46,813 - INFO - Processed 45 transactions in batch
+2025-11-04 13:01:46,813 - INFO - 127.0.0.1 - - [04/Nov/2025 13:01:46] "[31m[1mPOST /predict/transaction HTTP/1.1[0m" 400 -
+2025-11-04 13:03:27,227 - INFO - Transaction risk prediction complete. Risk: 0.5800
+2025-11-04 13:03:27,227 - INFO - 127.0.0.1 - - [04/Nov/2025 13:03:27] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:04:29,667 - INFO - 127.0.0.1 - - [04/Nov/2025 13:04:29] "POST /batch/start HTTP/1.1" 200 -
+2025-11-04 13:04:37,349 - INFO - Transaction risk prediction complete. Risk: 0.6000
+2025-11-04 13:04:37,349 - INFO - 127.0.0.1 - - [04/Nov/2025 13:04:37] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:06:00,995 - INFO - Transaction risk prediction complete. Risk: 0.5100
+2025-11-04 13:06:00,996 - INFO - 127.0.0.1 - - [04/Nov/2025 13:06:00] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:07:25,417 - INFO - Transaction risk prediction complete. Risk: 0.5500
+2025-11-04 13:07:25,418 - INFO - 127.0.0.1 - - [04/Nov/2025 13:07:25] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:08:48,920 - INFO - Transaction risk prediction complete. Risk: 0.4300
+2025-11-04 13:08:48,920 - INFO - 127.0.0.1 - - [04/Nov/2025 13:08:48] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:10:13,070 - INFO - Transaction risk prediction complete. Risk: 0.4100
+2025-11-04 13:10:13,072 - INFO - 127.0.0.1 - - [04/Nov/2025 13:10:13] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:11:25,550 - INFO - Transaction risk prediction complete. Risk: 0.4900
+2025-11-04 13:11:25,550 - INFO - 127.0.0.1 - - [04/Nov/2025 13:11:25] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:11:46,831 - INFO - Starting batch processing...
+2025-11-04 13:11:47,177 - INFO - Fetching 50 latest transactions...
+2025-11-04 13:12:22,394 - INFO - Successfully fetched 50 transactions
+2025-11-04 13:12:22,394 - INFO - Fetched 50 transactions
+2025-11-04 13:12:23,126 - INFO - Processed 47 transactions in batch
+2025-11-04 13:12:48,916 - INFO - Transaction risk prediction complete. Risk: 0.5000
+2025-11-04 13:12:48,916 - INFO - 127.0.0.1 - - [04/Nov/2025 13:12:48] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:14:13,062 - INFO - Transaction risk prediction complete. Risk: 0.7000
+2025-11-04 13:14:13,062 - INFO - 127.0.0.1 - - [04/Nov/2025 13:14:13] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:16:12,941 - INFO - Transaction risk prediction complete. Risk: 0.5600
+2025-11-04 13:16:12,942 - INFO - 127.0.0.1 - - [04/Nov/2025 13:16:12] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:17:37,016 - INFO - Transaction risk prediction complete. Risk: 0.4300
+2025-11-04 13:17:37,016 - INFO - 127.0.0.1 - - [04/Nov/2025 13:17:37] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:19:00,868 - INFO - Transaction risk prediction complete. Risk: 0.6000
+2025-11-04 13:19:00,868 - INFO - 127.0.0.1 - - [04/Nov/2025 13:19:00] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:20:24,798 - INFO - Transaction risk prediction complete. Risk: 0.6400
+2025-11-04 13:20:24,798 - INFO - 127.0.0.1 - - [04/Nov/2025 13:20:24] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:21:49,830 - INFO - Transaction risk prediction complete. Risk: 0.5400
+2025-11-04 13:21:49,831 - INFO - 127.0.0.1 - - [04/Nov/2025 13:21:49] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:22:23,133 - INFO - Starting batch processing...
+2025-11-04 13:22:23,492 - INFO - Fetching 50 latest transactions...
+2025-11-04 13:22:58,695 - INFO - Successfully fetched 50 transactions
+2025-11-04 13:22:58,695 - INFO - Fetched 50 transactions
+2025-11-04 13:22:59,515 - INFO - Processed 49 transactions in batch
+2025-11-04 13:23:36,667 - INFO - Transaction risk prediction complete. Risk: 0.5500
+2025-11-04 13:23:36,667 - INFO - 127.0.0.1 - - [04/Nov/2025 13:23:36] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:25:01,268 - INFO - Transaction risk prediction complete. Risk: 0.6000
+2025-11-04 13:25:01,268 - INFO - 127.0.0.1 - - [04/Nov/2025 13:25:01] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:26:25,422 - INFO - Transaction risk prediction complete. Risk: 0.3900
+2025-11-04 13:26:25,423 - INFO - 127.0.0.1 - - [04/Nov/2025 13:26:25] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:27:48,693 - INFO - Transaction risk prediction complete. Risk: 0.5600
+2025-11-04 13:27:48,693 - INFO - 127.0.0.1 - - [04/Nov/2025 13:27:48] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:29:12,733 - INFO - Transaction risk prediction complete. Risk: 0.4900
+2025-11-04 13:29:12,733 - INFO - 127.0.0.1 - - [04/Nov/2025 13:29:12] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:30:26,152 - INFO - Transaction risk prediction complete. Risk: 0.5900
+2025-11-04 13:30:26,153 - INFO - 127.0.0.1 - - [04/Nov/2025 13:30:26] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:31:49,030 - INFO - Transaction risk prediction complete. Risk: 0.5400
+2025-11-04 13:31:49,030 - INFO - 127.0.0.1 - - [04/Nov/2025 13:31:49] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:32:59,522 - INFO - Starting batch processing...
+2025-11-04 13:32:59,795 - INFO - Fetching 50 latest transactions...
+2025-11-04 13:33:13,984 - INFO - Transaction risk prediction complete. Risk: 0.4500
+2025-11-04 13:33:13,985 - INFO - 127.0.0.1 - - [04/Nov/2025 13:33:13] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:33:36,240 - INFO - Successfully fetched 50 transactions
+2025-11-04 13:33:36,241 - INFO - Fetched 50 transactions
+2025-11-04 13:33:36,876 - INFO - Processed 41 transactions in batch
+2025-11-04 13:34:37,145 - INFO - Transaction risk prediction complete. Risk: 0.6400
+2025-11-04 13:34:37,145 - INFO - 127.0.0.1 - - [04/Nov/2025 13:34:37] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:36:01,532 - INFO - Transaction risk prediction complete. Risk: 0.5700
+2025-11-04 13:36:01,532 - INFO - 127.0.0.1 - - [04/Nov/2025 13:36:01] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:37:36,783 - INFO - Transaction risk prediction complete. Risk: 0.3500
+2025-11-04 13:37:36,784 - INFO - 127.0.0.1 - - [04/Nov/2025 13:37:36] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:39:01,956 - INFO - Transaction risk prediction complete. Risk: 0.5100
+2025-11-04 13:39:01,956 - INFO - 127.0.0.1 - - [04/Nov/2025 13:39:01] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:41:13,321 - INFO - Transaction risk prediction complete. Risk: 0.5500
+2025-11-04 13:41:13,321 - INFO - 127.0.0.1 - - [04/Nov/2025 13:41:13] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:42:37,518 - INFO - Transaction risk prediction complete. Risk: 0.5800
+2025-11-04 13:42:37,519 - INFO - 127.0.0.1 - - [04/Nov/2025 13:42:37] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:43:36,878 - INFO - Starting batch processing...
+2025-11-04 13:43:37,173 - INFO - Fetching 50 latest transactions...
+2025-11-04 13:44:00,993 - INFO - Transaction risk prediction complete. Risk: 0.5900
+2025-11-04 13:44:00,993 - INFO - 127.0.0.1 - - [04/Nov/2025 13:44:00] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:44:10,987 - INFO - Successfully fetched 50 transactions
+2025-11-04 13:44:10,988 - INFO - Fetched 50 transactions
+2025-11-04 13:44:11,871 - INFO - Processed 49 transactions in batch
+2025-11-04 13:45:25,032 - INFO - Transaction risk prediction complete. Risk: 0.4400
+2025-11-04 13:45:25,033 - INFO - 127.0.0.1 - - [04/Nov/2025 13:45:25] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:46:49,799 - INFO - Transaction risk prediction complete. Risk: 0.4800
+2025-11-04 13:46:49,800 - INFO - 127.0.0.1 - - [04/Nov/2025 13:46:49] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:48:12,828 - INFO - Transaction risk prediction complete. Risk: 0.4900
+2025-11-04 13:48:12,829 - INFO - 127.0.0.1 - - [04/Nov/2025 13:48:12] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 13:49:37,262 - INFO - Transaction risk prediction complete. Risk: 0.5700
+2025-11-04 13:49:37,262 - INFO - 127.0.0.1 - - [04/Nov/2025 13:49:37] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:32:57,924 - INFO - Transaction risk prediction complete. Risk: 0.5500
+2025-11-04 14:32:57,924 - INFO - 127.0.0.1 - - [04/Nov/2025 14:32:57] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:34:24,865 - INFO - Transaction risk prediction complete. Risk: 0.5000
+2025-11-04 14:34:24,865 - INFO - 127.0.0.1 - - [04/Nov/2025 14:34:24] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:35:38,266 - INFO - Transaction risk prediction complete. Risk: 0.5400
+2025-11-04 14:35:38,282 - INFO - 127.0.0.1 - - [04/Nov/2025 14:35:38] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:35:46,344 - INFO - Starting batch processing...
+2025-11-04 14:35:46,635 - INFO - Fetching 50 latest transactions...
+2025-11-04 14:36:21,569 - INFO - Successfully fetched 50 transactions
+2025-11-04 14:36:21,569 - INFO - Fetched 50 transactions
+2025-11-04 14:36:22,349 - INFO - Processed 47 transactions in batch
+2025-11-04 14:37:01,564 - INFO - Transaction risk prediction complete. Risk: 0.5300
+2025-11-04 14:37:01,564 - INFO - 127.0.0.1 - - [04/Nov/2025 14:37:01] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:38:24,742 - INFO - Transaction risk prediction complete. Risk: 0.6400
+2025-11-04 14:38:24,742 - INFO - 127.0.0.1 - - [04/Nov/2025 14:38:24] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:39:49,938 - INFO - Transaction risk prediction complete. Risk: 0.5300
+2025-11-04 14:39:49,938 - INFO - 127.0.0.1 - - [04/Nov/2025 14:39:49] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 14:41:13,116 - INFO - Transaction risk prediction complete. Risk: 0.5600
+2025-11-04 14:41:13,116 - INFO - 127.0.0.1 - - [04/Nov/2025 14:41:13] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-04 16:29:46,153 - INFO - Transaction risk prediction complete. Risk: 0.6000
+2025-11-04 16:29:46,153 - INFO - 127.0.0.1 - - [04/Nov/2025 16:29:46] "POST /predict/transaction HTTP/1.1" 200 -
