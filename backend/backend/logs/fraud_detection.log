@@ -1503,3 +1503,300 @@
 2025-11-05 01:01:01,778 - INFO - Fetching 50 latest transactions...
 2025-11-05 01:01:08,157 - INFO - Successfully fetched 50 transactions
 2025-11-05 01:01:08,160 - INFO - 127.0.0.1 - - [05/Nov/2025 01:01:08] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:01:17,661 - INFO - ✅ Connected to Ethereum network: https://eth-sepolia.g.alchemy.com/v2/5bURjldvKPu4glB_tFxWt
+2025-11-05 01:01:17,661 - INFO - ✅ Model and components loaded successfully from ../ml_models/saved_models/fraud_detector_model.pkl
+2025-11-05 01:01:17,662 - INFO - 🚀 Ethereum Fraud Detection API starting...
+2025-11-05 01:01:17,678 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-11-05 01:01:17,678 - INFO - [33mPress CTRL+C to quit[0m
+2025-11-05 01:01:17,716 - INFO - 127.0.0.1 - - [05/Nov/2025 01:01:17] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:01:31,639 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:02:01,161 - INFO - 127.0.0.1 - - [05/Nov/2025 01:02:01] "GET /transaction/66e0d3ef612b59f460521d228c97d5627e6db801ae43ad95d27c4c1babde282f HTTP/1.1" 200 -
+2025-11-05 01:02:01,772 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:02:05,051 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:02:05,056 - INFO - 127.0.0.1 - - [05/Nov/2025 01:02:05] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:02:31,658 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:02:35,992 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:02:35,993 - INFO - 127.0.0.1 - - [05/Nov/2025 01:02:35] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:02:48,931 - INFO - 127.0.0.1 - - [05/Nov/2025 01:02:48] "GET /transaction/64f21ef4e87a4297c358770e59f983e67b5c9057f0e76a244302388fbdd667db HTTP/1.1" 200 -
+2025-11-05 01:03:01,957 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:03:05,125 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:03:05,126 - INFO - 127.0.0.1 - - [05/Nov/2025 01:03:05] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:03:13,321 - INFO - 127.0.0.1 - - [05/Nov/2025 01:03:13] "GET /transaction/2ed86b7e43bc319b1b0a365afeb9bd2b9d39cd65b36a26401b42ba5db37bc14f HTTP/1.1" 200 -
+2025-11-05 01:03:31,616 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:03:36,913 - INFO - 127.0.0.1 - - [05/Nov/2025 01:03:36] "GET /transaction/c3d2356393971a4917e9263bd6821d7bfcb5af79c6111fc356cf9fd6f6bf5136 HTTP/1.1" 200 -
+2025-11-05 01:03:38,448 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:03:38,451 - INFO - 127.0.0.1 - - [05/Nov/2025 01:03:38] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:04:01,245 - INFO - 127.0.0.1 - - [05/Nov/2025 01:04:01] "GET /transaction/d8d44c9e286267ebbb3e58b1f255e3578d464b61ff8be54eadb193a7e9c0a450 HTTP/1.1" 200 -
+2025-11-05 01:04:04,982 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:04:04,984 - INFO - 127.0.0.1 - - [05/Nov/2025 01:04:04] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:04:25,205 - INFO - 127.0.0.1 - - [05/Nov/2025 01:04:25] "GET /transaction/15ce8c6cf372fb1bef0c3181067e2a35a4c66291f50a60eccee699f5d97066f1 HTTP/1.1" 200 -
+2025-11-05 01:04:49,370 - INFO - 127.0.0.1 - - [05/Nov/2025 01:04:49] "GET /transaction/75f10d8808464f6ff90e1060b5641cd05e9d55ea400bf6df626a404441b9f1e8 HTTP/1.1" 200 -
+2025-11-05 01:04:54,054 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:05:13,857 - INFO - 127.0.0.1 - - [05/Nov/2025 01:05:13] "GET /transaction/50eb974eab9800eba942df87bbcdfb4e82ac11fe102e3ab6c9e1e333bdf42c57 HTTP/1.1" 200 -
+2025-11-05 01:05:29,534 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:05:29,534 - INFO - 127.0.0.1 - - [05/Nov/2025 01:05:29] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:05:37,535 - INFO - 127.0.0.1 - - [05/Nov/2025 01:05:37] "GET /transaction/e7d00a15b4cff03c6ae27f4e42843cc31e9674d059f3b98ae52413ccf3203f91 HTTP/1.1" 200 -
+2025-11-05 01:05:53,605 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:06:01,078 - INFO - 127.0.0.1 - - [05/Nov/2025 01:06:01] "GET /transaction/a0dc979330e07de10a26c276d1b77d4d3dbd7e5603ff75716ca9b6845b8e5da9 HTTP/1.1" 200 -
+2025-11-05 01:06:04,818 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:06:25,310 - INFO - 127.0.0.1 - - [05/Nov/2025 01:06:25] "GET /transaction/f01300faad77d88a0260b07c3e5aba94d7fc64c28aa986c0450e765afc9ba878 HTTP/1.1" 200 -
+2025-11-05 01:06:27,339 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:06:27,341 - INFO - 127.0.0.1 - - [05/Nov/2025 01:06:27] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:06:39,084 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:06:39,087 - INFO - 127.0.0.1 - - [05/Nov/2025 01:06:39] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:07:00,858 - INFO - 127.0.0.1 - - [05/Nov/2025 01:07:00] "GET /transaction/eb7a0421f9b43bd462c0bee3e73f30585964c3a2665fea9db64dd70b98c9f935 HTTP/1.1" 200 -
+2025-11-05 01:07:25,302 - INFO - 127.0.0.1 - - [05/Nov/2025 01:07:25] "GET /transaction/6fbdb8cce3999fad558e0130f2386354f35285f2cbc12ddda0f63c2d73250c86 HTTP/1.1" 200 -
+2025-11-05 01:07:49,431 - INFO - 127.0.0.1 - - [05/Nov/2025 01:07:49] "GET /transaction/114c05029c21bd7b92130acea15c16b589425416cfcea4afc05f04391ed06d4c HTTP/1.1" 200 -
+2025-11-05 01:08:13,531 - INFO - 127.0.0.1 - - [05/Nov/2025 01:08:13] "GET /transaction/ddfa32ee4728727973f431c8c404402502ee1969179ef011a10f8a1b48243f41 HTTP/1.1" 200 -
+2025-11-05 01:08:37,244 - INFO - 127.0.0.1 - - [05/Nov/2025 01:08:37] "GET /transaction/46f258c8f7f53461b5816f46d15d69eb41ca406c1334a502cee9e630c49c2ad7 HTTP/1.1" 200 -
+2025-11-05 01:09:18,032 - INFO - 127.0.0.1 - - [05/Nov/2025 01:09:18] "GET /transaction/43b0372ee84609830d5c9ad741935e5d58ac5fec54044514aec1347e24842db4 HTTP/1.1" 200 -
+2025-11-05 01:09:49,341 - INFO - 127.0.0.1 - - [05/Nov/2025 01:09:49] "GET /transaction/6f0d818c3376982dcba232623f769a6c2c1eebfa91500e8e66f16a2aaaff2ad1 HTTP/1.1" 200 -
+2025-11-05 01:10:37,649 - INFO - 127.0.0.1 - - [05/Nov/2025 01:10:37] "GET /transaction/11259395af6adf94c1692afeae2b491cc40ace41af4981550039ebb12cd7d650 HTTP/1.1" 200 -
+2025-11-05 01:11:26,040 - INFO - 127.0.0.1 - - [05/Nov/2025 01:11:26] "GET /transaction/efa36e94d55f3c75f669c6af978a872b91ef35066811bf86f17f8f2056b8f37d HTTP/1.1" 200 -
+2025-11-05 01:12:13,439 - INFO - 127.0.0.1 - - [05/Nov/2025 01:12:13] "GET /transaction/c6643751dfa4ec416d5b63f5b169764039a13e17365a0c43ce059b0da86f1fc5 HTTP/1.1" 200 -
+2025-11-05 01:12:37,350 - INFO - 127.0.0.1 - - [05/Nov/2025 01:12:37] "GET /transaction/7d518414a6ca7fb3611fc92150f4dd5359753efb5bb5eed5ddf0617c21bd5ebe HTTP/1.1" 200 -
+2025-11-05 01:13:01,347 - INFO - 127.0.0.1 - - [05/Nov/2025 01:13:01] "GET /transaction/b9c606043551466f9ff900c7f2b12a4995a4d1c6f7ee00ac13fd5e6857126f4a HTTP/1.1" 200 -
+2025-11-05 01:13:37,497 - INFO - 127.0.0.1 - - [05/Nov/2025 01:13:37] "GET /transaction/6b3ca14cba8ec0be1500f48233fc031833c051e7be646f10f6233096ba875d5a HTTP/1.1" 200 -
+2025-11-05 01:14:25,333 - INFO - 127.0.0.1 - - [05/Nov/2025 01:14:25] "GET /transaction/29e1a6c8d28b335092d35361ca4ae27ac8b16246a96ea2f0a2048cd95a257c5a HTTP/1.1" 200 -
+2025-11-05 01:15:13,142 - INFO - 127.0.0.1 - - [05/Nov/2025 01:15:13] "GET /transaction/9461d469eb4ed6fa90a20d75e9fad5b3dc5d621e229b8dea0e7c065ab97ca758 HTTP/1.1" 200 -
+2025-11-05 01:16:01,244 - INFO - 127.0.0.1 - - [05/Nov/2025 01:16:01] "GET /transaction/c2f76d91abf652b27dfbb287f53a431784f87d4acd08814dbcaddb61c5592fd3 HTTP/1.1" 200 -
+2025-11-05 01:16:26,386 - INFO - 127.0.0.1 - - [05/Nov/2025 01:16:26] "GET /transaction/d605ee3e725006544be211b6b5dfa98935291db6f3df9c1a2aea9ffd9e77bf97 HTTP/1.1" 200 -
+2025-11-05 01:17:13,040 - INFO - 127.0.0.1 - - [05/Nov/2025 01:17:13] "GET /transaction/69c9a67e3896d931db6a7a86007ea7f0ee3b015284d681c66a5a79082e0394dd HTTP/1.1" 200 -
+2025-11-05 01:17:37,557 - INFO - 127.0.0.1 - - [05/Nov/2025 01:17:37] "GET /transaction/07a4e3241251e6b90f81097b00d2268bd3c14821ffe6f697d0494480c8eef59f HTTP/1.1" 200 -
+2025-11-05 01:19:01,179 - INFO - 127.0.0.1 - - [05/Nov/2025 01:19:01] "GET /transaction/96c55f73efea2d34d6a85c81f308d554e70476569354f4393ada3bbadbfe5c6a HTTP/1.1" 200 -
+2025-11-05 01:19:04,180 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:19:13,912 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:19:26,076 - INFO - 127.0.0.1 - - [05/Nov/2025 01:19:26] "GET /transaction/886b2ce56b4cea3a802f8e306c68aee6ab2130e6e53abc820bd09822ecfd5ed6 HTTP/1.1" 200 -
+2025-11-05 01:19:34,933 - INFO - Fetching 50 latest transactions...
+2025-11-05 01:19:41,231 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:19:41,233 - INFO - 127.0.0.1 - - [05/Nov/2025 01:19:41] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:19:49,116 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:19:49,117 - INFO - 127.0.0.1 - - [05/Nov/2025 01:19:49] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:19:49,954 - INFO - 127.0.0.1 - - [05/Nov/2025 01:19:49] "GET /transaction/1abd9d569cca6814fd072e80cc925be2b4ae2f8889f751e19e7a48a74e425887 HTTP/1.1" 200 -
+2025-11-05 01:20:09,613 - INFO - Successfully fetched 50 transactions
+2025-11-05 01:20:09,615 - INFO - 127.0.0.1 - - [05/Nov/2025 01:20:09] "GET /transactions?n=50 HTTP/1.1" 200 -
+2025-11-05 01:20:14,321 - INFO - 127.0.0.1 - - [05/Nov/2025 01:20:14] "GET /transaction/123b6443ccc3af7115f7106e03429cac94294990dd70d9685a63a3243dabad5d HTTP/1.1" 200 -
+2025-11-05 01:20:38,419 - INFO - 127.0.0.1 - - [05/Nov/2025 01:20:38] "GET /transaction/52fe295919d44ec58abfd258ac5f6604183316416da47dc6d322f198bc234eb8 HTTP/1.1" 200 -
+2025-11-05 01:21:01,419 - INFO - 127.0.0.1 - - [05/Nov/2025 01:21:01] "GET /transaction/38d01586b311966e2c4edc73dfc7fcba0da5df6b39013cdf97412e69079a4028 HTTP/1.1" 200 -
+2025-11-05 01:22:23,744 - INFO - 127.0.0.1 - - [05/Nov/2025 01:22:23] "GET /transaction/0x52fe295919d44ec58abfd258ac5f6604183316416da47dc6d322f198bc234eb8 HTTP/1.1" 200 -
+2025-11-05 01:22:42,541 - INFO - 127.0.0.1 - - [05/Nov/2025 01:22:42] "GET /transaction/30095bdb0285563612991c9b03e6492a695b091fcb59739989fb77007543d19d HTTP/1.1" 200 -
+2025-11-05 01:23:25,155 - INFO - 127.0.0.1 - - [05/Nov/2025 01:23:25] "GET /transaction/45b1f6c7c49d97113563bad209afe67809a83955f0daaeada4828ae9591a837e HTTP/1.1" 200 -
+2025-11-05 01:36:50,752 - ERROR - Error fetching transaction 6a6a152ac4fd72e4504f5212d238772959aa6c320095f2bcf85378b23130ed13: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B126C730>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:50,760 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:50] "[33mGET /transaction/6a6a152ac4fd72e4504f5212d238772959aa6c320095f2bcf85378b23130ed13 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:50,853 - ERROR - Error fetching transaction 0x6a6a152ac4fd72e4504f5212d238772959aa6c320095f2bcf85378b23130ed13: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B2294B20>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:50,855 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:50] "[33mGET /transaction/0x6a6a152ac4fd72e4504f5212d238772959aa6c320095f2bcf85378b23130ed13 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:50,978 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:50] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,196 - ERROR - Error fetching transaction 387e28c20148e61be116613cfd0a44d926766578cbcc34bcc9c6c62688d8b9eb: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B11BB4F0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,202 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/387e28c20148e61be116613cfd0a44d926766578cbcc34bcc9c6c62688d8b9eb HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,244 - ERROR - Error fetching transaction 0x387e28c20148e61be116613cfd0a44d926766578cbcc34bcc9c6c62688d8b9eb: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B225C310>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,244 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0x387e28c20148e61be116613cfd0a44d926766578cbcc34bcc9c6c62688d8b9eb HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,303 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,387 - ERROR - Error fetching transaction 33f04eac896f82a8d9f26fd17111b0148a9d216b49fd3b1de7d9bee16224f439: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B225CDC0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,389 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/33f04eac896f82a8d9f26fd17111b0148a9d216b49fd3b1de7d9bee16224f439 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,406 - ERROR - Error fetching transaction 0x33f04eac896f82a8d9f26fd17111b0148a9d216b49fd3b1de7d9bee16224f439: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B126F220>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,407 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0x33f04eac896f82a8d9f26fd17111b0148a9d216b49fd3b1de7d9bee16224f439 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,461 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,507 - ERROR - Error fetching transaction f5f2a78e6afd16d229292ab103e7b5efcb450aff8d39f1b4bcd4433602fe01ad: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B225C100>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,508 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/f5f2a78e6afd16d229292ab103e7b5efcb450aff8d39f1b4bcd4433602fe01ad HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,526 - ERROR - Error fetching transaction 0xf5f2a78e6afd16d229292ab103e7b5efcb450aff8d39f1b4bcd4433602fe01ad: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22C35B0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,528 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0xf5f2a78e6afd16d229292ab103e7b5efcb450aff8d39f1b4bcd4433602fe01ad HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,589 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,635 - ERROR - Error fetching transaction 53ab9a3e0901d215279b5bda8db96c13ebba5b586499628acd1922de33cfaa7a: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B225CD60>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,637 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/53ab9a3e0901d215279b5bda8db96c13ebba5b586499628acd1922de33cfaa7a HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,659 - ERROR - Error fetching transaction 0x53ab9a3e0901d215279b5bda8db96c13ebba5b586499628acd1922de33cfaa7a: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B2253D60>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,661 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0x53ab9a3e0901d215279b5bda8db96c13ebba5b586499628acd1922de33cfaa7a HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,703 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,740 - ERROR - Error fetching transaction 97ad72f4f2f99b05d26b4c5f31061abf363f361293d65e0c8de0f22264f516b5: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B126C250>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,742 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/97ad72f4f2f99b05d26b4c5f31061abf363f361293d65e0c8de0f22264f516b5 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,761 - ERROR - Error fetching transaction 0x97ad72f4f2f99b05d26b4c5f31061abf363f361293d65e0c8de0f22264f516b5: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22C3340>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,761 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0x97ad72f4f2f99b05d26b4c5f31061abf363f361293d65e0c8de0f22264f516b5 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,809 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,862 - ERROR - Error fetching transaction 3d4e032514e93adec1a11b977b0ffb631ae931303e965f88d8c409c6bd1d861e: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22C3970>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,864 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/3d4e032514e93adec1a11b977b0ffb631ae931303e965f88d8c409c6bd1d861e HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,883 - ERROR - Error fetching transaction 0x3d4e032514e93adec1a11b977b0ffb631ae931303e965f88d8c409c6bd1d861e: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B226C160>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,884 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0x3d4e032514e93adec1a11b977b0ffb631ae931303e965f88d8c409c6bd1d861e HTTP/1.1[0m" 404 -
+2025-11-05 01:36:51,943 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:51,990 - ERROR - Error fetching transaction 0cb36b182757bea10600ed130556f0b2522befe59e63e2f64005efda5c65d516: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B226C430>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:51,992 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:51] "[33mGET /transaction/0cb36b182757bea10600ed130556f0b2522befe59e63e2f64005efda5c65d516 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,009 - ERROR - Error fetching transaction 0x0cb36b182757bea10600ed130556f0b2522befe59e63e2f64005efda5c65d516: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22D3AC0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,011 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0x0cb36b182757bea10600ed130556f0b2522befe59e63e2f64005efda5c65d516 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,052 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,098 - ERROR - Error fetching transaction b1810ee65fb74dda06053f968123f42f6f7a70d384d325c34631c9520f4fe710: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22D3B20>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,100 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/b1810ee65fb74dda06053f968123f42f6f7a70d384d325c34631c9520f4fe710 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,116 - ERROR - Error fetching transaction 0xb1810ee65fb74dda06053f968123f42f6f7a70d384d325c34631c9520f4fe710: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B23123D0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,116 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0xb1810ee65fb74dda06053f968123f42f6f7a70d384d325c34631c9520f4fe710 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,160 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,197 - ERROR - Error fetching transaction e18a63db960c23c60bb0063eb2da14ab849462ff86181597ad42694ef4929be3: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B23121C0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,201 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/e18a63db960c23c60bb0063eb2da14ab849462ff86181597ad42694ef4929be3 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,223 - ERROR - Error fetching transaction 0xe18a63db960c23c60bb0063eb2da14ab849462ff86181597ad42694ef4929be3: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22C3160>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,225 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0xe18a63db960c23c60bb0063eb2da14ab849462ff86181597ad42694ef4929be3 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,273 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,312 - ERROR - Error fetching transaction c1199798ba5bbce4e16a2c1c39f6a29a8660de448be210969dbc1b29c2c5dab0: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B22C3460>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,312 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/c1199798ba5bbce4e16a2c1c39f6a29a8660de448be210969dbc1b29c2c5dab0 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,328 - ERROR - Error fetching transaction 0xc1199798ba5bbce4e16a2c1c39f6a29a8660de448be210969dbc1b29c2c5dab0: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B2298A30>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,330 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0xc1199798ba5bbce4e16a2c1c39f6a29a8660de448be210969dbc1b29c2c5dab0 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,378 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,418 - ERROR - Error fetching transaction 2355e719660f665fc76c0b2a4fd98ae818d81c5c274bf62545b5d173cfb2f620: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B432F4C0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,420 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/2355e719660f665fc76c0b2a4fd98ae818d81c5c274bf62545b5d173cfb2f620 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,440 - ERROR - Error fetching transaction 0x2355e719660f665fc76c0b2a4fd98ae818d81c5c274bf62545b5d173cfb2f620: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B225C9D0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,442 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0x2355e719660f665fc76c0b2a4fd98ae818d81c5c274bf62545b5d173cfb2f620 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,493 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,532 - ERROR - Error fetching transaction df5c811ff235a37aaabf5edfed665b8367b9d9aa8393e675ecbd4e6020a2d3e6: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B431B280>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,534 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/df5c811ff235a37aaabf5edfed665b8367b9d9aa8393e675ecbd4e6020a2d3e6 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,552 - ERROR - Error fetching transaction 0xdf5c811ff235a37aaabf5edfed665b8367b9d9aa8393e675ecbd4e6020a2d3e6: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B43061F0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,554 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0xdf5c811ff235a37aaabf5edfed665b8367b9d9aa8393e675ecbd4e6020a2d3e6 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,595 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,633 - ERROR - Error fetching transaction d9494f3c561c1245127f3bd4c479ed62ef08544421245df2eafdeda36eac3768: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B432FA90>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,636 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/d9494f3c561c1245127f3bd4c479ed62ef08544421245df2eafdeda36eac3768 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,650 - ERROR - Error fetching transaction 0xd9494f3c561c1245127f3bd4c479ed62ef08544421245df2eafdeda36eac3768: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B43186A0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,652 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0xd9494f3c561c1245127f3bd4c479ed62ef08544421245df2eafdeda36eac3768 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,692 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,728 - ERROR - Error fetching transaction 44a394660bb646b3303796ca17afbe543d276152a216aad68b166ac459361aed: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B432FE80>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,730 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/44a394660bb646b3303796ca17afbe543d276152a216aad68b166ac459361aed HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,746 - ERROR - Error fetching transaction 0x44a394660bb646b3303796ca17afbe543d276152a216aad68b166ac459361aed: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B431B280>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,748 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0x44a394660bb646b3303796ca17afbe543d276152a216aad68b166ac459361aed HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,801 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,838 - ERROR - Error fetching transaction 0c1b7305655b0c2f9cc76e9bf43d0d0e2b2927153730b22fb7b9d63ead32e745: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B4303130>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,840 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0c1b7305655b0c2f9cc76e9bf43d0d0e2b2927153730b22fb7b9d63ead32e745 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,858 - ERROR - Error fetching transaction 0x0c1b7305655b0c2f9cc76e9bf43d0d0e2b2927153730b22fb7b9d63ead32e745: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B431B8B0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,858 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0x0c1b7305655b0c2f9cc76e9bf43d0d0e2b2927153730b22fb7b9d63ead32e745 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,896 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:52,930 - ERROR - Error fetching transaction f2cd6307792bd8537cf9bd1c72bfbf90736fd5ffff95f13492d5c74075c172cf: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B4318A90>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,932 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/f2cd6307792bd8537cf9bd1c72bfbf90736fd5ffff95f13492d5c74075c172cf HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,946 - ERROR - Error fetching transaction 0xf2cd6307792bd8537cf9bd1c72bfbf90736fd5ffff95f13492d5c74075c172cf: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B430B880>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:52,948 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "[33mGET /transaction/0xf2cd6307792bd8537cf9bd1c72bfbf90736fd5ffff95f13492d5c74075c172cf HTTP/1.1[0m" 404 -
+2025-11-05 01:36:52,995 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 01:36:53,031 - ERROR - Error fetching transaction 45bf27a7bf2c81fb121ab5905693aa2efd14f16238e5aa88ce1e6f9bd0ef2169: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B430BD30>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:53,033 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:53] "[33mGET /transaction/45bf27a7bf2c81fb121ab5905693aa2efd14f16238e5aa88ce1e6f9bd0ef2169 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:53,048 - ERROR - Error fetching transaction 0x45bf27a7bf2c81fb121ab5905693aa2efd14f16238e5aa88ce1e6f9bd0ef2169: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B4303AF0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 01:36:53,049 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:53] "[33mGET /transaction/0x45bf27a7bf2c81fb121ab5905693aa2efd14f16238e5aa88ce1e6f9bd0ef2169 HTTP/1.1[0m" 404 -
+2025-11-05 01:36:53,102 - INFO - 127.0.0.1 - - [05/Nov/2025 01:36:53] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 10:57:37,388 - INFO - 127.0.0.1 - - [05/Nov/2025 10:57:37] "GET /transaction/3aea2775c56bbdb9bd99eba46df4592991cbff7ccce7d2ca35fe182f753c0d9e HTTP/1.1" 200 -
+2025-11-05 10:58:01,133 - INFO - 127.0.0.1 - - [05/Nov/2025 10:58:01] "GET /transaction/0ec7653db152c90080a7d47cfd2d86a51ae4e4e3a9d8255236146194ae8a2a3d HTTP/1.1" 200 -
+2025-11-05 10:58:24,931 - INFO - 127.0.0.1 - - [05/Nov/2025 10:58:24] "GET /transaction/39280286cbdc4d1d66655555ec533d118edec251046e703783a355e1a134c490 HTTP/1.1" 200 -
+2025-11-05 10:59:25,206 - INFO - 127.0.0.1 - - [05/Nov/2025 10:59:25] "GET /transaction/1523c3b7e7bc6d9517b1161883792256faf03bee09ddc24c3981b399efeedba8 HTTP/1.1" 200 -
+2025-11-05 10:59:48,710 - INFO - 127.0.0.1 - - [05/Nov/2025 10:59:48] "GET /transaction/6dac636dec34c7e8592c1ec2a815bcc2055aa9880d736c7e0ae970bf47cc1196 HTTP/1.1" 200 -
+2025-11-05 11:00:36,798 - INFO - 127.0.0.1 - - [05/Nov/2025 11:00:36] "GET /transaction/786147b9cd016d1bde43be1f9f2d266868ba643fb3fc50ec7484619b2bac4997 HTTP/1.1" 200 -
+2025-11-05 11:01:12,760 - INFO - 127.0.0.1 - - [05/Nov/2025 11:01:12] "GET /transaction/4ef29fe8c2641dd57c88df92ca49595d174f067a93ce6a71bc5d8b1462efd754 HTTP/1.1" 200 -
+2025-11-05 11:02:00,835 - INFO - 127.0.0.1 - - [05/Nov/2025 11:02:00] "GET /transaction/ac1c46316fa1cff99d0c683516d965def69a05cba1e662ade49666d9bbfca97b HTTP/1.1" 200 -
+2025-11-05 11:02:25,623 - INFO - 127.0.0.1 - - [05/Nov/2025 11:02:25] "GET /transaction/06709c0caa901eb5c5c3c464cfb55b2c53976607ae53d21c160eff7440c2a1f9 HTTP/1.1" 200 -
+2025-11-05 11:03:12,965 - INFO - 127.0.0.1 - - [05/Nov/2025 11:03:12] "GET /transaction/3fcfdc3145eb96533b5ada73be022dbd06f16a414d128f5a948e76436f07954b HTTP/1.1" 200 -
+2025-11-05 11:03:49,051 - INFO - 127.0.0.1 - - [05/Nov/2025 11:03:49] "GET /transaction/96eb839c204a7e56e4d48529e8714d92dd8e25d6877a8bc6657e55ca03fe1ec2 HTTP/1.1" 200 -
+2025-11-05 11:04:12,838 - INFO - 127.0.0.1 - - [05/Nov/2025 11:04:12] "GET /transaction/1b5b85007349b1da4a8a67659c186ab9f4c9c62fd4a81390a49f0c86544ac445 HTTP/1.1" 200 -
+2025-11-05 11:05:12,870 - INFO - 127.0.0.1 - - [05/Nov/2025 11:05:12] "GET /transaction/df7065d8b4a9f2549aaa38168233e5f3c0caf787237bb037d77958a01ebe5364 HTTP/1.1" 200 -
+2025-11-05 11:05:36,580 - INFO - 127.0.0.1 - - [05/Nov/2025 11:05:36] "GET /transaction/d752030d9e4bcfa23aa2fdeaceaf173ee7cfc03f27027a2f1d0a576278ff5806 HTTP/1.1" 200 -
+2025-11-05 11:06:36,569 - INFO - 127.0.0.1 - - [05/Nov/2025 11:06:36] "GET /transaction/10219156f9b1782a1c7850e4a4e3893aa16218d00647c8b622064fcdfd3e0367 HTTP/1.1" 200 -
+2025-11-05 11:07:01,662 - INFO - 127.0.0.1 - - [05/Nov/2025 11:07:01] "GET /transaction/df2993eda29d7a9b6c6518c756a7f5e7a992f1d01325bc0ffbdac3eb567bb79b HTTP/1.1" 200 -
+2025-11-05 11:07:49,258 - INFO - 127.0.0.1 - - [05/Nov/2025 11:07:49] "GET /transaction/21250f335fef2efbdde226f5d36ea729e2d661317e4bef4cdd64be0a2e9c17d5 HTTP/1.1" 200 -
+2025-11-05 11:08:25,161 - INFO - 127.0.0.1 - - [05/Nov/2025 11:08:25] "GET /transaction/7bc7a4e600982d321577dc57c47b551cd4833d0a1760f196634585c157eb6b89 HTTP/1.1" 200 -
+2025-11-05 11:08:49,902 - INFO - 127.0.0.1 - - [05/Nov/2025 11:08:49] "GET /transaction/99dc46223d31d739690ee34c0e3366cf7289d750aa67dc26b61865e2fdd16d99 HTTP/1.1" 200 -
+2025-11-05 11:09:25,164 - INFO - 127.0.0.1 - - [05/Nov/2025 11:09:25] "GET /transaction/5b49843fdebec6b9224ae0b0543a075d7064dec6200e2d55f9b592dd14031cf0 HTTP/1.1" 200 -
+2025-11-05 11:10:28,575 - INFO - 127.0.0.1 - - [05/Nov/2025 11:10:28] "GET /transaction/81ebc38ad8e29a45b5cc7af927cc354d57b3e75366e29237911ec2ef95f79a7c HTTP/1.1" 200 -
+2025-11-05 11:11:25,703 - INFO - 127.0.0.1 - - [05/Nov/2025 11:11:25] "GET /transaction/cc31c1e414f7c723558f411306e93125741c09c44a7cb9add66e2619c6927470 HTTP/1.1" 200 -
+2025-11-05 11:12:01,089 - INFO - 127.0.0.1 - - [05/Nov/2025 11:12:01] "GET /transaction/59c09f49bd8597f47aee6d146728f045093ec4516bb1ccbf091cc6f831dd36a6 HTTP/1.1" 200 -
+2025-11-05 11:13:36,646 - INFO - 127.0.0.1 - - [05/Nov/2025 11:13:36] "GET /transaction/a51293bdd7c6190166411cd5c9095f73222749cbbd7aa9b5c713e622eb4ab528 HTTP/1.1" 200 -
+2025-11-05 11:14:00,974 - INFO - 127.0.0.1 - - [05/Nov/2025 11:14:00] "GET /transaction/9f8f8aa230eaf4e00d277e132d8fde5cf98c84bdeb075534723c87cfa0a00bbe HTTP/1.1" 200 -
+2025-11-05 11:14:24,972 - INFO - 127.0.0.1 - - [05/Nov/2025 11:14:24] "GET /transaction/91d327b1f46c952ee22dd4925e4aa2ea96468045bed9934fc8c3a58e930cf926 HTTP/1.1" 200 -
+2025-11-05 11:14:50,225 - INFO - 127.0.0.1 - - [05/Nov/2025 11:14:50] "GET /transaction/c3671ceed4c9bef4ae3c591b43323d937ed55a83541b1d0c708d180bfb0598e9 HTTP/1.1" 200 -
+2025-11-05 11:15:12,640 - INFO - 127.0.0.1 - - [05/Nov/2025 11:15:12] "GET /transaction/7711dab4bff695fa191fb9cbdb7545df82950becc27c191fd987fe80a1324828 HTTP/1.1" 200 -
+2025-11-05 11:15:36,837 - INFO - 127.0.0.1 - - [05/Nov/2025 11:15:36] "GET /transaction/6d9c2f86a26c76a4a5391c914210318f4f2035b0a7e1c24d49426ce372ae4d68 HTTP/1.1" 200 -
+2025-11-05 11:16:00,996 - INFO - 127.0.0.1 - - [05/Nov/2025 11:16:00] "GET /transaction/fe0e6b7cd0dbb24600081ead692327e4adb69ba4ad854d759554d59612dfbd6d HTTP/1.1" 200 -
+2025-11-05 11:16:24,602 - INFO - 127.0.0.1 - - [05/Nov/2025 11:16:24] "GET /transaction/3077c77d8397983c239aafe2dccaec4c6b753d79d480d6cd10984dfd7dfb3847 HTTP/1.1" 200 -
+2025-11-05 11:16:48,773 - INFO - 127.0.0.1 - - [05/Nov/2025 11:16:48] "GET /transaction/fbbbf8b2a00799f7e3b5ae1bac717dfd1da2f3bdee7ce8466d7f978d952990a4 HTTP/1.1" 200 -
+2025-11-05 11:17:13,123 - INFO - 127.0.0.1 - - [05/Nov/2025 11:17:13] "GET /transaction/f218c371d60231240ff56cdc265d84c9c042343cb22ac6ddacda943c64736581 HTTP/1.1" 200 -
+2025-11-05 11:17:36,785 - INFO - 127.0.0.1 - - [05/Nov/2025 11:17:36] "GET /transaction/e40e6d38a2de95cb2b999b674564150290fdff995d96ab5cb985501156e25968 HTTP/1.1" 200 -
+2025-11-05 11:18:01,460 - INFO - 127.0.0.1 - - [05/Nov/2025 11:18:01] "GET /transaction/d1e76ab2a565635a7033a409f4bd9a3ee91da3f3f18cc2daa0ae2331a71a253e HTTP/1.1" 200 -
+2025-11-05 11:18:37,745 - INFO - 127.0.0.1 - - [05/Nov/2025 11:18:37] "GET /transaction/d12673d07dbde3e47a5099e8cdc2dd876aa26245c9fcc5ff38a314b524d6f8d4 HTTP/1.1" 200 -
+2025-11-05 11:19:00,905 - INFO - 127.0.0.1 - - [05/Nov/2025 11:19:00] "GET /transaction/c693f4367ba6208e65e210441fe68a8284f5b3b416cfaad9b73e6563e2e7a07a HTTP/1.1" 200 -
+2025-11-05 11:19:25,054 - INFO - 127.0.0.1 - - [05/Nov/2025 11:19:25] "GET /transaction/b6607edfabd981cdc4b1b92114715749baaf95884c1f6e4bee0444d1a3c9f835 HTTP/1.1" 200 -
+2025-11-05 11:20:14,104 - INFO - 127.0.0.1 - - [05/Nov/2025 11:20:14] "GET /transaction/a41af040118dc108e88e88f70899b728b9e55e015db9baeae5f371ef5dff742d HTTP/1.1" 200 -
+2025-11-05 11:20:36,793 - INFO - 127.0.0.1 - - [05/Nov/2025 11:20:36] "GET /transaction/96d805f70a41af152d866083cca932835d6d0efde23d25c41a620f08ec0d0a77 HTTP/1.1" 200 -
+2025-11-05 11:21:40,551 - INFO - 127.0.0.1 - - [05/Nov/2025 11:21:40] "GET /transaction/541020e1f502578464cd4f7ccc029fabbc0df97e4c634572545a74a7852504dc HTTP/1.1" 200 -
+2025-11-05 11:22:38,658 - INFO - 127.0.0.1 - - [05/Nov/2025 11:22:38] "GET /transaction/050c0f42e1669cd89526870a5d3a7df741db67140d82053542dad20fa2179837 HTTP/1.1" 200 -
+2025-11-05 11:23:00,605 - INFO - 127.0.0.1 - - [05/Nov/2025 11:23:00] "GET /transaction/33bb0b9e290186cdb887d47bc1e6eeb986284b5ff2de6778b2bec01a3f316a68 HTTP/1.1" 200 -
+2025-11-05 11:23:24,571 - INFO - 127.0.0.1 - - [05/Nov/2025 11:23:24] "GET /transaction/1dd3763777ee06cb2ffa1b0c6ab9dd6bd2f3f54e71b3a5c98bbc652cdafdfd3b HTTP/1.1" 200 -
+2025-11-05 11:23:50,153 - INFO - 127.0.0.1 - - [05/Nov/2025 11:23:50] "GET /transaction/51315544543b1d322dab861f52d1c29a0574d4fb87c4572e43eba7d0ff7594f8 HTTP/1.1" 200 -
+2025-11-05 11:24:12,902 - INFO - 127.0.0.1 - - [05/Nov/2025 11:24:12] "GET /transaction/dadb47aa22ff655cceb95095db75df6f9307c51228c991ab11b704d244f75b2c HTTP/1.1" 200 -
+2025-11-05 11:25:01,225 - INFO - 127.0.0.1 - - [05/Nov/2025 11:25:01] "GET /transaction/f475856235290d78b5edbb3fcca40ae0337aa8123deae96bc482aa79ce214a5d HTTP/1.1" 200 -
+2025-11-05 11:25:25,204 - INFO - 127.0.0.1 - - [05/Nov/2025 11:25:25] "GET /transaction/7d58ae2402134a9c181fa689e5fdc987ed795e3af9f26e2ce6be5bb13860b6d7 HTTP/1.1" 200 -
+2025-11-05 11:25:48,933 - INFO - 127.0.0.1 - - [05/Nov/2025 11:25:48] "GET /transaction/9590a454e5f1ddf4758576de01d67741e77997bb43fcb407d0309ed13728a789 HTTP/1.1" 200 -
+2025-11-05 11:26:12,896 - INFO - 127.0.0.1 - - [05/Nov/2025 11:26:12] "GET /transaction/18f772b04dbaf822428f1fc2615a59b88d4c43a829c7beccd4d57beeab6755af HTTP/1.1" 200 -
+2025-11-05 11:26:37,349 - INFO - 127.0.0.1 - - [05/Nov/2025 11:26:37] "GET /transaction/000df59b965cf9686057a8cfe0d3623734e30b0f8190082f34c8b55eb46d7d1b HTTP/1.1" 200 -
+2025-11-05 11:27:00,942 - INFO - 127.0.0.1 - - [05/Nov/2025 11:27:00] "GET /transaction/8b58fcf790d80d8392dad25a1ded75366c26195155ac22c9b9048714dd694c3b HTTP/1.1" 200 -
+2025-11-05 11:27:25,669 - INFO - 127.0.0.1 - - [05/Nov/2025 11:27:25] "GET /transaction/89d00744758abcbb9d42dc9d5d54f2dc8f958c93113eddf04a0f5b926138c6fe HTTP/1.1" 200 -
+2025-11-05 11:27:48,746 - INFO - 127.0.0.1 - - [05/Nov/2025 11:27:48] "GET /transaction/e685e65b2683b0df41fe2632c9d3a1c544fdf5c13cd6da4cce45a896824f9fe4 HTTP/1.1" 200 -
+2025-11-05 11:28:13,055 - INFO - 127.0.0.1 - - [05/Nov/2025 11:28:13] "GET /transaction/48afa34f70034a390b321e602883d59431b48dbdb8d36881195b87b2f352982f HTTP/1.1" 200 -
+2025-11-05 11:28:36,869 - INFO - 127.0.0.1 - - [05/Nov/2025 11:28:36] "GET /transaction/d695fea4cde1af5afa9db5db4577e6c8e7e3f9fe5c33ce618500b327fdab1266 HTTP/1.1" 200 -
+2025-11-05 11:29:00,920 - INFO - 127.0.0.1 - - [05/Nov/2025 11:29:00] "GET /transaction/1fa1c3a6869710d2b9d65e0b97f1859492d07ba7394368e143ffb142aee821a4 HTTP/1.1" 200 -
+2025-11-05 11:29:24,553 - INFO - 127.0.0.1 - - [05/Nov/2025 11:29:24] "GET /transaction/b512bbbea83da4606c26662c815ff71abcc14e62491e20270bee97ebaf782fe8 HTTP/1.1" 200 -
+2025-11-05 11:29:48,874 - INFO - 127.0.0.1 - - [05/Nov/2025 11:29:48] "GET /transaction/272658a8fcc60eeec079096a1f9e0cb54ff001813fe26842c02b5b743b7f9a86 HTTP/1.1" 200 -
+2025-11-05 11:30:13,230 - INFO - 127.0.0.1 - - [05/Nov/2025 11:30:13] "GET /transaction/43a37fe64b4f197975ff2f427f03e0f7c17fc37d51cedc912fccd64308ff2398 HTTP/1.1" 200 -
+2025-11-05 11:30:53,187 - INFO - 127.0.0.1 - - [05/Nov/2025 11:30:53] "GET /transaction/b3936bf683f24c49a5c6739550dbbf2db717ec8c5fef5df3ea6cdfc3a772cf28 HTTP/1.1" 200 -
+2025-11-05 11:31:12,872 - INFO - 127.0.0.1 - - [05/Nov/2025 11:31:12] "GET /transaction/8c733759ea95f6941f16c705cbb3ff8bd91c10e7b500c17d626c1789640f60e5 HTTP/1.1" 200 -
+2025-11-05 11:31:36,748 - INFO - 127.0.0.1 - - [05/Nov/2025 11:31:36] "GET /transaction/bb68f536ec079da27003fa7a94371eeb8517e518d119ffb2cd8c8781208dcf12 HTTP/1.1" 200 -
+2025-11-05 11:32:01,002 - INFO - 127.0.0.1 - - [05/Nov/2025 11:32:01] "GET /transaction/b5f6ebeb78efd03ad5f89043ab035057c76967efa8224212319b1c660386374b HTTP/1.1" 200 -
+2025-11-05 11:32:25,063 - INFO - 127.0.0.1 - - [05/Nov/2025 11:32:25] "GET /transaction/42c8d8c57beb7ecc5b8e215a54803d827c3814cbf740c6469cf343e8771c3347 HTTP/1.1" 200 -
+2025-11-05 11:32:49,142 - INFO - 127.0.0.1 - - [05/Nov/2025 11:32:49] "GET /transaction/e7b9f441a97908669384c0f1d051cb89b063be353850c8e142980bb6eb0c4e66 HTTP/1.1" 200 -
+2025-11-05 11:33:12,759 - INFO - 127.0.0.1 - - [05/Nov/2025 11:33:12] "GET /transaction/fd02ca6e5f4c03e15352a56b92944d85412a6bdc825065d3ebe608a3e8f5c262 HTTP/1.1" 200 -
+2025-11-05 11:33:36,936 - INFO - 127.0.0.1 - - [05/Nov/2025 11:33:36] "GET /transaction/1b31e08c9462d0cba41c4d6a9d28c5d8ea11a28213ba31305cb274388175c3f3 HTTP/1.1" 200 -
+2025-11-05 11:34:00,989 - INFO - 127.0.0.1 - - [05/Nov/2025 11:34:00] "GET /transaction/617cdf4d60f2f8af3fd7091af85c3197f7f5f9e07413a7f59a71a6433aee548a HTTP/1.1" 200 -
+2025-11-05 11:34:24,925 - INFO - 127.0.0.1 - - [05/Nov/2025 11:34:24] "GET /transaction/fd24b028a4eda854126e71b09e59abacdfad19df0fa439a6e4963d88918bc287 HTTP/1.1" 200 -
+2025-11-05 11:34:49,580 - INFO - 127.0.0.1 - - [05/Nov/2025 11:34:49] "GET /transaction/d9d1ac0812dfc4176f52da43c5af16f7c6258692dc068b84be394d22268a841a HTTP/1.1" 200 -
+2025-11-05 11:35:12,828 - INFO - 127.0.0.1 - - [05/Nov/2025 11:35:12] "GET /transaction/a44da9c7b78dc12487e60983e5a2373e3dcf0390e88e6c17471e485d119e80d5 HTTP/1.1" 200 -
+2025-11-05 11:35:36,906 - INFO - 127.0.0.1 - - [05/Nov/2025 11:35:36] "GET /transaction/a6efbeb945ef5cbf7aebf566786be7521e126122f066606a34befd81870c517d HTTP/1.1" 200 -
+2025-11-05 11:36:26,367 - INFO - 127.0.0.1 - - [05/Nov/2025 11:36:26] "GET /transaction/f300c5e1ae3bfc3c2a8d1b89272d894d0e9aafec4d8816df5bef1b371c1f222d HTTP/1.1" 200 -
+2025-11-05 11:37:00,608 - INFO - 127.0.0.1 - - [05/Nov/2025 11:37:00] "GET /transaction/21c6307c61493ed9882e63cdf96a7969051e7574ee26534e96d241111a3962d0 HTTP/1.1" 200 -
+2025-11-05 11:38:13,103 - INFO - 127.0.0.1 - - [05/Nov/2025 11:38:13] "GET /transaction/4beb1850af23a0ed2694d48b8e7ff0cbaabe6d1fb4d4905b4c774000128e0cfd HTTP/1.1" 200 -
+2025-11-05 11:38:37,119 - INFO - 127.0.0.1 - - [05/Nov/2025 11:38:37] "GET /transaction/35ea6941eba15df1f78b41a33bc1f83ed22c7e5c3ccd05e72b17de5b8272ebf7 HTTP/1.1" 200 -
+2025-11-05 11:39:15,144 - INFO - 127.0.0.1 - - [05/Nov/2025 11:39:15] "GET /transaction/35ae9e4f0558569ad233dc9a6f0e2f232eecf936c9b5425070b7120b7fcacea4 HTTP/1.1" 200 -
+2025-11-05 11:39:50,200 - INFO - 127.0.0.1 - - [05/Nov/2025 11:39:50] "GET /transaction/85c5108176b17455a86b9cb35a8d14654b4c03356c8d6d41d970d1dc6c3dd37b HTTP/1.1" 200 -
+2025-11-05 11:40:37,836 - INFO - 127.0.0.1 - - [05/Nov/2025 11:40:37] "GET /transaction/1b15c84c4e44433d8416deb56686dcd4c0b0f306f9e00e4fd887d14320d1ce53 HTTP/1.1" 200 -
+2025-11-05 11:41:28,898 - INFO - 127.0.0.1 - - [05/Nov/2025 11:41:28] "GET /transaction/d6d7ff609174dd5b0bc6fe5c82d65ca0e792fbf95c24418351e5d0cfa768f12e HTTP/1.1" 200 -
+2025-11-05 11:41:48,699 - INFO - 127.0.0.1 - - [05/Nov/2025 11:41:48] "GET /transaction/899351ab30ed255ca221ffd9dfa2a93ded3a7c7639d8be5fa54150f9105982bb HTTP/1.1" 200 -
+2025-11-05 11:42:25,175 - INFO - 127.0.0.1 - - [05/Nov/2025 11:42:25] "GET /transaction/76875fecc7df5412e49a3888c304759bc6c596d956eb9d56125e8bd621e672c3 HTTP/1.1" 200 -
+2025-11-05 11:42:50,636 - INFO - 127.0.0.1 - - [05/Nov/2025 11:42:50] "GET /transaction/f675ca708b3debdc581160b4e2959993a66532df6324f6648998243e5f0e3ac9 HTTP/1.1" 200 -
+2025-11-05 11:43:13,376 - INFO - 127.0.0.1 - - [05/Nov/2025 11:43:13] "GET /transaction/983dbb8d740e13f8e959661791c0a742e96bb1232c98959c28c76b44cf3ccbcd HTTP/1.1" 200 -
+2025-11-05 11:44:01,393 - INFO - 127.0.0.1 - - [05/Nov/2025 11:44:01] "GET /transaction/906fcbc6bd59cb5f490ed3c4fdeee003e1916f7c56ada50cffbb3399ec0d5c33 HTTP/1.1" 200 -
+2025-11-05 11:44:25,472 - INFO - 127.0.0.1 - - [05/Nov/2025 11:44:25] "GET /transaction/d64da69268df63702a157c69fb7e924b56cde0f32073fbc637a0d5e34e381fb8 HTTP/1.1" 200 -
+2025-11-05 11:45:13,192 - INFO - 127.0.0.1 - - [05/Nov/2025 11:45:13] "GET /transaction/a27df00667df29b11678ca00f87049b5f414d92a9c867406ace63fa50273b2be HTTP/1.1" 200 -
+2025-11-05 11:45:49,017 - INFO - 127.0.0.1 - - [05/Nov/2025 11:45:49] "GET /transaction/f14934fddc3580726b3364d488310135c10ad8bd4a70e267e87d89cc4e493fe0 HTTP/1.1" 200 -
+2025-11-05 11:46:37,026 - INFO - 127.0.0.1 - - [05/Nov/2025 11:46:37] "GET /transaction/7a30e885114ca645354274bfbec89e4d88d780a36c9d4e18b53800e97326175d HTTP/1.1" 200 -
+2025-11-05 11:47:01,874 - INFO - 127.0.0.1 - - [05/Nov/2025 11:47:01] "GET /transaction/ce6803ee542ec3a00056b31295261f8b7dd7b7a0c154173b4fa512d821071b60 HTTP/1.1" 200 -
+2025-11-05 11:48:01,850 - INFO - 127.0.0.1 - - [05/Nov/2025 11:48:01] "GET /transaction/3643916f87d74652842e75e35ac267c91b1429e15d2568807f7cdb92e3041ca9 HTTP/1.1" 200 -
+2025-11-05 11:48:24,549 - INFO - 127.0.0.1 - - [05/Nov/2025 11:48:24] "GET /transaction/ebfb6b465fbc8e267c8128624365426ac4b81dd0a547cdae42cea93efee39afa HTTP/1.1" 200 -
+2025-11-05 11:49:01,203 - INFO - 127.0.0.1 - - [05/Nov/2025 11:49:01] "GET /transaction/b9c09f428e6f788f8d9c6841a50e852a627e44a4eb329660372a800b1ed102df HTTP/1.1" 200 -
+2025-11-05 11:49:49,202 - INFO - 127.0.0.1 - - [05/Nov/2025 11:49:49] "GET /transaction/acaf884e62ed887d6a858a9a10a492dc574560d0753c2f72675d5b6149dd437e HTTP/1.1" 200 -
+2025-11-05 12:01:22,275 - ERROR - Error fetching transaction 8252ea6ed3f9d2263a5faaea2c2032da308368b3cf788455e6de927686a4c0a4: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B430C6D0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,278 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/8252ea6ed3f9d2263a5faaea2c2032da308368b3cf788455e6de927686a4c0a4 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,429 - ERROR - Error fetching transaction 0x8252ea6ed3f9d2263a5faaea2c2032da308368b3cf788455e6de927686a4c0a4: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B53C2A30>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,438 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/0x8252ea6ed3f9d2263a5faaea2c2032da308368b3cf788455e6de927686a4c0a4 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,510 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 12:01:22,580 - ERROR - Error fetching transaction 2af67bb4ac7a37d58fc4e4f0d91535642076bd2e26d510ff7921e8c3a9359116: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B1187340>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,582 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/2af67bb4ac7a37d58fc4e4f0d91535642076bd2e26d510ff7921e8c3a9359116 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,615 - ERROR - Error fetching transaction 0x2af67bb4ac7a37d58fc4e4f0d91535642076bd2e26d510ff7921e8c3a9359116: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B53B87C0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,617 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/0x2af67bb4ac7a37d58fc4e4f0d91535642076bd2e26d510ff7921e8c3a9359116 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,689 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 12:01:22,742 - ERROR - Error fetching transaction dfc9ca35ad84176693b72d307acc87d3eec85a1f5b6eadd26cf26935bbfed476: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B431B760>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,745 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/dfc9ca35ad84176693b72d307acc87d3eec85a1f5b6eadd26cf26935bbfed476 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,769 - ERROR - Error fetching transaction 0xdfc9ca35ad84176693b72d307acc87d3eec85a1f5b6eadd26cf26935bbfed476: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B53C6BE0>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,769 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/0xdfc9ca35ad84176693b72d307acc87d3eec85a1f5b6eadd26cf26935bbfed476 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,828 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 12:01:22,878 - ERROR - Error fetching transaction 4b5878a76a092e9dfa258accd87e4706a31c15cbda29b30edbe08856044234c5: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B4318460>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,882 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/4b5878a76a092e9dfa258accd87e4706a31c15cbda29b30edbe08856044234c5 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,911 - ERROR - Error fetching transaction 0x4b5878a76a092e9dfa258accd87e4706a31c15cbda29b30edbe08856044234c5: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B7370040>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:22,913 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "[33mGET /transaction/0x4b5878a76a092e9dfa258accd87e4706a31c15cbda29b30edbe08856044234c5 HTTP/1.1[0m" 404 -
+2025-11-05 12:01:22,961 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:22] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 12:01:23,010 - ERROR - Error fetching transaction 5aa0cf5ac0ac93654e863b92899203754b2309c887703382d39c6fccb70b5dfb: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B53C2C70>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:23,012 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:23] "[33mGET /transaction/5aa0cf5ac0ac93654e863b92899203754b2309c887703382d39c6fccb70b5dfb HTTP/1.1[0m" 404 -
+2025-11-05 12:01:23,035 - ERROR - Error fetching transaction 0x5aa0cf5ac0ac93654e863b92899203754b2309c887703382d39c6fccb70b5dfb: HTTPSConnectionPool(host='eth-sepolia.g.alchemy.com', port=443): Max retries exceeded with url: /v2/5bURjldvKPu4glB_tFxWt (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002F1B7375460>: Failed to resolve 'eth-sepolia.g.alchemy.com' ([Errno 11001] getaddrinfo failed)"))
+2025-11-05 12:01:23,038 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:23] "[33mGET /transaction/0x5aa0cf5ac0ac93654e863b92899203754b2309c887703382d39c6fccb70b5dfb HTTP/1.1[0m" 404 -
+2025-11-05 12:01:23,093 - INFO - 127.0.0.1 - - [05/Nov/2025 12:01:23] "POST /predict/transaction HTTP/1.1" 200 -
+2025-11-05 18:23:14,919 - INFO - 127.0.0.1 - - [05/Nov/2025 18:23:14] "GET /transaction/9cfca98f604bb864437ec2db1accdd0dc295b2820489ff9dfa6a2eede65a15b9 HTTP/1.1" 200 -
+2025-11-05 18:23:37,133 - INFO - 127.0.0.1 - - [05/Nov/2025 18:23:37] "GET /transaction/ee07832b1614dffd50d60960f2c6621ec9dbf3128e2c1326d68f0b6428e3bff5 HTTP/1.1" 200 -
+2025-11-05 18:24:13,886 - INFO - 127.0.0.1 - - [05/Nov/2025 18:24:13] "GET /transaction/3765138c4e73720ecdc9d99f12624c5c567f4880370b3f863f9871f93c0ad217 HTTP/1.1" 200 -
+2025-11-05 18:24:48,960 - INFO - 127.0.0.1 - - [05/Nov/2025 18:24:48] "GET /transaction/561cb1fa30fa458d9688cc50f3222ba0c048eeefaa17976afb2c09c63283a9bc HTTP/1.1" 200 -
+2025-11-05 18:25:12,544 - INFO - 127.0.0.1 - - [05/Nov/2025 18:25:12] "GET /transaction/fe13c2f27ea63b303c458c318edc9bf1603658ca1844e6010534e4ad3e2fcfb6 HTTP/1.1" 200 -
+2025-11-05 18:26:01,974 - INFO - 127.0.0.1 - - [05/Nov/2025 18:26:01] "GET /transaction/f27b89971225f0c98b19d514a5aa88a300e6a4716b02d8133a8f2b66709d5144 HTTP/1.1" 200 -
