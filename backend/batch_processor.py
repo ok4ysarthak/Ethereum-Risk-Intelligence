@@ -35,7 +35,7 @@ class BatchProcessor:
 
         try:
             # Prefer contract-specific fetch if available
-            limit = Config.BATCH_FETCH_LIMIT
+            limit = Config.BATCH_INTERVAL_MINUTES
             txs = []
             if hasattr(self.data_fetcher, "get_contract_transactions"):
                 txs = self.data_fetcher.get_contract_transactions(

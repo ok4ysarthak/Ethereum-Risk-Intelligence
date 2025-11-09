@@ -14,6 +14,12 @@ from data_fetcher import EthereumDataFetcher
 from wallet_scorer import WalletScorer
 from batch_processor import BatchProcessor
 from config import Config
+# backend/app.py  (or wherever your Flask app is)
+from flask import Flask, request, jsonify
+from datetime import datetime
+
+
+IN_MEMORY_TXS = []
 
 app = Flask(__name__)
 CORS(app)
@@ -417,6 +423,38 @@ def lookup_transaction(tx_hash):
     except Exception as e:
         logger.error(f"❌ Error in /transaction/{tx_hash} lookup: {e}")
         return jsonify({"error": str(e)}), 500
+
+@app.route('/transactions', methods=['GET'])
+def get_transactions():
+    # optional ?limit query param
+    limit = int(request.args.get('limit', 100))
+    # return newest first
+    return jsonify(IN_MEMORY_TXS[:limit]), 200
+
+@app.route('/transactions', methods=['POST'])
+def post_transaction():
+    try:
+        data = request.get_json(force=True)
+        if not data:
+            return jsonify({"error": "empty payload"}), 400
+
+        # Accept either a single tx dict or a list
+        if isinstance(data, list):
+            # prepend so newest appear first in GET
+            for tx in reversed(data):
+                IN_MEMORY_TXS.insert(0, tx)
+        else:
+            IN_MEMORY_TXS.insert(0, data)
+
+        # optionally keep in-memory list bounded
+        if len(IN_MEMORY_TXS) > 2000:
+            IN_MEMORY_TXS[:] = IN_MEMORY_TXS[:2000]
+
+        return jsonify({"status": "ok", "added": 1}), 201
+    except Exception as e:
+        app.logger.exception("Failed to ingest transaction")
+        return jsonify({"error": str(e)}), 500
+
 
 # --- Main Execution ---
 if __name__ == '__main__':
