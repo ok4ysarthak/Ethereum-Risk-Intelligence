@@ -3,504 +3,651 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETH Fraud Detection Dashboard</title>
+    <title>Dashboard - ETH Fraud Detection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
     <style>
-        body {
+        body { 
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%);
             font-family: 'Inter', sans-serif;
-            background-color: #0a0e1a;
+            min-height: 100vh;
         }
-        ::-webkit-scrollbar { width: 12px; }
-        ::-webkit-scrollbar-track { background: #111827; }
-        ::-webkit-scrollbar-thumb { background-color: #374151; border-radius: 6px; border: 3px solid #111827; }
-        ::-webkit-scrollbar-thumb:hover { background-color: #4b5563; }
-        .risk-high-glow { box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .loading-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#60a5fa; margin-right:8px; animation: pulse 1.2s infinite ease-in-out; }
-        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } }
-        .loader-text { font-size: 0.875rem; color: #9ca3af; }
-        pre.debug-json { background-color: #0c1220; border: 1px solid #374151; border-radius: 8px; padding: 12px; max-height: 200px; overflow-y: auto; color: #d1d5db; font-size: 0.8rem; line-height: 1.4; margin-top: 16px; }
         
-        .etherscan-link {
-            color: #60a5fa;
-            text-decoration: none;
-            transition: color 0.2s;
+        /* Glassmorphism effect */
+        .glass-panel { 
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(55, 65, 81, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-        .etherscan-link:hover {
-            color: #93c5fd;
-            text-decoration: underline;
+        
+        /* Animated gradient background */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #008B8B, #36454F, #4682b4, #1B1B1B);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
-        .icon-svg {
-            width: 1.1rem;
-            height: 1.1rem;
-            margin-right: 0.35rem;
-            display: inline-block;
-            vertical-align: text-bottom;
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 139, 139, 0.3);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1f2e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #008B8B;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4682b4;
+        }
+        
+        /* Pulse animation for stats */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        /* Icon styling */
+        .icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(0, 139, 139, 0.2), rgba(70, 130, 180, 0.2));
+            border: 1px solid rgba(0, 139, 139, 0.3);
+        }
+        
+        .icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+            stroke: #008B8B;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        /* Feature card animations */
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: scale(1.02);
+            border-color: rgba(0, 139, 139, 0.5);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #008B8B 0%, #4682b4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Stat card glow */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 139, 139, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Hero section animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
 <body class="text-gray-200">
 
-    <header class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 shadow-lg shadow-black/20 border-b border-gray-700/50">
-        <nav class="container mx-auto px-4 lg:px-6">
-            <div class="flex justify-between items-center py-4">
-                <h1 class="text-2xl font-bold text-white flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 12 11.42 8.83l-5.83 3.17M12 21l-5.83-3.17v-6.34L12 15l5.83-3.17v6.34L12 21z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v6.17l5.83 3.17L12 15l-5.83-3.17L12 3z" />
+    <!-- Header -->
+    <header class="glass-panel sticky top-0 z-50 border-b border-gray-800/50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <div class="icon-wrapper w-10 h-10">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/>
                     </svg>
-                    ETH Fraud Detection
-                </h1>
-                <div class="flex items-center space-x-4">
-                    <a href="/" class="nav-link px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors border-b-2 border-transparent" data-page="dashboard">Dashboard</a>
-                    <a href="/activity" class="nav-link px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors border-b-2 border-transparent" data-page="activity">Recent Activity</a>
-                    <a href="/live" class="nav-link px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors border-b-2 border-transparent" data-page="live">Live Feed</a>
                 </div>
+                Sentin<span class="gradient-text">ETH</span>
+            </h1>
+            <div class="flex space-x-6 text-sm font-medium">
+                <a href="/" class="text-[#008B8B] border-b-2 border-[#008B8B] pb-1">Dashboard</a>
+                <a href="/activity" class="text-gray-400 hover:text-white transition-colors pb-1">Predicted History</a>
+                <a href="/live" class="text-gray-400 hover:text-white transition-colors pb-1">Live Sepolia Feed</a>
             </div>
         </nav>
     </header>
 
-    <main class="container mx-auto px-4 lg:px-6 py-8">
+    <main class="container mx-auto px-4 py-8 space-y-8">
+        
+        <!-- Hero Section -->
+        <section class="fade-in-up">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold text-white mb-4">
+                    Ethereum <span class="gradient-text">Fraud Detection</span> System
+                </h1>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto">
+                    Real-time ML-powered fraud detection for Ethereum transactions with advanced risk scoring and wallet trust analysis
+                </p>
+            </div>
+        </section>
 
-        <section id="dashboard" class="fade-in">
-            <h2 class="text-2xl font-semibold text-white mb-4">Risk Overview</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-gray-800/50 p-6 rounded-lg shadow-lg border border-gray-700/50">
-                    <h3 class="text-sm font-medium text-gray-400">Total Wallets Flagged</h3>
-                    <p id="stat-total-wallets" class="text-3xl font-bold text-white mt-2">-</p>
-                </div>
-                <div class="bg-gray-800/50 p-6 rounded-lg shadow-lg border border-gray-700/50">
-                    <h3 class="text-sm font-medium text-gray-400">High-Risk Wallets</h3>
-                    <p id="stat-high-wallets" class="text-3xl font-bold text-red-400 mt-2">-</p>
-                </div>
-                <div class="bg-gray-800/50 p-6 rounded-lg shadow-lg border border-gray-700/50">
-                    <h3 class="text-sm font-medium text-gray-400">Total Transactions Flagged</h3>
-                    <p id="stat-total-tx" class="text-3xl font-bold text-white mt-2">-</p>
-                </div>
-                <div class="bg-gray-800/50 p-6 rounded-lg shadow-lg border border-gray-700/50">
-                    <h3 class="text-sm font-medium text-gray-400">High-Risk Transactions</h3>
-                    <p id="stat-high-tx" class="text-3xl font-bold text-red-400 mt-2">-</p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-                <div class="bg-gray-800/50 p-6 rounded-lg shadow-lg border border-gray-700/50">
-                    <h3 class="text-lg font-medium text-gray-300 mb-4">Transaction Risk Distribution</h3>
-                    <div id="tx-risk-donut-chart" class="min-h-[300px] w-full"></div>
-                </div>
-                <div class="bg-gray-800/50 p-6 rounded-lg shadow-lg border border-gray-700/50">
-                    <h3 class="text-lg font-medium text-gray-300 mb-4">Wallet Trust Distribution</h3>
-                    <div id="wallet-trust-donut-chart" class="min-h-[300px] w-full"></div>
+        <!-- Stats Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-panel p-6 rounded-xl hover-lift stat-card">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 10v4h10v-4"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 14v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14v4"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Total Scanned</span>
+                    </div>
+                    <div class="text-4xl font-bold text-white mb-2" id="stat-total-tx">-</div>
+                    <div class="text-sm text-gray-400">Transactions analyzed</div>
+                    <div class="mt-4 flex items-center gap-2 text-green-400 text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                        <span>Live monitoring</span>
+                    </div>
                 </div>
             </div>
             
+            <div class="glass-panel p-6 rounded-xl hover-lift stat-card border-red-900/30">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #ef4444;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 17h.01"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">High Risk Detected</span>
+                    </div>
+                    <div class="text-4xl font-bold text-red-400 mb-2 pulse-glow" id="stat-high-tx">-</div>
+                    <div class="text-sm text-gray-400">Flagged as suspicious</div>
+                    <div class="mt-4 flex items-center gap-2 text-red-400 text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>Requires attention</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl hover-lift stat-card border-blue-900/30">
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(70, 130, 180, 0.2), rgba(59, 130, 246, 0.2));">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #4682b4;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Unique Wallets</span>
+                    </div>
+                    <div class="text-4xl font-bold text-[#4682b4] mb-2" id="stat-total-wallets">-</div>
+                    <div class="text-sm text-gray-400">Addresses tracked</div>
+                    <div class="mt-4 flex items-center gap-2 text-[#4682b4] text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span>Active monitoring</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Project Overview -->
+            <div class="lg:col-span-2 glass-panel p-8 rounded-xl shadow-xl hover-lift">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="h-1 w-12 bg-gradient-to-r from-[#008B8B] to-transparent rounded"></div>
+                    <h2 class="text-2xl font-bold text-white">Project Overview</h2>
+                </div>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    The Ethereum Fraud Detection System uses advanced Machine Learning (XGBoost) to analyze transaction patterns in real-time on the Sepolia Testnet. It assigns a <strong class="text-[#008B8B]">Risk Score (1-10)</strong> to every transaction and builds a persistent <strong class="text-[#4682b4]">Trust Score</strong> for every wallet interactively.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-card bg-gradient-to-br from-green-900/20 to-green-800/10 p-5 rounded-xl border border-green-800/30">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-green-400">What We Do</h3>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">•</span>
+                                <span>Real-time transaction interception via Oracle</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">•</span>
+                                <span>Feature engineering (Velocity, Volatility, Age)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">•</span>
+                                <span>ML-based Fraud Probability prediction</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-0.5">•</span>
+                                <span>On-chain recording of Trust Scores</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card bg-gradient-to-br from-red-900/20 to-red-800/10 p-5 rounded-xl border border-red-800/30">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold text-red-400">What We Don't Do</h3>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2">
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-500 mt-0.5">•</span>
+                                <span>We do not block transactions (Detection only)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-500 mt-0.5">•</span>
+                                <span>We do not access private keys</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-500 mt-0.5">•</span>
+                                <span>We do not guarantee 100% accuracy (ML Probabilistic)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Technology Stack -->
+                <div class="mt-6 pt-6 border-t border-gray-700/50">
+                    <h4 class="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">Technology Stack</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 bg-[#008B8B]/20 border border-[#008B8B]/30 rounded-lg text-xs font-medium text-[#008B8B]">XGBoost ML</span>
+                        <span class="px-3 py-1.5 bg-[#4682b4]/20 border border-[#4682b4]/30 rounded-lg text-xs font-medium text-[#4682b4]">Web3.js</span>
+                        <span class="px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-lg text-xs font-medium text-purple-400">Flask API</span>
+                        <span class="px-3 py-1.5 bg-green-500/20 border border-green-500/30 rounded-lg text-xs font-medium text-green-400">Sepolia Testnet</span>
+                        <span class="px-3 py-1.5 bg-yellow-500/20 border border-yellow-500/30 rounded-lg text-xs font-medium text-yellow-400">SQLAlchemy</span>
+                        <span class="px-3 py-1.5 bg-pink-500/20 border border-pink-500/30 rounded-lg text-xs font-medium text-pink-400">Socket.IO</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Activity Feed -->
+            <div class="glass-panel p-6 rounded-xl hover-lift">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">Live Activity</h3>
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">LIVE</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-4" id="live-activity">
+                    <div class="text-center text-gray-500 text-sm py-8">
+                        <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Waiting for transactions...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-panel p-6 rounded-xl hover-lift">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#008B8B] rounded-full animate-pulse"></span>
+                        Transaction Risk Distribution
+                    </h3>
+                    <span class="text-xs text-gray-500 bg-gray-800/50 px-2 py-1 rounded">Real-time</span>
+                </div>
+                <div id="tx-risk-donut-chart" class="w-full h-80"></div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl hover-lift">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#4682b4] rounded-full animate-pulse"></span>
+                        Wallet Trust Levels
+                    </h3>
+                    <span class="text-xs text-gray-500 bg-gray-800/50 px-2 py-1 rounded">Updated</span>
+                </div>
+                <div id="wallet-trust-donut-chart" class="w-full h-80"></div>
+            </div>
         </section>
 
     </main>
 
-    <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-gray-800 rounded-lg shadow-2xl w-full max-w-2xl border border-gray-700 animate-fadeIn">
-            <div class="flex justify-between items-center p-4 border-b border-gray-700">
-                <h3 id="modal-title" class="text-xl font-semibold text-white">Lookup Result</h3>
-                <button id="modal-close-btn" class="text-gray-400 hover:text-white">
-                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-            </div>
-            <div id="modal-content" class="p-6 text-gray-300"></div>
-        </div>
-    </div>
-
-
     <script>
-        // =======================================================================
-        // CONFIGURATION
-        // =======================================================================
-        
-        const CONFIG = {
-            API_BASE: '', // Relative path (your backend)
-            SOCKET_URL: `${window.location.protocol}//${window.location.host}`, // Connect to same server
-            ETHERSCAN_BASE: 'https://sepolia.etherscan.io',
-            HIGH_RISK_THRESHOLD: 0.6,
-            LOW_TRUST_THRESHOLD: 0.4,
-            REFRESH_INTERVAL: 30000,
-            ALCHEMY_WS: 'wss://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_KEY'
-        };
+        const CONFIG = { API_BASE: '', REFRESH_INTERVAL: 10000 };
+        let socket;
 
-        // Global state
-        let refreshInterval = null;
-        let seenTxHashes = new Set();
-        let globalSocket = null;
-        let alchemyConnected = false;
-
-
-        // =======================================================================
-        // UTILITY FUNCTIONS
-        // =======================================================================
-        
-        function setActiveNav() {
-            const path = window.location.pathname;
-            document.querySelectorAll('.nav-link').forEach(link => {
-                const page = link.dataset.page;
-                const isActive = (path === '/' && page === 'dashboard') || (path.startsWith('/' + page) && page !== 'dashboard');
-                
-                link.classList.toggle('text-blue-400', isActive);
-                link.classList.toggle('border-blue-400', isActive);
-                link.classList.toggle('text-gray-400', !isActive);
-                link.classList.toggle('border-transparent', !isActive);
-            });
-        }
-
-        const truncate = (str, n = 6) => {
-            if (!str) return '...';
-            if (str.length <= (n * 2 + 3)) return str;
-            return `${str.substring(0, n)}...${str.substring(str.length - n)}`;
-        };
-
-        const formatAddress = (address) => {
-            if (!address) return `<span class="text-gray-500">N/A</span>`;
-            return `<a href="${CONFIG.ETHERSCAN_BASE}/address/${address}" target="_blank" class="etherscan-link font-mono" title="${address}">${truncate(address)}</a>`;
-        };
-        
-        const formatTxHash = (hash) => {
-            if (!hash) return `<span class="text-gray-500">N/A</span>`;
-            return `<a href="${CONFIG.ETHERSCAN_BASE}/tx/${hash}" target="_blank" class="etherscan-link font-mono" title="${hash}">${truncate(hash)}</a>`;
-        };
-
-        const formatValue = (value) => {
-            const num = parseFloat(value);
-            if (Number.isNaN(num)) return '0.00000';
-            return num.toFixed(5);
-        };
-
-        const formatPercentNullable = (score) => {
-            if (score === null || score === undefined) return 'N/A';
-            const n = Number(score);
-            if (Number.isNaN(n)) return 'N/A';
-            return (n * 100).toFixed(1) + '%';
-        };
-
-        const timeAgo = (timestamp) => {
-            if (!timestamp) return '-';
-            const now = new Date();
-            const seconds = Math.floor(now.getTime() / 1000) - Number(timestamp);
-            if (seconds < 2) return "just now";
-            let interval = seconds / 31536000;
-            if (interval > 1) return Math.floor(interval) + "y ago";
-            interval = seconds / 2592000;
-            if (interval > 1) return Math.floor(interval) + "mo ago";
-            interval = seconds / 86400;
-            if (interval > 1) return Math.floor(interval) + "d ago";
-            interval = seconds / 3600;
-            if (interval > 1) return Math.floor(interval) + "h ago";
-            interval = seconds / 60;
-            if (interval > 1) return Math.floor(interval) + "m ago";
-            return Math.floor(seconds) + "s ago";
-        };
-
-        async function safeFetch(url, options = {}) {
+        async function fetchStats() {
             try {
-                const response = await fetch(`${CONFIG.API_BASE}${url}`, options);
-                if (!response.ok) {
-                    let errorText = `HTTP error! status: ${response.status}`;
-                    try { const errorData = await response.json(); errorText = errorData.error || errorText; } catch (e) {}
-                    throw new Error(errorText);
-                }
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    return await response.json();
-                } else {
-                    return await response.text();
-                }
-            } catch (error) {
-                console.error(`Fetch error for ${url}:`, error);
-                if (options.method !== 'GET' || url.startsWith('/transaction/') || url.startsWith('/wallet/')) {
-                        showModal(`<p class="text-red-400"><strong>API Connection Error:</strong> ${error.message}.<br/>Is your backend server running?</p>`);
-                }
-                return null;
+                const res = await fetch('/transactions?limit=500');
+                const txs = await res.json();
+                
+                const highRisk = txs.filter(t => t.riskScore > 0.7).length;
+                const wallets = new Set(txs.map(t => t.from)).size;
+
+                document.getElementById('stat-total-tx').innerText = txs.length;
+                document.getElementById('stat-high-tx').innerText = highRisk;
+                document.getElementById('stat-total-wallets').innerText = wallets;
+
+                renderCharts(txs);
+            } catch(e) { 
+                console.error("Stats error", e); 
             }
         }
 
-        const scoreToLabel = (score, type = 'risk') => {
-            if (score === null || score === undefined) return 'Unknown';
-            if (type === 'risk') {
-                if (score >= 0.8) return 'Very High';
-                if (score >= 0.6) return 'High';
-                if (score >= 0.4) return 'Medium';
-                if (score >= 0.2) return 'Low';
-                return 'Very Low';
-            } else {
-                if (score >= 0.8) return 'Very High';
-                if (score >= 0.6) return 'High';
-                if (score >= 0.4) return 'Medium';
-                if (score >= 0.2) return 'Low';
-                return 'Very Low';
-            }
-        };
-
-        const getScoreClass = (score, type = 'risk', format = 'badge') => {
-            const label = scoreToLabel(score, type);
-            let riskLevel = 'low';
-            if (type === 'risk') {
-                if (label === 'Very High' || label === 'High') riskLevel = 'high';
-                else if (label === 'Medium') riskLevel = 'medium';
-            } else {
-                if (label === 'Very Low' || label === 'Low') riskLevel = 'high';
-                else if (label === 'Medium') riskLevel = 'medium';
-            }
-            switch (format) {
-                case 'text':
-                    if (riskLevel === 'high') return 'text-red-400';
-                    if (riskLevel === 'medium') return 'text-yellow-400';
-                    return 'text-green-400';
-                case 'badge':
-                default:
-                    if (riskLevel === 'high') return 'bg-red-500/20 text-red-300';
-                    if (riskLevel === 'medium') return 'bg-yellow-500/20 text-yellow-300';
-                    return 'bg-green-500/20 text-green-300';
-            }
-        };
-
-        const getRiskIcon = (score, type = 'risk') => {
-            const label = scoreToLabel(score, type);
-            let riskLevel = 'low';
-            if (type === 'risk') {
-                if (label === 'Very High' || label === 'High') riskLevel = 'high';
-                else if (label === 'Medium') riskLevel = 'medium';
-            } else {
-                if (label === 'Very Low' || label === 'Low') riskLevel = 'high';
-                else if (label === 'Medium') riskLevel = 'medium';
-            }
-            if (riskLevel === 'high') {
-                return `<svg class="icon-svg text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" /></svg>`;
-            }
-            if (riskLevel === 'medium') {
-                return `<svg class="icon-svg text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l-3-3m0 0l3-3m-3 3h12" /></svg>`;
-            }
-            return `<svg class="icon-svg text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
-        };
-
-        function showTableLoader(tableBody, colSpan) {
-            tableBody.innerHTML = `<tr><td colspan="${colSpan}" class="px-6 py-8 text-center"><div class="flex justify-center items-center"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div><span class="loader-text mt-2">Loading data...</span></td></tr>`;
-        }
-        
-        function showTableNoData(tableBody, colSpan, message = "No data found.") {
-             tableBody.innerHTML = `<tr><td colspan="${colSpan}" class="px-6 py-8 text-center text-gray-500">${message}</td></tr>`;
-        }
-        
-        // =======================================================================
-        // DATA RENDERING FUNCTIONS (API-DRIVEN)
-        // =======================================================================
-
-        async function renderDashboardStats() {
-            const txs = await safeFetch('/transactions?limit=200', { method: 'GET' });
-            if (!txs || !Array.isArray(txs)) {
-                ['stat-total-wallets', 'stat-high-wallets', 'stat-total-tx', 'stat-high-tx'].forEach(id => document.getElementById(id).textContent = '-');
-                return;
-            }
-            const wallets = new Set();
-            let highRiskWallets = 0;
-            let highRiskTx = 0;
-            txs.forEach(tx => {
-                if(tx && tx.from) wallets.add(tx.from);
-                const walletScore = tx.walletScore !== undefined ? tx.walletScore : tx.walletScore; // defensive
-                if (tx && walletScore !== null && walletScore !== undefined && walletScore < CONFIG.LOW_TRUST_THRESHOLD) { highRiskWallets++; }
-                if (tx && tx.riskScore > CONFIG.HIGH_RISK_THRESHOLD) { highRiskTx++; }
-            });
-            document.getElementById('stat-total-wallets').textContent = wallets.size;
-            document.getElementById('stat-high-wallets').textContent = highRiskWallets;
-            document.getElementById('stat-total-tx').textContent = txs.length;
-            document.getElementById('stat-high-tx').textContent = highRiskTx;
-        }
-
-        // --- NEW CHART FUNCTIONS ---
-        
-        async function renderTxRiskDonutChart() {
-            const txs = await safeFetch('/transactions?limit=200', { method: 'GET' });
-            if (!txs || !Array.isArray(txs)) return;
-
-            let high = 0, medium = 0, low = 0;
-            txs.forEach(tx => {
-                const score = tx.riskScore || 0;
-                if (score > 0.6) high++;
-                else if (score > 0.3) medium++;
-                else low++;
-            });
-
-            const options = {
+        function renderCharts(txs) {
+            // Risk Chart
+            const risks = [
+                txs.filter(t => t.riskScore > 0.7).length,
+                txs.filter(t => t.riskScore > 0.4 && t.riskScore <= 0.7).length,
+                txs.filter(t => t.riskScore <= 0.4).length
+            ];
+            
+            new ApexCharts(document.querySelector("#tx-risk-donut-chart"), {
+                series: risks,
+                labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+                colors: ['#ef4444', '#f59e0b', '#22c55e'],
                 chart: { 
-                    type: 'donut',
-                    foreColor: '#9ca3af' // Sets text color for dark mode
-                },
-                series: [high, medium, low],
-                labels: ['High Risk (> 60%)', 'Medium Risk (30-60%)', 'Low Risk (< 30%)'],
-                colors: ['#EF4444', '#F59E0B', '#10B981'], // Red, Yellow, Green
-                legend: { 
-                    position: 'bottom',
-                    labels: {
-                        colors: '#9ca3af' // Legend text color
-                    }
-                },
-                theme: {
-                    mode: 'dark' // Ensures tooltips are dark
-                },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: "100%"
-                        },
-                        legend: {
-                            position: 'bottom'
+                    type: 'donut', 
+                    height: 320,
+                    background: 'transparent',
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800,
+                        animateGradually: {
+                            enabled: true,
+                            delay: 150
                         }
                     }
-                }]
-            };
-            
-            // Clear previous chart before rendering
-            document.querySelector("#tx-risk-donut-chart").innerHTML = '';
-            const chart = new ApexCharts(document.querySelector("#tx-risk-donut-chart"), options);
-            chart.render();
-        }
-
-        async function renderWalletTrustDonutChart() {
-            const wallets = await safeFetch('/wallets?limit=200', { method: 'GET' });
-            if (!wallets || !Array.isArray(wallets)) return;
-
-            let lowTrust = 0, mediumTrust = 0, highTrust = 0;
-            wallets.forEach(wallet => {
-                const score = wallet.score;
-                if (score === null || score === undefined) return; // Skip wallets without score
-                
-                if (score < 0.4) lowTrust++;
-                else if (score < 0.7) mediumTrust++;
-                else highTrust++;
-            });
-
-            const options = {
-                chart: { 
-                    type: 'donut',
-                    foreColor: '#9ca3af'
                 },
-                series: [highTrust, mediumTrust, lowTrust],
-                labels: ['High Trust (> 70%)', 'Medium Trust (40-70%)', 'Low Trust (< 40%)'],
-                colors: ['#10B981', '#F59E0B', '#EF4444'], // Green, Yellow, Red
-                legend: { 
+                theme: { mode: 'dark' },
+                dataLabels: { 
+                    enabled: true,
+                    style: {
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        colors: ['#fff']
+                    },
+                    dropShadow: {
+                        enabled: false
+                    }
+                },
+                plotOptions: { 
+                    pie: { 
+                        donut: { 
+                            size: '70%',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontSize: '16px',
+                                    color: '#9ca3af'
+                                },
+                                value: {
+                                    show: true,
+                                    fontSize: '24px',
+                                    fontWeight: 'bold',
+                                    color: '#fff'
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total',
+                                    fontSize: '16px',
+                                    color: '#9ca3af',
+                                    formatter: function (w) {
+                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                legend: {
                     position: 'bottom',
+                    fontSize: '13px',
                     labels: {
                         colors: '#9ca3af'
+                    },
+                    markers: {
+                        width: 12,
+                        height: 12,
+                        radius: 3
                     }
                 },
-                theme: {
-                    mode: 'dark'
+                stroke: {
+                    width: 2,
+                    colors: ['#1a1f2e']
                 },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: "100%"
-                        },
-                        legend: {
-                            position: 'bottom'
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val + ' transactions'
                         }
                     }
-                }]
-            };
+                }
+            }).render();
 
-            // Clear previous chart before rendering
-            document.querySelector("#wallet-trust-donut-chart").innerHTML = '';
-            const chart = new ApexCharts(document.querySelector("#wallet-trust-donut-chart"), options);
-            chart.render();
+            // Trust Chart
+            const trusts = [
+                txs.filter(t => t.walletScore > 0.7).length,
+                txs.filter(t => t.walletScore > 0.4 && t.walletScore <= 0.7).length,
+                txs.filter(t => t.walletScore <= 0.4).length
+            ];
+            
+            new ApexCharts(document.querySelector("#wallet-trust-donut-chart"), {
+                series: trusts,
+                labels: ['Trusted', 'Neutral', 'Untrusted'],
+                colors: ['#22c55e', '#4682b4', '#ef4444'],
+                chart: { 
+                    type: 'donut', 
+                    height: 320,
+                    background: 'transparent',
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800
+                    }
+                },
+                theme: { mode: 'dark' },
+                dataLabels: { 
+                    enabled: true,
+                    style: {
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        colors: ['#fff']
+                    },
+                    dropShadow: {
+                        enabled: false
+                    }
+                },
+                plotOptions: { 
+                    pie: { 
+                        donut: { 
+                            size: '70%',
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontSize: '16px',
+                                    color: '#9ca3af'
+                                },
+                                value: {
+                                    show: true,
+                                    fontSize: '24px',
+                                    fontWeight: 'bold',
+                                    color: '#fff'
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total',
+                                    fontSize: '16px',
+                                    color: '#9ca3af',
+                                    formatter: function (w) {
+                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom',
+                    fontSize: '13px',
+                    labels: {
+                        colors: '#9ca3af'
+                    },
+                    markers: {
+                        width: 12,
+                        height: 12,
+                        radius: 3
+                    }
+                },
+                stroke: {
+                    width: 2,
+                    colors: ['#1a1f2e']
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val + ' wallets'
+                        }
+                    }
+                }
+            }).render();
         }
 
-        // --- END CHART FUNCTIONS ---
-        
-        function connectToSocket() {
-            if (globalSocket) globalSocket.disconnect();
-            globalSocket = io(CONFIG.SOCKET_URL);
-            globalSocket.on('connect', () => console.log('Socket.IO connected.'));
-            globalSocket.on('disconnect', () => console.warn('Socket.IO disconnected.'));
-            globalSocket.on('connect_error', (err) => console.error('Socket.IO connection error:', err));
+        // Socket.IO connection for live updates
+        function initializeSocket() {
+            socket = io();
             
-            // Listen for updates to refresh stats
-            globalSocket.on('new_transaction', (tx) => {
-                 console.log('New tx, refreshing stats', tx);
-                 renderDashboardStats();
-                 // Also refresh charts
-                 renderTxRiskDonutChart();
-                 renderWalletTrustDonutChart();
+            socket.on('connect', () => {
+                console.log('Connected to live feed');
+            });
+            
+            socket.on('new_transaction', (data) => {
+                updateLiveActivity(data);
+                // Refresh stats
+                fetchStats();
             });
         }
-        
-        function startAlchemyWebsocket() {
-            if (!CONFIG.ALCHEMY_WS || CONFIG.ALCHEMY_WS.includes('YOUR_ALCHEMY_KEY')) {
-                console.warn('Alchemy WS not configured.');
-                return;
+
+        function updateLiveActivity(tx) {
+            const feed = document.getElementById('live-activity');
+            const riskColor = tx.riskScore > 0.7 ? 'text-red-400' : tx.riskScore > 0.4 ? 'text-yellow-400' : 'text-green-400';
+            const riskBg = tx.riskScore > 0.7 ? 'bg-red-900/20 border-red-800/30' : tx.riskScore > 0.4 ? 'bg-yellow-900/20 border-yellow-800/30' : 'bg-green-900/20 border-green-800/30';
+            
+            const item = document.createElement('div');
+            item.className = `p-3 rounded-lg border ${riskBg} animate-fadeIn`;
+            item.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-gray-400">New Transaction</span>
+                    <span class="text-xs ${riskColor} font-semibold">${(tx.riskScore * 100).toFixed(0)}% Risk</span>
+                </div>
+                <div class="text-xs font-mono text-gray-300 truncate">${tx.transaction_hash || tx.id}</div>
+                <div class="flex items-center justify-between mt-2 text-xs text-gray-500">
+                    <span>${tx.value ? parseFloat(tx.value).toFixed(4) : '0.0000'} ETH</span>
+                    <span>Just now</span>
+                </div>
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+            
+            // Keep only last 5 items
+            while (feed.children.length > 5) {
+                feed.removeChild(feed.lastChild);
             }
         }
 
-        // =======================================================================
-        // LOOKUP & MODAL HANDLING
-        // =======================================================================
-        
-        const modal = document.getElementById('modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalContent = document.getElementById('modal-content');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-
-        function showModal(content, title = "Lookup Result") {
-            modalTitle.textContent = title;
-            modalContent.innerHTML = content;
-            modal.classList.remove('hidden');
-        }
-
-        function hideModal() {
-            modal.classList.add('hidden');
-            modalContent.innerHTML = '';
-        }
-
-        function setupLookup() {
-            // No lookup buttons on this page, but we set up the modal close
-            modalCloseBtn.addEventListener('click', hideModal);
-            modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
-        }
-        
-        // (Lookup handlers are not needed on this page, but don't break anything)
-        async function handleWalletLookup(query) { /* ... */ }
-        async function handleTxLookup(query) { /* ... */ }
-
-        // =======================================================================
-        // INITIALIZATION
-        // =======================================================================
-        
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            setActiveNav();
-            setupLookup(); // Sets up modal close button
+            fetchStats();
+            initializeSocket();
             
-            // Load data for this page
-            renderDashboardStats();
-            renderTxRiskDonutChart();     // <-- LOAD CHARTS
-            renderWalletTrustDonutChart(); // <-- LOAD CHARTS
-
-            connectToSocket(); 
-
-            if (refreshInterval) clearInterval(refreshInterval);
-            refreshInterval = setInterval(() => {
-                // Refresh all dashboard data
-                renderDashboardStats();
-                renderTxRiskDonutChart();
-                renderWalletTrustDonutChart();
-
-            }, CONFIG.REFRESH_INTERVAL);
+            // Refresh stats periodically
+            setInterval(fetchStats, CONFIG.REFRESH_INTERVAL);
         });
-
-    </script></body>
+    </script>
+</body>
 </html>

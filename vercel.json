@@ -1,0 +1,9 @@
+{
+  "name": "eth-risk-intelligence-frontend",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://YOUR_BACKEND_URL/api/$1" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/backend/static/$1" }
+  ]
+}

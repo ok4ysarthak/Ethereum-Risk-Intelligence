@@ -19,7 +19,7 @@ class Config:
     CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
     
     # Model Configuration
-    MODEL_PATH = '../ml_models/saved_models/fraud_detector_model.pkl'
+    MODEL_PATH = '../ml_models/saved_models/noise_fraud_detector_model.pkl'
     
     # Processing Configuration
     BATCH_INTERVAL_MINUTES = 10

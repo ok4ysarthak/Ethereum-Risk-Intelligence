@@ -1,0 +1,176 @@
+{
+  "timestamp": "2025-12-07 14:29:09",
+  "model_path": "saved_models\\xgb_fraud_detector_v3.0_20251207_142909.pkl",
+  "csv_path": "../data/mock_ethereum_fraud_dataset.csv",
+  "xgboost_params": {
+    "n_estimators": 129,
+    "learning_rate": 0.03,
+    "max_depth": 7,
+    "min_child_weight": 5,
+    "gamma": 0.2,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "colsample_bylevel": 0.8,
+    "reg_alpha": 0.3,
+    "reg_lambda": 2.0,
+    "scale_pos_weight": 1.5,
+    "max_delta_step": 1,
+    "tree_method": "hist",
+    "grow_policy": "depthwise",
+    "n_jobs": -1,
+    "random_state": 42,
+    "eval_metric": [
+      "logloss",
+      "auc"
+    ]
+  },
+  "cross_validation": {
+    "cv_scores": [
+      0.9999674479166666,
+      0.9997054036458334,
+      0.9999902343749999,
+      0.9995849609375,
+      0.9998714192708333
+    ],
+    "cv_mean": 0.9998238932291666,
+    "cv_std": 0.0001559900452569803
+  },
+  "metrics": {
+    "accuracy": 0.998,
+    "roc_auc": 0.9999770833333333,
+    "pr_auc": 0.9999655668310201,
+    "mcc": 0.9958337594004989,
+    "kappa": 0.995831596498541,
+    "precision_normal": 0.997504159733777,
+    "recall_normal": 0.9991666666666666,
+    "f1_normal": 0.9983347210657785,
+    "precision_fraud": 0.9987468671679198,
+    "recall_fraud": 0.99625,
+    "f1_fraud": 0.9974968710888611,
+    "precision_macro": 0.9981255134508484,
+    "recall_macro": 0.9977083333333333,
+    "f1_macro": 0.9979157960773197,
+    "tn": 1199,
+    "fp": 1,
+    "fn": 3,
+    "tp": 797,
+    "specificity": 0.9991666666666666,
+    "sensitivity": 0.99625,
+    "fpr": 0.0008333333333333334,
+    "fnr": 0.00375,
+    "feature_importance": [
+      {
+        "feature": "Wallet_Age_Days",
+        "importance": 0.42056745290756226
+      },
+      {
+        "feature": "BMax_BMin_per_NT",
+        "importance": 0.18851222097873688
+      },
+      {
+        "feature": "Volatility_Age_Interaction",
+        "importance": 0.11468105018138885
+      },
+      {
+        "feature": "Number_of_Outputs",
+        "importance": 0.11464927345514297
+      },
+      {
+        "feature": "Number_of_Inputs",
+        "importance": 0.05782300606369972
+      },
+      {
+        "feature": "Gas_Complexity",
+        "importance": 0.03016711212694645
+      },
+      {
+        "feature": "Is_Young_Wallet",
+        "importance": 0.02819378860294819
+      },
+      {
+        "feature": "Gas_Price",
+        "importance": 0.011361969634890556
+      },
+      {
+        "feature": "Tx_Frequency_Score",
+        "importance": 0.005594639107584953
+      },
+      {
+        "feature": "Input_Output_Ratio",
+        "importance": 0.0047938022762537
+      },
+      {
+        "feature": "Wallet_Balance",
+        "importance": 0.004000387154519558
+      },
+      {
+        "feature": "Balance_Utilization",
+        "importance": 0.00381139456294477
+      },
+      {
+        "feature": "Log_Wallet_Balance",
+        "importance": 0.0037748634349554777
+      },
+      {
+        "feature": "Transaction_Fees",
+        "importance": 0.0031919567845761776
+      },
+      {
+        "feature": "Value_to_Fee_Ratio",
+        "importance": 0.0028696332592517138
+      },
+      {
+        "feature": "Transaction_Velocity",
+        "importance": 0.0024394539650529623
+      },
+      {
+        "feature": "Exchange_Rate",
+        "importance": 0.0009976265719160438
+      },
+      {
+        "feature": "Gas_Efficiency",
+        "importance": 0.0007786271162331104
+      },
+      {
+        "feature": "Value_Velocity_Interaction",
+        "importance": 0.0007611220353282988
+      },
+      {
+        "feature": "Transaction_Value",
+        "importance": 0.0006266694981604815
+      },
+      {
+        "feature": "Log_Transaction_Value",
+        "importance": 0.0004039775812998414
+      },
+      {
+        "feature": "Is_High_Velocity",
+        "importance": 0.0
+      }
+    ]
+  },
+  "feature_names": [
+    "Transaction_Value",
+    "Transaction_Fees",
+    "Number_of_Inputs",
+    "Number_of_Outputs",
+    "Gas_Price",
+    "Wallet_Age_Days",
+    "Wallet_Balance",
+    "Transaction_Velocity",
+    "Exchange_Rate",
+    "BMax_BMin_per_NT",
+    "Value_to_Fee_Ratio",
+    "Gas_Efficiency",
+    "Input_Output_Ratio",
+    "Balance_Utilization",
+    "Tx_Frequency_Score",
+    "Value_Velocity_Interaction",
+    "Volatility_Age_Interaction",
+    "Gas_Complexity",
+    "Log_Transaction_Value",
+    "Log_Wallet_Balance",
+    "Is_Young_Wallet",
+    "Is_High_Velocity"
+  ]
+}

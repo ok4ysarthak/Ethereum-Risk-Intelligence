@@ -5,7 +5,7 @@ import time
 import sys
 
 # Import your fetcher
-from backend.data_fetcher import EthereumDataFetcher
+from data.data_fetcher import EthereumDataFetcher
 
 PROVIDER_URL = "https://eth-sepolia.g.alchemy.com/v2/5bURjldvKPu4glB_tFxWt"
 
