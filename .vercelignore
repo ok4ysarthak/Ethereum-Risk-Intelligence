@@ -1,0 +1,16 @@
+# Ignore dependencies (Vercel installs them automatically)
+node_modules
+env
+venv
+__pycache__
+*.pyc
+
+# Ignore Hardhat/Blockchain build files (not needed for the website)
+blockchain/artifacts
+blockchain/cache
+blockchain/typechain-types
+artifacts
+cache
+
+# Ignore Git history
+.git
