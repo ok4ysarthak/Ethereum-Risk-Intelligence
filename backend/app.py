@@ -12,16 +12,20 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from web3 import Web3
 from flask_socketio import SocketIO, emit
-from wallet_updater import WalletScoreUpdater, INITIAL_SCORE
+from utils.wallet_updater import WalletScoreUpdater, INITIAL_SCORE
 from config import Config
-from Database.db import init_db, SessionLocal
-import Database.crud as crud
-from Database.models_db import Transaction, Wallet
+from database.db import init_db, SessionLocal
+import database.crud as crud
+from database.models_db import Transaction, Wallet
+import google.generativeai as genai  # OR import openai
+from google.generativeai.types import HarmCategory, HarmBlockThreshold # <--- NEW
+from config import Config
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__, static_folder='../frontend/static')
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+genai.configure(api_key=Config.GOOGLE_API_KEY)
 
 logging.basicConfig(
     level=getattr(logging, Config.LOG_LEVEL),
@@ -300,8 +304,208 @@ def api_add_transaction():
         app.logger.error(f"Failed to add transaction: {e}")
         return jsonify({"error": str(e)}), 500
 
-# --- 3. PREDICTION ENDPOINT (Used by Oracle) ---
+def generate_ai_explanation(features: dict, risk_score: int, risk_prob: float):
+    """
+    Uses an LLM to generate a 'Thinking' Executive Summary.
+    """
+    try:
+        # 1. Construct the Analyst Prompt
+        # We give the AI a persona and the raw data
+        prompt = f"""
+        You are a Senior Blockchain Fraud Analyst for DeTrust. 
+        Analyze the following Ethereum transaction data and provide a 2-sentence Executive Summary for a non-technical stakeholder.
+        
+        CONTEXT:
+        - Risk Score: {risk_score}/10 (Probability: {risk_prob:.2%})
+        - Transaction Value: {features.get('Transaction_Value')} ETH
+        - Wallet Age: {features.get('Wallet_Age_Days')} days
+        - Velocity: {features.get('Transaction_Velocity')} tx/day
+        - Max/Min Balance Ratio (Volatility): {features.get('BMax_BMin_per_NT')}
+        - Gas Efficiency: {features.get('Gas_Efficiency')}
+        - Value to Fee Ratio: {features.get('Value_to_Fee_Ratio')}
+        
+        INSTRUCTIONS:
+        1. Explain WHY the score is high or low based on the features.
+        2. Highlight specific anomalies (e.g., "The high velocity combined with a new wallet suggests bot activity").
+        3. Be professional, concise, and definitive. Do not use bullet points. Write it as a narrative.
+        4. If the risk is Low, explain why it appears safe (e.g., "established history").
+        """
+        
+        # 2. Call the AI Model (Gemini Example)
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        safety_settings = {
+            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+        }
 
+        response = model.generate_content(prompt, safety_settings=safety_settings)
+        
+        # --- NEW: SAFE RESPONSE HANDLING ---
+        # Sometimes response.text fails if the model refused to answer
+        if hasattr(response, 'text'):
+            return response.text.replace('*', '').strip()
+        elif response.parts:
+            return response.parts[0].text.replace('*', '').strip()
+        else:
+            return "AI Analysis produced no text (Safety Block or Empty)."
+
+    except Exception as e:
+        # Log the specific error to your terminal so you can see it
+        print(f"------------ AI ERROR DEBUG ------------\n{e}\n----------------------------------------")
+        return f"AI Analysis unavailable: {str(e)}"
+    
+@app.route('/explain/transaction', methods=['POST'])
+def explain_transaction_ai():
+    try:
+        data = request.get_json(force=True)
+        # We expect the frontend to send the transaction details
+        features = data.get('features')
+        risk_score = data.get('risk_score')
+        risk_prob = data.get('risk_prob')
+        
+        if not features:
+            return jsonify({"error": "Missing features"}), 400
+
+        # Call the AI function
+        explanation = generate_ai_explanation(features, risk_score, risk_prob)
+        
+        return jsonify({"explanation": explanation})
+    except Exception as e:
+        logger.error(f"AI Explain Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# --- RISK EXPLANATION ---
+def get_risk_explanation_rules(features: dict, risk_score: int):
+    """
+    Smart Rule-Based Engine: Analyzes the 'tug-of-war' between Risk Drivers and Trust Signals.
+    Explains WHY the score is High, Low, or Medium based on which side won.
+    """
+    # 1. Weights (Adjusted for better balance)
+    # Positive = Increases Risk | Negative = Decreases Risk (Trust)
+    weights = {
+        "Transaction_Value": 0.5,       # Lowered slightly so huge values don't dominate everything
+        "Transaction_Fees": 0.6,
+        "Number_of_Inputs": 0.4,        # Inputs usually indicate complexity
+        "Number_of_Outputs": 0.4,
+        "Gas_Price": 0.7,
+        "Value_to_Fee_Ratio": 0.8,
+        "Gas_Efficiency": 0.9,
+        "Final_Balance": -0.8,          # High balance = Trust
+        "BMax_BMin_per_NT": 1.2,        # Volatility = Risk
+        "Wallet_Age_Days": -1.5,        # Age is a very strong trust signal
+        "Transaction_Velocity": 1.1     # Velocity is a strong risk signal
+    }
+
+    # 2. Smart Templates (Context-Aware)
+    # {0} = Feature Name, {1} = Feature Value
+    
+    # Templates for when a feature INCREASES Risk
+    risk_descs = {
+        "Transaction_Value": "unusually large transfer amount ({1} ETH)",
+        "Transaction_Fees": "suspiciously high network fees",
+        "Number_of_Inputs": "complex input mixing",
+        "Gas_Price": "aggressive gas bidding",
+        "Value_to_Fee_Ratio": "abnormal value-to-fee ratio",
+        "Gas_Efficiency": "automated/bot-like gas usage",
+        "Final_Balance": "critically low wallet balance",
+        "BMax_BMin_per_NT": "highly volatile balance history",
+        "Wallet_Age_Days": "freshly created wallet ({1} days old)",
+        "Transaction_Velocity": "high transaction frequency ({1} tx/day)"
+    }
+
+    # Templates for when a feature INCREASES Trust (Decreases Risk)
+    trust_descs = {
+        "Transaction_Value": "standard transfer size",
+        "Final_Balance": "substantial wallet reserves ({1} ETH)",
+        "BMax_BMin_per_NT": "stable balance history",
+        "Wallet_Age_Days": "long-established history ({1} days)",
+        "Transaction_Velocity": "normal transaction pacing",
+        "Gas_Price": "standard gas pricing"
+    }
+
+    # 3. Calculate Contributions (The "Tug of War")
+    drivers = []      # Pushing Score UP (Bad)
+    mitigators = []   # Pushing Score DOWN (Good)
+
+    for feat, weight in weights.items():
+        val = float(features.get(feat, 0))
+        
+        # Special Handling for Age & Balance (Logarithmic scaling prevents huge numbers from breaking logic)
+        # e.g. 1000 days age shouldn't just be -1500 points, we cap its impact slightly
+        if feat == "Wallet_Age_Days":
+            impact = min(val, 3650) * weight * 0.1 # Scaled down for calculation
+        elif feat == "Transaction_Velocity":
+             impact = min(val, 1000) * weight * 0.1
+        else:
+            impact = val * weight
+
+        # Format Value for Text
+        readable_val = f"{val:.2f}"
+        if feat in ["Wallet_Age_Days", "Transaction_Velocity"]: 
+            readable_val = f"{int(val)}"
+
+        # Categorize
+        if impact > 0.1: # It's a Driver
+            text = risk_descs.get(feat, feat.replace("_", " ")).format(feat, readable_val)
+            drivers.append((impact, text))
+        elif impact < -0.1: # It's a Mitigator
+            text = trust_descs.get(feat, feat.replace("_", " ")).format(feat, readable_val)
+            mitigators.append((abs(impact), text))
+
+    # Sort by impact magnitude
+    drivers.sort(key=lambda x: x[0], reverse=True)
+    mitigators.sort(key=lambda x: x[0], reverse=True)
+
+    # 4. Generate Narrative based on the "Winner"
+    narrative = ""
+
+    # SCENARIO A: LOW RISK (Trust > Risk)
+    if risk_score <= 4:
+        narrative = f"This transaction is classified as **Low Risk**."
+        
+        if mitigators:
+            top_trust = mitigators[0][1]
+            narrative += f" The strongest signal of legitimacy is the **{top_trust}**, which effectively neutralizes potential concerns."
+            
+            if drivers:
+                narrative += f" Although **{drivers[0][1]}** was detected, it was insufficient to raise the risk level."
+            else:
+                narrative += " No significant risk patterns were identified."
+        else:
+            narrative += " The transaction pattern appears standard with no anomalies."
+
+    # SCENARIO B: HIGH RISK (Risk > Trust)
+    elif risk_score >= 7:
+        narrative = f"**Critical Alert**: This transaction carries a **High Risk** score."
+        
+        if drivers:
+            top_risk = drivers[0][1]
+            narrative += f" The primary cause is **{top_risk}**."
+            
+            if len(drivers) > 1:
+                narrative += f" This is compounded by **{drivers[1][1]}**, suggesting potential automated or illicit activity."
+            
+            if mitigators:
+                narrative += f" While the **{mitigators[0][1]}** is positive, it is not enough to outweigh the risk factors."
+        else:
+            narrative += " Multiple anomalous features accumulated to trigger this score."
+
+    # SCENARIO C: MEDIUM RISK (Conflict)
+    else:
+        narrative = f"The model assigned a **Medium Risk** score due to conflicting patterns."
+        
+        if drivers and mitigators:
+            narrative += f" While **{drivers[0][1]}** raises suspicion, the **{mitigators[0][1]}** provides a counter-balance, preventing a critical alert."
+        elif drivers:
+            narrative += f" Moderate risk indicators were found, specifically **{drivers[0][1]}**."
+        else:
+            narrative += " The transaction shows unusual behavior but lacks definitive fraud markers."
+
+    return [narrative]  
+
+# --- 3. PREDICTION ENDPOINT (Used by Oracle) ---
 @app.route('/predict/transaction', methods=['POST'])
 def predict_transaction_risk():
     if not detector:
@@ -320,7 +524,7 @@ def predict_transaction_risk():
         X = np.array([complete_vector], dtype=float)
         risk_probability = None
         
-        # Try method from new class first
+        # Try method from detector class first
         if hasattr(detector, 'predict_risk_score'):
              try:
                 res = detector.predict_risk_score(raw_feats)
@@ -338,18 +542,24 @@ def predict_transaction_risk():
                 out = m.predict(X)
                 risk_probability = 1.0 if out[0] == 1 else 0.0
 
-        risk_probability = float(risk_probability)
+        risk_score = int(math.ceil(risk_probability * 10)) if risk_probability > 0.01 else 1
+        
+        # 3. USE RULE-BASED EXPLANATION BY DEFAULT
+        # This is fast, free, and always available
+        risk_explanation = get_risk_explanation_rules(features_dict, risk_score)
+        
         return jsonify({
             "risk_probability": risk_probability,
             "risk_level": get_risk_level(risk_probability),
             "is_high_risk": risk_probability > Config.HIGH_RISK_THRESHOLD,
-            "risk_score": int(math.ceil(risk_probability * 10)) if risk_probability > 0.01 else 1
+            "risk_score": risk_score,
+            "explanation": risk_explanation 
         }), 200
 
     except Exception as e:
         logger.error(f"Error during transaction prediction: {e}")
         return jsonify({"error": str(e)}), 400
-
+    
 # --- 4. PROXY ENDPOINTS (For Live Frontend Search) ---
 
 @app.route('/api/proxy/transaction/<tx_hash>', methods=['GET'])
@@ -407,3 +617,4 @@ if __name__ == '__main__':
     load_model()
     logger.info("Ethereum Fraud Detection API starting...")
     socketio.run(app, host='0.0.0.0', port=5000, debug=False, allow_unsafe_werkzeug=True)
+    

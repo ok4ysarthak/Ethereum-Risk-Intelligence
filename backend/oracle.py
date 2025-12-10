@@ -8,8 +8,8 @@ from web3 import Web3
 from dotenv import load_dotenv
 
 # --- LOCAL IMPORTS ---
-from wallet_updater import WalletScoreUpdater
-from feature_calculator import RealTimeFeatureCalculator
+from utils.wallet_updater import WalletScoreUpdater
+from utils.feature_calculator import RealTimeFeatureCalculator
 
 # --- CONFIGURATION ---
 load_dotenv(dotenv_path='../.env', override=True)  # Add override=True
@@ -41,7 +41,7 @@ w3.eth.default_account = oracle_account.address
 logger.info(f"✅ Oracle Signer: {oracle_account.address}")
 
 # Load Contract
-artifact_path = '../artifacts/contracts/TrustScore.sol/FraudDetection.json'
+artifact_path = '../blockchain/artifacts/contracts/TrustScore.sol/FraudDetection.json'
 try:
     with open(artifact_path, 'r') as f:
         cj = json.load(f)

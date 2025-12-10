@@ -81,7 +81,7 @@ def create_transaction(session, data):
                 raw_payload_to_store = str(raw_json)
 
         # lazy import models to avoid circular imports
-        from Database.models_db import Transaction, Wallet
+        from database.models_db import Transaction, Wallet
 
         # Build transaction upsert payload
         tx_upsert_values = {
@@ -175,7 +175,7 @@ def get_wallet_by_address(session, address):
     """
     Fetches a single wallet by its (normalized) address.
     """
-    from Database.models_db import Wallet
+    from database.models_db import Wallet
     
     norm_addr = _normalize_address(address)
     if not norm_addr:
@@ -199,7 +199,7 @@ def mark_tx_onchain(session, tx_hash, onchain_record_hash):
     by adding the new on-chain transaction hash.
     Returns the updated Transaction object or None.
     """
-    from Database.models_db import Transaction
+    from database.models_db import Transaction
     
     norm_hash = _normalize_address(tx_hash)
     if not norm_hash:

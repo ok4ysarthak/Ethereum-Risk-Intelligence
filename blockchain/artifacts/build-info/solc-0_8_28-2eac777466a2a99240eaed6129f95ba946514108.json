@@ -1,0 +1,35 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-2eac777466a2a99240eaed6129f95ba946514108",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/TrustScore.sol": "project/contracts/TrustScore.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/TrustScore.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\n/**\r\n * @title FraudDetection System\r\n * @dev Optimized for gas efficiency and real-world batch processing.\r\n */\r\ncontract FraudDetection {\r\n    \r\n    // --- Structs ---\r\n    struct TransactionRecord {\r\n        uint256 value;      // Stored in wei\r\n        uint48 timestamp;   // Optimized for storage (valid until year 8,000,000)\r\n        uint8 riskScore;    // 0-100 scale (uint8 saves gas)\r\n    }\r\n    \r\n    struct WalletInfo {\r\n        uint8 trustScore;   // 0-100 scale\r\n        uint48 lastUpdated; // Optimized timestamp\r\n    }\r\n\r\n    // --- State Variables ---\r\n    address public owner;\r\n    \r\n    // Mappings\r\n    mapping(bytes32 => TransactionRecord) private transactions;\r\n    mapping(address => WalletInfo) private wallets;\r\n    mapping(address => bool) public authorizedOracles;\r\n\r\n    // Configuration\r\n    uint8 public minTrustScore = 30; \r\n    uint8 public highRiskThreshold = 70; \r\n\r\n    // --- Events (Crucial for your Frontend) ---\r\n    event TransactionRiskUpdated(bytes32 indexed txHash, uint256 value, uint8 riskScore, bool isFlagged);\r\n    event WalletScoreUpdated(address indexed wallet, uint8 trustScore, bool isHighRisk);\r\n    event OracleAuthorized(address indexed oracle);\r\n    event OracleRevoked(address indexed oracle);\r\n\r\n    // --- Modifiers ---\r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"Only owner can call this\");\r\n        _;\r\n    }\r\n    \r\n    modifier onlyOracle() {\r\n        require(authorizedOracles[msg.sender] || msg.sender == owner, \"Not authorized oracle\");\r\n        _;\r\n    }\r\n\r\n    constructor() {\r\n        owner = msg.sender;\r\n        authorizedOracles[msg.sender] = true; // Deployer is auto-authorized\r\n    }\r\n\r\n    // =============================================================\r\n    // 1. CORE FUNCTIONS (Single Update)\r\n    // =============================================================\r\n\r\n    function updateTransactionRisk(\r\n        bytes32 txHash, \r\n        uint256 value, \r\n        uint8 riskScore\r\n    ) external onlyOracle {\r\n        require(riskScore <= 100, \"Score > 100\");\r\n\r\n        transactions[txHash] = TransactionRecord({\r\n            value: value,\r\n            timestamp: uint48(block.timestamp),\r\n            riskScore: riskScore\r\n        });\r\n\r\n        // Emit event so your Frontend 'Live Feed' sees it instantly\r\n        emit TransactionRiskUpdated(txHash, value, riskScore, riskScore >= highRiskThreshold);\r\n    }\r\n\r\n    function updateWalletScore(address wallet, uint8 trustScore) external onlyOracle {\r\n        require(trustScore <= 100, \"Score > 100\");\r\n\r\n        wallets[wallet] = WalletInfo({\r\n            trustScore: trustScore,\r\n            lastUpdated: uint48(block.timestamp)\r\n        });\r\n\r\n        emit WalletScoreUpdated(wallet, trustScore, trustScore < minTrustScore);\r\n    }\r\n\r\n    // =============================================================\r\n    // 2. REAL-LIFE FEATURE (Batch Updates)\r\n    // =============================================================\r\n    \r\n    /** * @dev Updates multiple wallet scores in one transaction. \r\n     * Saves ~20% gas compared to calling updateWalletScore 10 times.\r\n     */\r\n    function batchUpdateWallets(address[] calldata walletAddrs, uint8[] calldata scores) external onlyOracle {\r\n        require(walletAddrs.length == scores.length, \"Mismatched arrays\");\r\n        \r\n        for(uint i = 0; i < walletAddrs.length; i++) {\r\n            wallets[walletAddrs[i]] = WalletInfo({\r\n                trustScore: scores[i],\r\n                lastUpdated: uint48(block.timestamp)\r\n            });\r\n            emit WalletScoreUpdated(walletAddrs[i], scores[i], scores[i] < minTrustScore);\r\n        }\r\n    }\r\n\r\n    // =============================================================\r\n    // 3. READ FUNCTIONS (For Frontend)\r\n    // =============================================================\r\n\r\n    function getWalletTrustScore(address wallet) external view returns (uint8) {\r\n        if (wallets[wallet].lastUpdated == 0) return 50; // Default neutral score\r\n        return wallets[wallet].trustScore;\r\n    }\r\n\r\n    function getTransactionRisk(bytes32 txHash) external view returns (uint8) {\r\n        return transactions[txHash].riskScore;\r\n    }\r\n\r\n    function isHighRiskWallet(address wallet) external view returns (bool) {\r\n        if (wallets[wallet].lastUpdated == 0) return false; // Unknown != High Risk\r\n        return wallets[wallet].trustScore < minTrustScore;\r\n    }\r\n\r\n    // =============================================================\r\n    // 4. ADMIN FUNCTIONS\r\n    // =============================================================\r\n\r\n    function setOracle(address oracle, bool isActive) external onlyOwner {\r\n        authorizedOracles[oracle] = isActive;\r\n        if(isActive) emit OracleAuthorized(oracle);\r\n        else emit OracleRevoked(oracle);\r\n    }\r\n\r\n    function setThresholds(uint8 _minTrust, uint8 _highRisk) external onlyOwner {\r\n        minTrustScore = _minTrust;\r\n        highRiskThreshold = _highRisk;\r\n    }\r\n}"
+      }
+    }
+  }
+}

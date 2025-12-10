@@ -1,9 +1,14 @@
 {
-  "name": "eth-risk-intelligence-frontend",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://YOUR_BACKEND_URL/api/$1" }
+  "builds": [
+    {
+      "src": "backend/app.py",
+      "use": "@vercel/python"
+    }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/backend/static/$1" }
+    {
+      "src": "/(.*)",
+      "dest": "backend/app.py"
+    }
   ]
 }

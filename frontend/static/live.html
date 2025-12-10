@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Sepolia Feed - DeTrust ETH</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+
+    <style>
+    /* --- SHARED STYLING FROM ACTIVITY.HTML --- */
+    
+    :root {
+        --bg-deep: #0e0e10;       
+        --bg-panel: #18181b;      
+        --text-main: #e4e4e7;     
+        --text-muted: #a1a1aa;    
+        
+        /* Accents */
+        --accent-gold: #fbbf24;   
+        --accent-sage: #a7f3d0;   
+        --accent-clay: #f87171;   
+        --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+
+    body { 
+        background-color: var(--bg-deep);
+        background-image: radial-gradient(circle at 50% 0%, #27272a 0%, var(--bg-deep) 80%);
+        font-family: 'Space Grotesk', sans-serif;
+        min-height: 100vh;
+        color: var(--text-main);
+        letter-spacing: 0.02em;
+    }
+    
+    /* Matte Cards (Matches Activity.html) */
+    .glass-panel { 
+        background: var(--bg-panel);
+        backdrop-filter: none; 
+        border: 1px solid var(--border-subtle);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 
+                    0 4px 20px rgba(0,0,0,0.4);
+        border-radius: 8px;
+    }
+    
+    /* Hover Effects */
+    .hover-lift {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid var(--border-subtle);
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent-gold);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); border-left: 1px solid var(--border-subtle); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border: 2px solid var(--bg-deep); border-radius: 0px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+    
+    /* Animations */
+    @keyframes pulse-glow {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(0.95); }
+    }
+    .pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+    
+    /* Scroll Reveal Animation (Ported from Activity.html) */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        will-change: opacity, transform;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Table Row Animation */
+    .table-row-enter { animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(10px); } 
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Icons & UI Elements */
+    .icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 8px; 
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-subtle);
+    }
+    
+    .icon-wrapper svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--accent-gold); 
+        stroke-width: 1.5; 
+        fill: none;
+    }
+    
+    /* Badges */
+    .badge-high-risk {
+        background: rgba(248, 113, 113, 0.1);
+        border: 1px solid rgba(248, 113, 113, 0.2);
+        color: var(--accent-clay);
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: -0.05em;
+        padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;
+    }
+    
+    .badge-trusted {
+        background: rgba(167, 243, 208, 0.05);
+        border: 1px solid rgba(167, 243, 208, 0.2);
+        color: var(--accent-sage);
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: -0.05em;
+        padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;
+    }
+
+    .badge-neutral {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+        padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;
+    }
+    
+    /* Search Styling */
+    .search-glow:focus-within {
+        box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3);
+        border-color: var(--accent-gold);
+    }
+    
+    /* Typography */
+    .font-mono, .detail-value, .feature-value {
+        font-family: 'JetBrains Mono', monospace; 
+        letter-spacing: -0.03em;
+    }
+
+    .clickable-hash {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 1px dotted var(--text-muted); 
+        color: var(--text-main);
+    }
+    
+    .clickable-hash:hover {
+        color: var(--accent-gold) !important;
+        border-bottom: 1px solid var(--accent-gold);
+        text-decoration: none;
+    }
+    
+    /* Details & Features */
+    .detail-row {
+        display: flex;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-subtle);
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .detail-label {
+        width: 35%;
+        min-width: 120px;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+    
+    .detail-value {
+        flex: 1;
+        color: var(--text-main);
+        font-size: 0.9rem;
+        word-break: break-all;
+    }
+    
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+    
+    .feature-item {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border-subtle);
+        border-radius: 6px;
+        padding: 1rem;
+    }
+    
+    .feature-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-value {
+        font-size: 1.2rem;
+        color: var(--text-main);
+    }
+
+    h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; color: #ffffff; }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+    .table-hover-row:hover td { background: rgba(255,255,255,0.02); }
+
+    /* Modal Overlay (Loader) */
+    .modal-overlay {
+        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(4px); z-index: 100;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+    </style>
+</head>
+<body>
+
+    <header class="glass-panel sticky top-0 z-50 border-b border-gray-800/50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+             <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <div class="icon-wrapper w-10 h-10">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                DeTrust<span class="text-[#008B8B]">ETH</span>
+                <span class="text-xs bg-[#008B8B]/20 text-[#008B8B] px-2 py-0.5 rounded ml-2 border border-[#008B8B]/30">Smart Contract View</span>
+            </h1>
+            
+            <div class="flex space-x-6 text-sm font-medium">
+                <a href="/" class="text-gray-400 hover:text-white transition-colors">Dashboard</a>
+                <a href="/activity" class="text-gray-400 hover:text-white transition-colors">Predicted History</a>
+                <a href="/live" class="text-[#008B8B] border-b-2 border-[#008B8B] pb-1">Live Sepolia Feed</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 max-w-6xl">
+
+        <div class="mb-12 flex justify-center reveal">
+            <div class="w-full max-w-2xl relative search-glow rounded-lg transition-shadow">
+                <div class="relative flex">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                    </div>
+                    <input type="text" id="main-search" 
+                           class="w-full bg-gray-800/50 border border-gray-700/50 text-sm rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-[#008B8B] focus:border-transparent outline-none text-white placeholder-gray-500 backdrop-blur-sm"
+                           placeholder="Search Address (0x...) or Txn Hash (0x...)"
+                           onkeypress="if(event.key === 'Enter') handleSearch()">
+                    <button onclick="handleSearch()" class="bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-feed" class="view-section active">
+            <div class="glass-panel reveal">
+                <div class="px-8 py-6 border-b border-[var(--border-subtle)] flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="h-6 w-1 bg-[var(--accent-gold)] rounded-full"></div>
+                        <h3 class="text-lg">Live Transactions</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-mono text-[var(--accent-sage)] tracking-wide" id="connection-status">● STREAM ACTIVE</span>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-black/20 text-[var(--text-muted)] text-xs uppercase tracking-wider font-semibold border-b border-[var(--border-subtle)]">
+                            <tr>
+                                <th class="px-8 py-5">Txn Hash</th>
+                                <th class="px-6 py-5">Type</th>
+                                <th class="px-6 py-5">Block</th>
+                                <th class="px-6 py-5">From</th>
+                                <th class="px-2 py-5"></th>
+                                <th class="px-6 py-5">To</th>
+                                <th class="px-8 py-5 text-right">Value (ETH)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="live-table-body" class="text-sm divide-y divide-[var(--border-subtle)]">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-tx" class="view-section">
+            <button onclick="showHome()" class="mb-8 flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors font-mono text-xs uppercase tracking-wide reveal">
+                ← Back to Feed
+                <span id="tx-back-badge" class="hidden bg-[var(--accent-gold)] text-black font-bold px-2 py-0.5 rounded ml-2">0 NEW</span>
+            </button>
+
+            <div class="glass-panel p-10 reveal">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+                    <div>
+                        <h2 class="text-2xl mb-2 flex items-center gap-3">
+                            <span class="icon-wrapper w-10 h-10"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+                            Transaction Details
+                        </h2>
+                        <div class="font-mono text-[var(--text-muted)] text-sm break-all" id="det-tx-hash">-</div>
+                    </div>
+                    <div id="det-tx-status-badge"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="detail-row">
+                            <div class="detail-label">Block Height</div>
+                            <div class="detail-value font-mono text-[var(--accent-gold)]" id="det-tx-block">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">From Address</div>
+                            <div class="detail-value">
+                                <span class="clickable-hash font-mono" id="det-tx-from" onclick="handleSearch(this.innerText)">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">To Address</div>
+                            <div class="detail-value">
+                                <span class="clickable-hash font-mono" id="det-tx-to" onclick="handleSearch(this.innerText)">-</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Value</div>
+                            <div class="detail-value font-mono text-[var(--text-main)]" id="det-tx-value">-</div>
+                        </div>
+                        <div class="detail-row border-none">
+                            <div class="detail-label">Gas Fee</div>
+                            <div class="detail-value font-mono text-[var(--text-muted)]" id="det-tx-fee">-</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-item hover-lift bg-[var(--bg-deep)]">
+                        <h4 class="text-xs font-bold text-[var(--accent-gold)] mb-6 uppercase tracking-widest flex items-center gap-2">
+                            SentinETH Risk Engine
+                        </h4>
+                        
+                        <div class="text-center mb-8">
+                            <div class="text-5xl font-bold font-mono text-[var(--text-main)] mb-2" id="det-tx-risk">-</div>
+                            <div class="text-sm font-medium text-[var(--text-muted)] uppercase tracking-wide" id="det-tx-level">Analyzing...</div>
+                        </div>
+
+                        <div class="w-full bg-[var(--bg-panel)] rounded-sm h-1 mb-2 overflow-hidden border border-[var(--border-subtle)]">
+                            <div class="h-full transition-all duration-1000" style="width: 0%; background: var(--accent-clay);" id="det-tx-risk-bar"></div>
+                        </div>
+                        <p class="text-[10px] text-[var(--text-muted)] font-mono text-center">
+                            Score calculated via velocity checks & graph analysis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-wallet" class="view-section">
+            <button onclick="showHome()" class="mb-8 flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors font-mono text-xs uppercase tracking-wide reveal">
+                ← Back to Feed
+                <span id="wal-back-badge" class="hidden bg-[var(--accent-gold)] text-black font-bold px-2 py-0.5 rounded ml-2">0 NEW</span>
+            </button>
+
+            <div class="glass-panel overflow-hidden reveal">
+                <div class="px-8 py-8 border-b border-[var(--border-subtle)] flex items-center gap-6">
+                    <div class="icon-wrapper w-16 h-16">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1-2-2 2 2 0 0 1 2-2h12v4" /><path d="M4 6v12a2 2 0 0 0 2 2h14v-4" /><path d="M18 12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v-8Z" /></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-1">Wallet Inspector</h2>
+                        <div class="font-mono text-[var(--accent-gold)] text-sm" id="det-wal-addr">-</div>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <div class="feature-grid">
+                        <div class="feature-item hover-lift">
+                            <div class="feature-label">ETH Balance</div>
+                            <div class="feature-value font-mono" id="det-wal-balance">-</div>
+                        </div>
+                        
+                        <div class="feature-item hover-lift">
+                            <div class="feature-label">Fiat Value (USD)</div>
+                            <div class="feature-value font-mono text-[var(--accent-gold)]" id="det-wal-usd">-</div>
+                        </div>
+
+                        <div class="feature-item hover-lift">
+                            <div class="feature-label">Trust Score</div>
+                            <div class="flex items-center gap-3">
+                                <span class="feature-value font-mono text-[var(--accent-sage)]" id="det-wal-trust">-</span>
+                                <div class="flex-1 bg-[var(--bg-deep)] h-1 rounded-sm overflow-hidden border border-[var(--border-subtle)]">
+                                    <div class="h-full bg-[var(--accent-sage)]" style="width: 0%" id="det-wal-trust-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-item hover-lift">
+                            <div class="feature-label">Total Transactions</div>
+                            <div class="feature-value font-mono" id="det-wal-count">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="loader" class="modal-overlay">
+        <div class="text-center">
+            <div class="w-12 h-12 border-2 border-[var(--border-subtle)] border-t-[var(--accent-gold)] rounded-full animate-spin mx-auto mb-4"></div>
+            <div class="font-mono text-[var(--accent-gold)] text-sm tracking-widest animate-pulse">QUERYING CHAIN...</div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        const ALCHEMY_WS_URL = 'wss://eth-sepolia.g.alchemy.com/v2/5bURjldvKPu4glB_tFxWt';
+        const tableBody = document.getElementById('live-table-body');
+        const MAX_ROWS = 12;
+        const CACHE_KEY = 'sepolia_tx_cache_retro';
+        const CACHE_SIZE = 50;
+        
+        let web3;
+        let isFeedVisible = true;
+        let missedUpdates = 0;
+
+        // --- SCROLL REVEAL LOGIC (From Activity.html) ---
+        function initScrollReveal() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            const elements = document.querySelectorAll('.reveal');
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCache();
+            initScrollReveal(); // Activate the reveal animations
+            
+            if (ALCHEMY_WS_URL) {
+                try {
+                    web3 = new Web3(new Web3.providers.WebsocketProvider(ALCHEMY_WS_URL));
+                    web3.eth.subscribe('newBlockHeaders', (error, header) => {
+                        if (!error) {
+                            fetchBlockTransactions(header.number);
+                        } else {
+                            console.error(error);
+                        }
+                    });
+                } catch (e) { console.error(e); }
+            }
+        });
+
+        // --- LOGIC ---
+        function loadCache() {
+            const cached = sessionStorage.getItem(CACHE_KEY);
+            if (cached) {
+                const txs = JSON.parse(cached);
+                tableBody.innerHTML = '';
+                txs.forEach((tx, index) => renderRow(tx, index, false));
+            }
+        }
+
+        function saveToCache(tx) {
+            let cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "[]");
+            cached.unshift(tx);
+            if (cached.length > CACHE_SIZE) cached = cached.slice(0, CACHE_SIZE);
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify(cached));
+        }
+
+        async function fetchBlockTransactions(blockNumber) {
+            try {
+                const block = await web3.eth.getBlock(blockNumber, true);
+                if (block && block.transactions) {
+                    block.transactions.slice(0, 2).forEach(tx => processNewTx(tx));
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function processNewTx(tx) {
+            const txData = {
+                hash: tx.hash,
+                from: tx.from,
+                to: tx.to,
+                value: web3.utils.fromWei(tx.value, 'ether'),
+                block: tx.blockNumber,
+                input: tx.input
+            };
+            saveToCache(txData);
+            
+            if (isFeedVisible) {
+                renderRow(txData, 0, true);
+            } else {
+                missedUpdates++;
+                updateBackBadges();
+            }
+        }
+
+        function renderRow(tx, index = 0, isLive = false) {
+            const row = document.createElement('tr');
+            
+            row.className = 'table-row-enter table-hover-row';
+            
+            // Stagger animation delay
+            const delay = isLive ? 0 : index * 0.05; 
+            row.style.animationDelay = `${delay}s`;
+            
+            const shortHash = h => `${h.substring(0, 14)}...`;
+            const shortAddr = a => a ? `${a.substring(0, 8)}...${a.substring(a.length-8)}` : 'N/A';
+            const val = parseFloat(tx.value).toFixed(5);
+            const method = (!tx.input || tx.input === '0x') ? 'Transfer' : 'Contract';
+            
+            const methodBadge = method === 'Transfer' 
+                ? `<span class="badge-neutral">Transfer</span>`
+                : `<span class="badge-neutral" style="color:var(--accent-sage); border-color:var(--accent-sage);">Contract</span>`;
+
+            row.innerHTML = `
+                <td class="px-8 py-4"><span class="clickable-hash font-mono text-sm" onclick="handleSearch('${tx.hash}')">${shortHash(tx.hash)}</span></td>
+                <td class="px-6 py-4">${methodBadge}</td>
+                <td class="px-6 py-4"><span class="font-mono text-[var(--text-muted)] text-sm">${tx.block}</span></td>
+                <td class="px-6 py-4"><span class="clickable-hash font-mono text-xs" onclick="handleSearch('${tx.from}')">${shortAddr(tx.from)}</span></td>
+                <td class="px-2 py-4"><svg class="w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></td>
+                <td class="px-6 py-4"><span class="clickable-hash font-mono text-xs" onclick="handleSearch('${tx.to}')">${shortAddr(tx.to)}</span></td>
+                <td class="px-8 py-4 text-right"><span class="font-mono text-[var(--text-main)] text-sm">${val}</span></td>
+            `;
+            
+            if (isLive) {
+                tableBody.prepend(row);
+                if (tableBody.children.length > MAX_ROWS) tableBody.lastElementChild.remove();
+            } else {
+                tableBody.appendChild(row);
+            }
+        }
+
+        // --- NAVIGATION & SEARCH ---
+        function switchView(id) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            // Re-trigger scroll reveal for new elements if needed
+            setTimeout(initScrollReveal, 100);
+
+            if (id === 'view-feed') {
+                isFeedVisible = true;
+                missedUpdates = 0;
+                updateBackBadges();
+                loadCache(); 
+            } else {
+                isFeedVisible = false;
+            }
+        }
+
+        function showHome() { switchView('view-feed'); }
+        function showLoader(show) { 
+            const loader = document.getElementById('loader');
+            if (show) loader.classList.add('active');
+            else loader.classList.remove('active');
+        }
+
+        function updateBackBadges() {
+            const badges = [document.getElementById('tx-back-badge'), document.getElementById('wal-back-badge')];
+            badges.forEach(b => {
+                if (missedUpdates > 0) {
+                    b.classList.remove('hidden');
+                    b.innerText = `${missedUpdates} NEW`;
+                } else {
+                    b.classList.add('hidden');
+                }
+            });
+        }
+
+        async function handleSearch(queryOverride = null) {
+            const query = (queryOverride || document.getElementById('main-search').value).trim();
+            if (!query) return;
+            showLoader(true);
+
+            // Simulation of routing
+            if (query.length === 66 && query.startsWith('0x')) await loadTxDetails(query);
+            else if (query.length === 42 && query.startsWith('0x')) await loadWalletDetails(query);
+            else { alert("Invalid Ethereum Format"); showLoader(false); }
+        }
+
+        // Mock Data Loaders
+        async function loadTxDetails(hash) {
+            try {
+                await new Promise(r => setTimeout(r, 800));
+                
+                const data = {
+                    hash: hash,
+                    block: 4819204,
+                    from: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+                    to: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FD4",
+                    value: 0.45,
+                    fee: 0.00021,
+                    status: 'Success',
+                    risk_score: 2,
+                    risk_level: 'Safe / Verified'
+                };
+
+                document.getElementById('det-tx-hash').innerText = data.hash;
+                document.getElementById('det-tx-block').innerText = data.block;
+                document.getElementById('det-tx-from').innerText = data.from;
+                document.getElementById('det-tx-to').innerText = data.to;
+                document.getElementById('det-tx-value').innerText = data.value.toFixed(4) + " ETH";
+                document.getElementById('det-tx-fee').innerText = data.fee + " ETH";
+                
+                const statusBadge = document.getElementById('det-tx-status-badge');
+                if(data.status === 'Success') {
+                    statusBadge.innerHTML = '<span class="badge-trusted">SUCCESS</span>';
+                } else {
+                    statusBadge.innerHTML = '<span class="badge-high-risk">FAILED</span>';
+                }
+
+                // Risk Animation
+                const risk = data.risk_score;
+                const riskColor = risk > 7 ? 'var(--accent-clay)' : (risk > 4 ? '#fbbf24' : 'var(--accent-sage)');
+                
+                document.getElementById('det-tx-risk').style.color = riskColor;
+                document.getElementById('det-tx-risk').innerText = `${risk}/10`;
+                document.getElementById('det-tx-level').innerText = data.risk_level;
+                
+                const bar = document.getElementById('det-tx-risk-bar');
+                bar.style.backgroundColor = riskColor;
+                setTimeout(() => { bar.style.width = `${risk * 10}%`; }, 100);
+
+                switchView('view-tx');
+            } catch (e) { console.error(e); } 
+            finally { showLoader(false); }
+        }
+
+        async function loadWalletDetails(addr) {
+            try {
+                await new Promise(r => setTimeout(r, 800));
+                
+                const data = {
+                    address: addr,
+                    balance: 12.402,
+                    tx_count: 145,
+                    trust_score: 0.85
+                };
+
+                document.getElementById('det-wal-addr').innerText = data.address;
+                document.getElementById('det-wal-balance').innerText = data.balance.toFixed(3) + " ETH";
+                document.getElementById('det-wal-usd').innerText = `$${(data.balance * 2800).toLocaleString()}`; 
+                document.getElementById('det-wal-count').innerText = data.tx_count;
+                
+                const score = (data.trust_score * 100).toFixed(0);
+                document.getElementById('det-wal-trust').innerText = `${score}/100`;
+                
+                setTimeout(() => {
+                    document.getElementById('det-wal-trust-bar').style.width = `${score}%`;
+                }, 100);
+
+                switchView('view-wallet');
+            } catch (e) { console.error(e); } 
+            finally { showLoader(false); }
+        }
+    </script>
+</body>
+</html>

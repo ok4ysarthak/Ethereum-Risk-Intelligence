@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ETH Fraud Detection</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    <style>
+        /* --- DESIGN SYSTEM FROM ACTIVITY.HTML --- */
+        :root {
+            --bg-deep: #0e0e10;       /* Almost black, slightly warm */
+            --bg-panel: #18181b;      /* Matte Charcoal */
+            --text-main: #e4e4e7;     /* Off-white/Cream */
+            --text-muted: #a1a1aa;    /* Soft Grey */
+            
+            /* Accents */
+            --accent-gold: #fbbf24;   /* Vintage Amber */
+            --accent-sage: #a7f3d0;   /* Soothing Green */
+            --accent-clay: #f87171;   /* Muted Red */
+            --border-subtle: rgba(255, 255, 255, 0.08);
+        }
+    
+        body { 
+            background-color: var(--bg-deep);
+            background-image: radial-gradient(circle at 50% 0%, #27272a 0%, var(--bg-deep) 80%);
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            color: var(--text-main);
+            letter-spacing: 0.02em;
+        }
+        
+        /* Matte Cards instead of Glassmorphism */
+        .glass-panel { 
+            background: var(--bg-panel);
+            backdrop-filter: none; 
+            border: 1px solid var(--border-subtle);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 
+                        0 4px 20px rgba(0,0,0,0.4);
+            border-radius: 8px;
+        }
+        
+        /* Hover effects */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+            border-left: 1px solid var(--border-subtle);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border: 2px solid var(--bg-deep);
+            border-radius: 0px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
+        }
+        
+        /* Animations */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.95); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+    
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            will-change: opacity, transform;
+        }
+    
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Icons */
+        .icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .icon-wrapper svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent-gold);
+            stroke-width: 1.5;
+            fill: none;
+        }
+        
+        /* Typography utilities */
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace; 
+            letter-spacing: -0.03em;
+        }
+        
+        /* Feature Cards specific to Dashboard */
+        .feature-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--accent-gold);
+            background: rgba(255,255,255,0.04);
+        }
+        
+        /* Gold Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Tech Stack Badges */
+        .badge-tech {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+
+    <header class="glass-panel sticky top-0 z-50 border-b border-gray-800/50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <div class="icon-wrapper w-10 h-10">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                DeTrust<span class="text-[#008B8B]">ETH</span>
+                <span class="text-xs bg-[#008B8B]/20 text-[#008B8B] px-2 py-0.5 rounded ml-2 border border-[#008B8B]/30">Dashboard</span>
+            </h1>
+            <div class="flex space-x-6 text-sm font-medium">
+                <a href="/" class="text-[#008B8B] border-b-2 border-[#008B8B] pb-1">Dashboard</a>
+                <a href="/activity" class="text-gray-400 hover:text-white transition-colors">Predicted History</a>
+                <a href="/live" class="text-gray-400 hover:text-white transition-colors">Live Sepolia Feed</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-8">
+        
+        <section class="reveal">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold text-white mb-4">
+                    Ethereum <span class="gradient-text">Fraud Detection</span> System
+                </h1>
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto font-light">
+                    Real-time ML-powered fraud detection for Ethereum transactions with advanced risk scoring and wallet trust analysis.
+                </p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="icon-wrapper">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 10v4h10v-4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 14v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14v4"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider">Total Scanned</span>
+                </div>
+                <div class="text-4xl font-bold text-white mb-2 font-mono" id="stat-total-tx">-</div>
+                <div class="text-xs text-gray-400">Transactions analyzed</div>
+                <div class="mt-4 flex items-center gap-2 text-[#a7f3d0] text-xs uppercase tracking-wide">
+                    <span class="w-1.5 h-1.5 bg-[#a7f3d0] rounded-full animate-pulse"></span>
+                    <span>Live monitoring</span>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal border-red-900/30">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1)); border-color: rgba(239,68,68,0.2);">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #ef4444;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 17h.01"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider">High Risk</span>
+                </div>
+                <div class="text-4xl font-bold text-[#f87171] mb-2 font-mono pulse-glow" id="stat-high-tx">-</div>
+                <div class="text-xs text-gray-400">Flagged as suspicious</div>
+                <div class="mt-4 flex items-center gap-2 text-[#f87171] text-xs uppercase tracking-wide">
+                    <span class="w-1.5 h-1.5 bg-[#f87171] rounded-full animate-pulse"></span>
+                    <span>Action Required</span>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); border-color: rgba(251,191,36,0.2);">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #fbbf24;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider">Unique Wallets</span>
+                </div>
+                <div class="text-4xl font-bold text-[#fbbf24] mb-2 font-mono" id="stat-total-wallets">-</div>
+                <div class="text-xs text-gray-400">Addresses tracked</div>
+                <div class="mt-4 flex items-center gap-2 text-[#fbbf24] text-xs uppercase tracking-wide">
+                    <span class="w-1.5 h-1.5 bg-[#fbbf24] rounded-full animate-pulse"></span>
+                    <span>Scoring Active</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 glass-panel p-8 rounded-xl hover-lift reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="h-1 w-12 bg-gradient-to-r from-[#fbbf24] to-transparent rounded"></div>
+                    <h2 class="text-2xl font-bold text-white">Project Overview</h2>
+                </div>
+                <p class="text-gray-400 leading-relaxed mb-6 font-light">
+                    The Ethereum Fraud Detection System uses advanced Machine Learning (XGBoost) to analyze transaction patterns in real-time on the Sepolia Testnet. It assigns a <strong class="text-[#fbbf24]">Risk Score</strong> to every transaction and builds a persistent <strong class="text-[#a7f3d0]">Trust Score</strong> for every wallet.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-card p-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-[#a7f3d0] font-mono text-xs uppercase tracking-wider">Capabilities</span>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2 font-mono">
+                            <li class="flex items-start gap-2">
+                                <span class="text-[#a7f3d0]">+</span>
+                                <span>Real-time Oracle Interception</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[#a7f3d0]">+</span>
+                                <span>Feature Engineering (Velocity/Age)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[#a7f3d0]">+</span>
+                                <span>ML Probability Prediction</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card p-5 border-red-900/20">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-[#f87171] font-mono text-xs uppercase tracking-wider">Limitations</span>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2 font-mono">
+                            <li class="flex items-start gap-2">
+                                <span class="text-[#f87171]">-</span>
+                                <span>No blocking (Detection Only)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[#f87171]">-</span>
+                                <span>No private key access</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[#f87171]">-</span>
+                                <span>Probabilistic (Not Absolute)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-gray-800">
+                    <h4 class="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">Technology Stack</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="badge-tech">XGBoost ML</span>
+                        <span class="badge-tech">Web3.js</span>
+                        <span class="badge-tech">Flask API</span>
+                        <span class="badge-tech">Sepolia</span>
+                        <span class="badge-tech">SQLAlchemy</span>
+                        <span class="badge-tech">Socket.IO</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white">Live Activity</h3>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#a7f3d0] rounded-full animate-pulse"></span>
+                        <span class="text-xs text-[#a7f3d0] font-mono uppercase">Socket Connected</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3" id="live-activity">
+                    <div class="text-center text-gray-500 text-sm py-8 font-mono">
+                        // Waiting for transactions...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <div class="w-1 h-4 bg-[#f87171]"></div>
+                        Transaction Risk
+                    </h3>
+                    <span class="text-xs text-gray-500 font-mono">DISTRIBUTION</span>
+                </div>
+                <div id="tx-risk-donut-chart" class="w-full h-80"></div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <div class="w-1 h-4 bg-[#fbbf24]"></div>
+                        Wallet Trust
+                    </h3>
+                    <span class="text-xs text-gray-500 font-mono">SCORES</span>
+                </div>
+                <div id="wallet-trust-donut-chart" class="w-full h-80"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const CONFIG = { API_BASE: '', REFRESH_INTERVAL: 10000 };
+        const CACHE_KEY = 'detrust_live_feed_v1'; // Key for LocalStorage
+        let socket;
+        let riskChartInstance = null;
+        let trustChartInstance = null;
+
+        // --- 1. CACHING LOGIC ---
+
+        // Load data from LocalStorage on page load
+        function loadCachedFeed() {
+            try {
+                const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
+                if (cached.length > 0) {
+                    const feed = document.getElementById('live-activity');
+                    feed.innerHTML = ''; // Clear "Waiting..." message
+                    
+                    // Render in reverse order (Oldest -> Newest) because renderFeedItem prepends (inserts at top)
+                    [...cached].reverse().forEach(tx => renderFeedItem(tx, false));
+                }
+            } catch (e) { console.error("Cache load error", e); }
+        }
+
+        // Save new transaction to LocalStorage
+        function saveToCache(tx) {
+            try {
+                let current = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
+                
+                // Add timestamp if missing so we don't always show "Just now" on reload
+                if (!tx.timestamp) tx.localTime = new Date().toLocaleTimeString();
+                
+                // Add to beginning of array
+                current.unshift(tx);
+                
+                // Keep only top 5
+                if (current.length > 5) current = current.slice(0, 5);
+                
+                localStorage.setItem(CACHE_KEY, JSON.stringify(current));
+            } catch (e) { console.error("Cache save error", e); }
+        }
+
+        // --- 2. RENDERING LOGIC ---
+
+        // Helper to generate the HTML card
+        function renderFeedItem(tx, animate = true) {
+            const feed = document.getElementById('live-activity');
+            
+            // Remove "Waiting..." placeholder if it exists
+            const placeholder = feed.querySelector('.text-center');
+            if (placeholder && placeholder.innerText.includes('Waiting')) {
+                feed.innerHTML = '';
+            }
+
+            const riskColor = tx.riskScore > 0.7 ? 'text-[#f87171]' : tx.riskScore > 0.4 ? 'text-[#fbbf24]' : 'text-[#a7f3d0]';
+            const riskBorder = tx.riskScore > 0.7 ? 'border-red-900/30' : tx.riskScore > 0.4 ? 'border-yellow-900/30' : 'border-green-900/30';
+            
+            // Display time: Use blockchain timestamp, or local cached time, or "Just now"
+            let timeDisplay = 'Just now';
+            if (tx.timestamp) timeDisplay = new Date(tx.timestamp * 1000).toLocaleTimeString();
+            else if (tx.localTime) timeDisplay = tx.localTime;
+
+            const item = document.createElement('div');
+            // Only pulse animation for fresh live events
+            const animClass = animate ? 'animate-pulse' : '';
+            
+            item.className = `p-3 rounded-lg border ${riskBorder} bg-[rgba(255,255,255,0.02)] ${animClass}`;
+            
+            // Stop pulsing after 2 seconds
+            if (animate) {
+                setTimeout(() => item.classList.remove('animate-pulse'), 2000);
+            }
+
+            item.innerHTML = `
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs text-gray-500 font-mono">NEW TRANSACTION</span>
+                    <span class="text-xs ${riskColor} font-bold font-mono">${(tx.riskScore * 100).toFixed(0)}% RISK</span>
+                </div>
+                <div class="text-sm font-mono text-gray-300 truncate tracking-tight">${tx.transaction_hash || tx.id}</div>
+                <div class="flex items-center justify-between mt-2 text-xs text-gray-500">
+                    <span class="text-white">${tx.value ? parseFloat(tx.value).toFixed(4) : '0.0000'} ETH</span>
+                    <span>${timeDisplay}</span>
+                </div>
+            `;
+            
+            // Insert at the top
+            feed.insertBefore(item, feed.firstChild);
+            
+            // Keep DOM clean (Visual limit)
+            if (feed.children.length > 5) feed.removeChild(feed.lastChild);
+        }
+
+        // Main handler called by Socket
+        function updateLiveActivity(tx) {
+            saveToCache(tx);      // 1. Save to storage
+            renderFeedItem(tx, true); // 2. Render with animation
+        }
+
+        // --- 3. EXISTING CHART & DATA LOGIC ---
+
+        function initScrollReveal() {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch('/transactions?limit=500');
+                const txs = await res.json();
+                
+                const highRisk = txs.filter(t => t.riskScore > 0.7).length;
+                const wallets = new Set(txs.map(t => t.from)).size;
+
+                document.getElementById('stat-total-tx').innerText = txs.length;
+                document.getElementById('stat-high-tx').innerText = highRisk;
+                document.getElementById('stat-total-wallets').innerText = wallets;
+
+                renderCharts(txs);
+            } catch(e) { 
+                console.error("Stats error", e); 
+            }
+        }
+
+        function renderCharts(txs) {
+            const chartColors = ['#ef4444', '#f59e0b', '#22c55e'];
+            
+            const risks = [
+                txs.filter(t => t.riskScore > 0.7).length,
+                txs.filter(t => t.riskScore > 0.4 && t.riskScore <= 0.7).length,
+                txs.filter(t => t.riskScore <= 0.4).length
+            ];
+            
+            const trusts = [
+                txs.filter(t => t.walletScore > 0.7).length,
+                txs.filter(t => t.walletScore > 0.4 && t.walletScore <= 0.7).length,
+                txs.filter(t => t.walletScore <= 0.4).length
+            ];
+
+            const commonOptions = {
+                chart: { 
+                    type: 'donut', 
+                    height: 320,
+                    background: 'transparent',
+                    animations: { enabled: true }
+                },
+                theme: { mode: 'dark' },
+                dataLabels: { 
+                    enabled: true,
+                    style: { fontFamily: 'JetBrains Mono', fontSize: '12px', fontWeight: 'bold' },
+                    dropShadow: { enabled: false }
+                },
+                plotOptions: { 
+                    pie: { 
+                        donut: { 
+                            size: '70%',
+                            labels: {
+                                show: true,
+                                name: { show: true, fontFamily: 'Space Grotesk', fontSize: '14px', color: '#a1a1aa' },
+                                value: { show: true, fontFamily: 'Space Grotesk', fontSize: '24px', fontWeight: 'bold', color: '#e4e4e7' },
+                                total: {
+                                    show: true,
+                                    label: 'Total',
+                                    fontSize: '14px',
+                                    color: '#a1a1aa',
+                                    formatter: function (w) {
+                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom',
+                    fontFamily: 'Space Grotesk',
+                    labels: { colors: '#a1a1aa' },
+                    markers: { width: 10, height: 10, radius: 2 }
+                },
+                stroke: { width: 1, colors: ['#18181b'] },
+                tooltip: { theme: 'dark' }
+            };
+
+            if (riskChartInstance) {
+                riskChartInstance.updateSeries(risks);
+            } else {
+                riskChartInstance = new ApexCharts(document.querySelector("#tx-risk-donut-chart"), {
+                    ...commonOptions,
+                    series: risks,
+                    labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+                    colors: chartColors
+                });
+                riskChartInstance.render();
+            }
+
+            if (trustChartInstance) {
+                trustChartInstance.updateSeries(trusts);
+            } else {
+                trustChartInstance = new ApexCharts(document.querySelector("#wallet-trust-donut-chart"), {
+                    ...commonOptions,
+                    series: trusts,
+                    labels: ['Trusted', 'Neutral', 'Untrusted'],
+                    colors: ['#22c55e', '#f59e0b', '#ef4444'] 
+                });
+                trustChartInstance.render();
+            }
+        }
+
+        function initializeSocket() {
+            socket = io();
+            socket.on('connect', () => console.log('Connected to live feed'));
+            socket.on('new_transaction', (data) => {
+                updateLiveActivity(data);
+                fetchStats();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchStats();
+            loadCachedFeed(); // <-- LOAD CACHE ON STARTUP
+            initializeSocket();
+            initScrollReveal();
+            setInterval(fetchStats, CONFIG.REFRESH_INTERVAL);
+        });
+    </script>
+</body>
+</html>

@@ -34,7 +34,7 @@ def init_db():
     Creates all tables in the database using SQLAlchemy models.
     Must be called once when server starts.
     """
-    from Database.models_db import Base
+    from database.models_db import Base
 
     print("Creating database tables if not exist...")
     Base.metadata.create_all(bind=engine)

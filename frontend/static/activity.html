@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicted History - ETH Fraud Detection</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    /* DEFINING THE "RETRO-ASPIRATIONAL" PALETTE */
+    :root {
+        --bg-deep: #0e0e10;       /* Almost black, slightly warm */
+        --bg-panel: #18181b;      /* Matte Charcoal */
+        --text-main: #e4e4e7;     /* Off-white/Cream - easier on eyes */
+        --text-muted: #a1a1aa;    /* Soft Grey */
+        
+        /* Accents - The "Aspiring" colors */
+        --accent-gold: #fbbf24;   /* Vintage Amber (warmth/success) */
+        --accent-sage: #a7f3d0;   /* Soothing Green */
+        --accent-clay: #f87171;   /* Muted Red */
+        --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+
+    body { 
+        background-color: var(--bg-deep);
+        /* A static, subtle vignette instead of spinning gradients */
+        background-image: radial-gradient(circle at 50% 0%, #27272a 0%, var(--bg-deep) 80%);
+        font-family: 'Space Grotesk', sans-serif; /* Aspiring, retro-future font */
+        min-height: 100vh;
+        color: var(--text-main);
+        letter-spacing: 0.02em; /* Slightly airy */
+    }
+    
+    /* REPLACED GLASSMORPHISM WITH "MATTE CARDS" */
+    .glass-panel { 
+        background: var(--bg-panel);
+        backdrop-filter: none; 
+        border: 1px solid var(--border-subtle);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 
+                    0 4px 20px rgba(0,0,0,0.4);
+        border-radius: 8px; /* Slightly sharper corners */
+    }
+    
+    .gradient-bg { background: transparent; }
+    
+    /* Hover effects - Subtle lift */
+    .hover-lift {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid transparent;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent-gold); /* Gold border on hover */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Custom scrollbar - Blocky and Retro */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--bg-deep);
+        border-left: 1px solid var(--border-subtle);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #3f3f46;
+        border: 2px solid var(--bg-deep);
+        border-radius: 0px; 
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-gold); 
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(0.95); }
+    }
+    
+    .pulse-glow {
+        animation: pulse-glow 4s ease-in-out infinite;
+    }
+    
+    /* Table row animation */
+    .table-row-enter {
+        animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(10px); } 
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Icon styling - Minimalist */
+    .icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-subtle);
+    }
+    
+    .icon-wrapper svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--accent-gold);
+        stroke-width: 1.5; 
+        fill: none;
+    }
+    
+    /* Badge styles */
+    .badge-high-risk {
+        background: rgba(248, 113, 113, 0.1);
+        border: 1px solid rgba(248, 113, 113, 0.2);
+        color: var(--accent-clay);
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: -0.05em;
+    }
+    
+    .badge-trusted {
+        background: rgba(167, 243, 208, 0.05);
+        border: 1px solid rgba(167, 243, 208, 0.2);
+        color: var(--accent-sage);
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: -0.05em;
+    }
+    
+    /* Search Styling */
+    .search-glow:focus-within {
+        box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3);
+        border-color: var(--accent-gold);
+    }
+    .font-mono, .detail-value, .feature-value {
+        font-family: 'JetBrains Mono', monospace; 
+        letter-spacing: -0.03em;
+    }    
+
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(4px);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+        display: flex; 
+    }
+    
+    .modal-content {
+        background: #18181b;
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        transform: scale(0.95);
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .modal-overlay.active .modal-content {
+        transform: scale(1);
+    }
+    
+    /* Clickable items */
+    .clickable-hash {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 1px dotted var(--text-muted);
+    }
+    
+    .clickable-hash:hover {
+        color: var(--accent-gold) !important;
+        border-bottom: 1px solid var(--accent-gold);
+        text-decoration: none;
+    }
+    
+    /* Detail rows */
+    .detail-row {
+        display: flex;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-subtle);
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .detail-label {
+        width: 35%;
+        min-width: 120px;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+    
+    .detail-value {
+        flex: 1;
+        color: var(--text-main);
+        font-size: 0.9rem;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        min-width: 0;
+    }
+    
+    /* Feature grid */
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+    
+    .feature-item {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border-subtle);
+        border-radius: 6px;
+        padding: 1rem;
+    }
+    
+    .feature-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-value {
+        font-size: 1.2rem;
+        color: var(--text-main);
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+    }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* SCROLL REVEAL ANIMATION */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        will-change: opacity, transform;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* --- NEW UTILITY FOR BREAKING LONG HASHES --- */
+    .break-all {
+        word-break: break-all;
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
+    
+    </style>
+</head>
+<body class="text-gray-300">
+
+    <header class="glass-panel sticky top-0 z-50 border-b border-gray-800/50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <div class="icon-wrapper w-10 h-10">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                DeTrust<span class="text-[#008B8B]">ETH</span>
+                <span class="text-xs bg-[#008B8B]/20 text-[#008B8B] px-2 py-0.5 rounded ml-2 border border-[#008B8B]/30">Smart Contract View</span>
+            </h1>
+            <div class="flex space-x-6 text-sm font-medium">
+                <a href="/" class="text-gray-400 hover:text-white transition-colors">Dashboard</a>
+                <a href="/activity" class="text-[#008B8B] border-b-2 border-[#008B8B] pb-1">Predicted History</a>
+                <a href="/live" class="text-gray-400 hover:text-white transition-colors">Live Sepolia Feed</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <div class="mb-8">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
+                <div>
+                    <h2 class="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-[#008B8B] to-[#4682b4] bg-clip-text text-transparent">
+                        Predicted History
+                    </h2>
+                    <p class="text-gray-400">Real-time fraud detection analytics and wallet trust scores</p>
+                </div>
+                
+                <div class="flex gap-2 w-full lg:w-auto search-glow rounded-lg transition-shadow">
+                    <div class="relative flex-1 lg:w-80">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="db-search" placeholder="Search for Wallet or Transaction Hash..." 
+                               class="w-full bg-gray-800/50 border border-gray-700/50 text-sm rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-[#008B8B] focus:border-transparent outline-none text-white placeholder-gray-500 backdrop-blur-sm">
+                    </div>
+                    <button onclick="searchDB()" class="bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50">
+                        Search
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18"/></svg></div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Total Wallets</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1" id="stat-total-wallets">-</div>
+                    <div class="text-xs text-gray-400">Unique addresses analyzed</div>
+                </div>
+                <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M7 10v4h10v-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 14v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v4"/></svg></div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Total Transactions</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1" id="stat-total-tx">-</div>
+                    <div class="text-xs text-gray-400">Processed and scored</div>
+                </div>
+                <div class="glass-panel p-6 rounded-xl hover-lift border-red-900/30 reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #ef4444;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4"/><path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 17h.01"/></svg></div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">High Risk</span>
+                    </div>
+                    <div class="text-3xl font-bold text-red-400 mb-1 pulse-glow" id="stat-high-risk">-</div>
+                    <div class="text-xs text-gray-400">Flagged transactions</div>
+                </div>
+                <div class="glass-panel p-6 rounded-xl hover-lift border-green-900/30 reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2));"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #22c55e;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></div>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider">Trusted</span>
+                    </div>
+                    <div class="text-3xl font-bold text-green-400 mb-1" id="stat-trusted">-</div>
+                    <div class="text-xs text-gray-400">Verified safe wallets</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <h3 class="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-[#008B8B] rounded-full animate-pulse"></span>
+                    Transaction Risk Distribution
+                </h3>
+                <div id="risk-distribution-chart" class="w-full h-64"></div>
+            </div>
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <h3 class="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-[#4682b4] rounded-full animate-pulse"></span>
+                    Wallet Trust Levels
+                </h3>
+                <div id="trust-distribution-chart" class="w-full h-64"></div>
+            </div>
+            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
+                <h3 class="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+                    Average Risk Trend
+                </h3>
+                <div id="risk-trend-chart" class="w-full h-64"></div>
+            </div>
+        </div>
+
+        <div class="mb-10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="h-1 w-12 bg-gradient-to-r from-purple-500 to-transparent rounded"></div>
+                <h3 class="text-2xl font-bold text-white">Scored Transactions</h3>
+            </div>
+            <div class="glass-panel rounded-xl overflow-hidden hover-lift reveal">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm table-fixed">
+                        <thead class="bg-gray-900/50 text-gray-400 uppercase text-xs border-b border-gray-700/50">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold w-1/3">Transaction Hash</th>
+                                <th class="px-6 py-4 font-semibold w-1/6">Value (ETH)</th>
+                                <th class="px-6 py-4 font-semibold w-1/6">Fraud Probability</th>
+                                <th class="px-6 py-4 font-semibold w-1/6">Risk Level</th>
+                                <th class="px-6 py-4 text-right font-semibold w-1/6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tx-rows" class="divide-y divide-gray-700/30"></tbody>
+                    </table>
+                </div>
+                <div class="px-6 py-3 bg-gray-900/30 border-t border-gray-700/50 text-center">
+                    <button id="btn-load-more-tx" onclick="loadMoreTransactions()" class="text-xs text-[#008B8B] hover:text-white font-medium transition-colors uppercase tracking-wider">
+                        Load More Transactions ↓
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="h-1 w-12 bg-gradient-to-r from-[#008B8B] to-transparent rounded"></div>
+                <h3 class="text-2xl font-bold text-white">Scored Wallets</h3>
+            </div>
+            <div class="glass-panel rounded-xl overflow-hidden hover-lift reveal">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm table-fixed">
+                        <thead class="bg-gray-900/50 text-gray-400 uppercase text-xs border-b border-gray-700/50">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold w-1/2">Address</th> 
+                                <th class="px-6 py-4 font-semibold w-1/6">Trust Score</th>
+                                <th class="px-6 py-4 font-semibold w-1/6">Last Seen</th>
+                                <th class="px-6 py-4 text-right font-semibold w-1/6">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wallet-rows" class="divide-y divide-gray-700/30"></tbody>
+                    </table>
+                </div>
+                <div class="px-6 py-3 bg-gray-900/30 border-t border-gray-700/50 text-center">
+                    <button id="btn-load-more-wallets" onclick="loadMoreWallets()" class="text-xs text-[#008B8B] hover:text-white font-medium transition-colors uppercase tracking-wider">
+                        Load More Wallets ↓
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="tx-modal" class="modal-overlay" onclick="closeModal(event, 'tx-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="p-6 border-b border-gray-700/50">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-[#008B8B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10v4h10v-4M6 14v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3M12 14v4"/>
+                        </svg>
+                        Transaction Details
+                    </h2>
+                    <button onclick="closeModal(event, 'tx-modal')" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="text-xs text-gray-400 break-all" id="tx-modal-hash"></div>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-6 p-4 rounded-lg border" id="tx-risk-section">
+                    <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Risk Assessment</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Fraud Probability</div>
+                            <div class="text-2xl font-bold" id="tx-modal-risk"></div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Risk Level</div>
+                            <div class="text-2xl font-bold" id="tx-modal-level"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+                            <span>Risk Score</span>
+                            <span id="tx-modal-risk-percent"></span>
+                        </div>
+                        <div class="w-full bg-gray-700/50 rounded-full h-2">
+                            <div id="tx-modal-risk-bar" class="h-full rounded-full transition-all duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tx-modal-explanation-container" style="display: none;" class="mt-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="h-4 w-1 bg-gradient-to-b from-blue-400 to-blue-600 rounded-full"></div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Risk Analysis</h3>
+                        </div>
+                        
+                        <button id="btn-get-ai" onclick="fetchAiExplanation()" class="flex items-center gap-2 px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/40 border border-purple-500/50 rounded-lg text-xs text-purple-300 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Get AI Insight
+                        </button>
+                    </div>
+                    
+                    <div class="relative p-5 rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700/50 shadow-xl overflow-hidden">
+                        <div id="tx-modal-explanation" class="relative z-10 text-gray-300 text-sm leading-7 font-sans">
+                        </div>
+                        
+                        <div id="ai-loading-overlay" class="absolute inset-0 bg-gray-900/90 flex flex-col items-center justify-center z-20 hidden">
+                            <svg class="animate-spin h-6 w-6 text-purple-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span class="text-xs text-purple-300 font-mono animate-pulse">GENERATING INSIGHT...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider"><br>Transaction Information</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">Value</div>
+                        <div class="detail-value font-semibold" id="tx-modal-value"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">From</div>
+                        <div class="detail-value">
+                            <span class="clickable-hash text-[#4682b4] break-all" id="tx-modal-from"></span>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">To</div>
+                        <div class="detail-value">
+                            <span class="clickable-hash text-[#4682b4] break-all" id="tx-modal-to"></span>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Timestamp</div>
+                        <div class="detail-value" id="tx-modal-timestamp"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value" id="tx-modal-status"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-6" id="tx-features-section">
+                    <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Calculated Features</h3>
+                    <div class="feature-grid" id="tx-features-grid"></div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <a id="tx-modal-etherscan" target="_blank" rel="noopener noreferrer" 
+                       class="flex-1 bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50 text-center">
+                        View on Sepolia Etherscan
+                    </a>
+                    <button onclick="closeModal(event, 'tx-modal')" 
+                            class="px-6 py-3 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg text-sm font-semibold transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wallet-modal" class="modal-overlay" onclick="closeModal(event, 'wallet-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="p-6 border-b border-gray-700/50">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-[#008B8B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2ZM3 7h18"/>
+                        </svg>
+                        Wallet Details
+                    </h2>
+                    <button onclick="closeModal(event, 'wallet-modal')" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                    <div class="text-xs font-mono text-gray-400 break-all" id="wallet-modal-address"></div>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-6 p-4 rounded-lg border" id="wallet-trust-section">
+                    <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Trust Assessment</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Trust Score</div>
+                            <div class="text-3xl font-bold" id="wallet-modal-score"></div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-400 mb-1">Status</div>
+                            <div class="text-xl font-bold" id="wallet-modal-status"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+                            <span>Trust Level</span>
+                            <span id="wallet-modal-trust-percent"></span>
+                        </div>
+                        <div class="w-full bg-gray-700/50 rounded-full h-2">
+                            <div id="wallet-modal-trust-bar" class="h-full rounded-full transition-all duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Wallet Information</h3>
+                    <div class="detail-row">
+                        <div class="detail-label">First Seen</div>
+                        <div class="detail-value" id="wallet-modal-first-seen"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Last Seen</div>
+                        <div class="detail-value" id="wallet-modal-last-seen"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Wallet Age</div>
+                        <div class="detail-value" id="wallet-modal-age"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-6" id="wallet-latest-tx-section">
+                    <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Latest Transaction</h3>
+                    <div id="wallet-latest-tx-content" class="text-sm text-gray-400"></div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <a id="wallet-modal-etherscan" target="_blank" rel="noopener noreferrer" 
+                       class="flex-1 bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50 text-center">
+                        View on Sepolia Etherscan
+                    </a>
+                    <button onclick="closeModal(event, 'wallet-modal')" 
+                            class="px-6 py-3 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg text-sm font-semibold transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- GLOBAL VARIABLES ---
+    let currentOpenTx = null;
+    let allWalletsData = [];
+    let allTxsData = [];
+    
+    // Filtered data (for search)
+    let walletsData = [];
+    let txsData = [];
+
+    // --- PAGINATION LIMITS ---
+    let txDisplayLimit = 5;      // Start with 5 transactions
+    let walletDisplayLimit = 5;  // Start with 5 wallets
+
+    let riskChartInstance = null;
+    let trustChartInstance = null;
+    let trendChartInstance = null;
+
+    async function loadData() {
+        try {
+            // Fetch large batch for stats/charts
+            const wRes = await fetch('/wallets?limit=1000'); 
+            allWalletsData = await wRes.json();
+            
+            const tRes = await fetch('/transactions?limit=1000');
+            allTxsData = await tRes.json();
+            
+            // Initialize display data
+            walletsData = [...allWalletsData];
+            txsData = [...allTxsData];
+            
+            refreshUI();
+        } catch (error) {
+            console.error('Error loading data:', error);
+        }
+    }
+
+    function refreshUI() {
+        updateStats();
+        renderWallets();
+        renderTransactions();
+        renderCharts();
+    }
+
+    // --- SEARCH FUNCTION ---
+    function searchDB() {
+        const query = document.getElementById('db-search').value.trim().toLowerCase();
+        
+        if (!query) {
+            walletsData = [...allWalletsData];
+            txsData = [...allTxsData];
+            // Reset limits when clearing search to show default view
+            txDisplayLimit = 5;
+            walletDisplayLimit = 5;
+            refreshUI();
+            return;
+        }
+        
+        // 1. Exact Match (Open Modal)
+        const walletMatch = allWalletsData.find(w => w.address.toLowerCase() === query);
+        if (walletMatch) { openWalletModal(walletMatch.address); return; }
+        
+        const txMatch = allTxsData.find(t => t.id.toLowerCase() === query);
+        if (txMatch) { openTransactionModal(txMatch.id); return; }
+        
+        // 2. Filter Lists
+        const filteredWallets = allWalletsData.filter(w => w.address.toLowerCase().includes(query));
+        const filteredTxs = allTxsData.filter(t => t.id.toLowerCase().includes(query));
+
+        if (filteredWallets.length === 0 && filteredTxs.length === 0) {
+                alert("No results found locally.");
+                return;
+        }
+
+        walletsData = filteredWallets;
+        txsData = filteredTxs;
+        
+        // Show all results for search
+        txDisplayLimit = filteredTxs.length;
+        walletDisplayLimit = filteredWallets.length;
+        
+        refreshUI();
+    }
+
+    // --- LOAD MORE FUNCTIONS ---
+    function loadMoreTransactions() {
+        txDisplayLimit += 5;
+        renderTransactions();
+    }
+
+    function loadMoreWallets() {
+        walletDisplayLimit += 5;
+        renderWallets();
+    }
+
+    function updateStats() {
+        document.getElementById('stat-total-wallets').innerText = walletsData.length;
+        document.getElementById('stat-total-tx').innerText = txsData.length;
+        document.getElementById('stat-high-risk').innerText = txsData.filter(t => t.riskScore > 0.7).length;
+        document.getElementById('stat-trusted').innerText = walletsData.filter(w => w.score > 0.7).length;
+    }
+
+    function renderWallets() {
+        const tbody = document.getElementById('wallet-rows');
+        const btn = document.getElementById('btn-load-more-wallets');
+        
+        if (walletsData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">No wallets found</td></tr>';
+            btn.style.display = 'none';
+            return;
+        }
+        
+        // SLICE DATA BASED ON LIMIT
+        const displayData = walletsData.slice(0, walletDisplayLimit);
+        
+        // Hide button if showing all
+        btn.style.display = displayData.length >= walletsData.length ? 'none' : 'inline-block';
+
+        tbody.innerHTML = displayData.map((w, idx) => {
+            const score = (w.score * 100).toFixed(0);
+            const isTrusted = w.score >= 0.5;
+            const statusClass = isTrusted ? 'badge-trusted' : 'badge-high-risk';
+            const statusText = isTrusted ? 'Trusted' : 'High Risk';
+            const scoreColor = isTrusted ? 'text-green-400' : 'text-red-400';
+            
+            return `
+                <tr class="hover:bg-gray-800/30 transition-colors table-row-enter" style="animation-delay: ${idx * 0.05}s">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[#008B8B] to-[#4682b4] flex items-center justify-center text-xs font-bold">
+                                ${w.address.substring(2, 4).toUpperCase()}
+                            </div>
+                            <span class="font-mono text-[#4682b4] text-sm clickable-hash break-all" onclick="openWalletModal('${w.address}')">
+                                ${w.address}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold ${scoreColor} text-lg">${score}</span>
+                            <span class="text-gray-500 text-xs">/100</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-400 text-xs">
+                         <div class="flex items-center gap-1">
+                            <span>${w.last_seen ? new Date(w.last_seen * 1000).toLocaleDateString() : 'Recent'}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span class="px-3 py-1.5 rounded-lg text-xs font-semibold ${statusClass}">
+                            ${statusText}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function renderTransactions() {
+        const tbody = document.getElementById('tx-rows');
+        const btn = document.getElementById('btn-load-more-tx');
+
+        if (txsData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">No transactions found</td></tr>';
+            btn.style.display = 'none';
+            return;
+        }
+
+        // SLICE DATA BASED ON LIMIT
+        const displayData = txsData.slice(0, txDisplayLimit);
+        
+        // Hide button if showing all
+        btn.style.display = displayData.length >= txsData.length ? 'none' : 'inline-block';
+
+        tbody.innerHTML = displayData.map((t, idx) => {
+            const riskPercent = (t.riskScore * 100).toFixed(1);
+            const riskLevel = t.riskScore > 0.7 ? 'Critical' : t.riskScore > 0.4 ? 'Medium' : 'Low';
+            const riskColor = t.riskScore > 0.7 ? 'bg-red-500' : t.riskScore > 0.4 ? 'bg-yellow-500' : 'bg-green-500';
+            const riskTextColor = t.riskScore > 0.7 ? 'text-red-400' : t.riskScore > 0.4 ? 'text-yellow-400' : 'text-green-400';
+            
+            return `
+                <tr class="hover:bg-gray-800/30 transition-colors table-row-enter" style="animation-delay: ${idx * 0.05}s">
+                    <td class="px-6 py-4">
+                        <span class="font-mono text-gray-300 text-sm break-all clickable-hash" onclick="openTransactionModal('${t.id}')">
+                            ${t.id.substring(0, 20)}...
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="font-semibold text-white">${parseFloat(t.value).toFixed(4)}</span>
+                        <span class="text-gray-500 text-xs ml-1">ETH</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="font-bold ${riskTextColor}">${riskPercent}%</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 bg-gray-700/50 rounded-full h-2 overflow-hidden w-24">
+                                <div class="${riskColor} h-full rounded-full transition-all duration-500" style="width: ${t.riskScore * 100}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-400 w-16">${riskLevel}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="openTransactionModal('${t.id}')" 
+                                class="text-xs bg-gray-700/50 hover:bg-[#008B8B]/30 border border-gray-600 hover:border-[#008B8B] px-4 py-2 rounded-lg transition-all duration-300 text-gray-300 hover:text-white">
+                            View
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // --- CHART & MODAL LOGIC ---
+    function renderCharts() {
+        const riskHigh = txsData.filter(t => t.riskScore > 0.7).length;
+        const riskMedium = txsData.filter(t => t.riskScore > 0.4 && t.riskScore <= 0.7).length;
+        const riskLow = txsData.filter(t => t.riskScore <= 0.4).length;
+        
+        const trustHigh = walletsData.filter(w => w.score > 0.7).length;
+        const trustMedium = walletsData.filter(w => w.score > 0.4 && w.score <= 0.7).length;
+        const trustLow = walletsData.filter(w => w.score <= 0.4).length;
+
+        let trendData = [0], trendCategories = ['No Data'];
+        if (txsData.length > 0) {
+            const slice = txsData.slice(0, 10).reverse(); 
+            trendData = slice.map(t => (t.riskScore * 100).toFixed(1));
+            trendCategories = slice.map((_, i) => `TX ${i + 1}`);
+        }
+
+        const riskSeries = [riskHigh, riskMedium, riskLow];
+        if (riskChartInstance) riskChartInstance.updateSeries(riskSeries);
+        else {
+            riskChartInstance = new ApexCharts(document.querySelector("#risk-distribution-chart"), {
+                series: riskSeries,
+                labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+                colors: ['#ef4444', '#f59e0b', '#22c55e'],
+                chart: { type: 'donut', height: 256, background: 'transparent', animations: { enabled: true } },
+                theme: { mode: 'dark' },
+                dataLabels: { enabled: true },
+                plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'Total', color: '#9ca3af' }}}} },
+                legend: { position: 'bottom', labels: { colors: '#9ca3af' } },
+                stroke: { width: 2, colors: ['#1a1f2e'] }
+            });
+            riskChartInstance.render();
+        }
+
+        const trustSeries = [trustHigh, trustMedium, trustLow];
+        if (trustChartInstance) trustChartInstance.updateSeries(trustSeries);
+        else {
+            trustChartInstance = new ApexCharts(document.querySelector("#trust-distribution-chart"), {
+                series: trustSeries,
+                labels: ['Trusted', 'Neutral', 'Untrusted'],
+                colors: ['#22c55e', '#4682b4', '#ef4444'],
+                chart: { type: 'donut', height: 256, background: 'transparent', animations: { enabled: true } },
+                theme: { mode: 'dark' },
+                dataLabels: { enabled: true },
+                plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'Total', color: '#9ca3af' }}}} },
+                legend: { position: 'bottom', labels: { colors: '#9ca3af' } },
+                stroke: { width: 2, colors: ['#1a1f2e'] }
+            });
+            trustChartInstance.render();
+        }
+
+        if (trendChartInstance) trendChartInstance.updateOptions({ series: [{ data: trendData }], xaxis: { categories: trendCategories } });
+        else {
+            trendChartInstance = new ApexCharts(document.querySelector("#risk-trend-chart"), {
+                series: [{ name: 'Risk Score', data: trendData }],
+                chart: { type: 'area', height: 256, background: 'transparent', toolbar: { show: false }, animations: { enabled: true } },
+                theme: { mode: 'dark' },
+                stroke: { curve: 'smooth', width: 3, colors: ['#a855f7'] },
+                fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.2, stops: [0, 90, 100] } },
+                colors: ['#a855f7'],
+                dataLabels: { enabled: false },
+                xaxis: { categories: trendCategories, labels: { style: { colors: '#9ca3af', fontSize: '10px' } } },
+                yaxis: { labels: { style: { colors: '#9ca3af' }, formatter: (val) => Number(val).toFixed(0) + '%' } },
+                grid: { borderColor: '#374151', strokeDashArray: 4 },
+                tooltip: { theme: 'dark', y: { formatter: (val) => val + '%' } }
+            });
+            trendChartInstance.render();
+        }
+    }
+
+    async function loadTxExplanation(tx) {
+        const raw = tx.raw_transaction || {};
+        const mappedFeatures = {
+            Transaction_Value: Number(raw.Transaction_Value || raw.transaction_value || tx.value || 0),
+            Transaction_Fees: Number(raw.Transaction_Fees || raw.transaction_fees || 0),
+            Number_of_Inputs: Number(raw.Number_of_Inputs || raw.number_of_inputs || 1),
+            Number_of_Outputs: Number(raw.Number_of_Outputs || raw.number_of_outputs || 1),
+            Gas_Price: Number(raw.Gas_Price || raw.gas_price || 0),
+            Value_to_Fee_Ratio: Number(raw.Value_to_Fee_Ratio || raw.value_to_fee_ratio || 0),
+            Gas_Efficiency: Number(raw.Gas_Efficiency || raw.gas_efficiency || 0),
+            Final_Balance: Number(raw.Final_Balance || raw.final_balance || 0),
+            BMax_BMin_per_NT: Number(raw.BMax_BMin_per_NT || raw.bmax_bmin_per_nt || 0),
+            Wallet_Age_Days: Number(raw.Wallet_Age_Days || raw.wallet_age_days || 0),
+            Transaction_Velocity: Number(raw.Transaction_Velocity || raw.transaction_velocity || 0)
+        };
+        try {
+            const res = await fetch('/predict/transaction', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ features: mappedFeatures }) });
+            if (!res.ok) throw new Error("Analysis failed");
+            const data = await res.json();
+            return data.explanation || [];
+        } catch (err) { return ["Could not generate detailed analysis."]; }
+    }
+
+    function closeModal(event, modalId) {
+        event.stopPropagation();
+        document.getElementById(modalId).classList.remove('active');
+    }
+    
+    // --- FULL TRANSACTION MODAL LOGIC (Fixed & Working) ---
+    async function openTransactionModal(txId) {
+        // 1. Find Data
+        const tx = allTxsData.find(t => t.id === txId) || txsData.find(t => t.id === txId);
+        if (!tx) { console.error("Transaction not found:", txId); return; }
+        
+        currentOpenTx = tx; 
+
+        // 2. Populate Fields
+    document.getElementById('tx-modal-hash').innerText = tx.id;        
+        const riskPercent = (tx.riskScore * 100).toFixed(1);
+        const riskLevel = tx.riskScore > 0.7 ? 'Critical' : tx.riskScore > 0.4 ? 'Medium' : 'Low';
+        const riskColor = tx.riskScore > 0.7 ? 'text-red-400' : tx.riskScore > 0.4 ? 'text-yellow-400' : 'text-green-400';
+        const riskBg = tx.riskScore > 0.7 ? 'bg-red-500' : tx.riskScore > 0.4 ? 'bg-yellow-500' : 'bg-green-500';
+        const borderColor = tx.riskScore > 0.7 ? 'border-red-900/30' : tx.riskScore > 0.4 ? 'border-yellow-900/30' : 'border-green-900/30';
+        
+        document.getElementById('tx-risk-section').className = `mb-6 p-4 rounded-lg border ${borderColor}`;
+        
+        const riskTitle = document.getElementById('tx-modal-risk');
+        riskTitle.className = `text-2xl font-bold ${riskColor}`;
+        riskTitle.innerText = riskPercent + '%';
+
+        const levelTitle = document.getElementById('tx-modal-level');
+        levelTitle.className = `text-2xl font-bold ${riskColor}`;
+        levelTitle.innerText = riskLevel;
+
+        document.getElementById('tx-modal-risk-percent').innerText = riskPercent + '%';
+        
+        const riskBar = document.getElementById('tx-modal-risk-bar');
+        riskBar.className = `h-full rounded-full transition-all duration-500 ${riskBg}`;
+        riskBar.style.width = riskPercent + '%';
+        
+        document.getElementById('tx-modal-value').innerText = parseFloat(tx.value).toFixed(4) + ' ETH';
+        document.getElementById('tx-modal-from').innerHTML = `<span class="clickable-hash text-blue-400 hover:text-blue-300 break-all" onclick="openWalletModal('${tx.from}')">${tx.from}</span>`;
+        document.getElementById('tx-modal-to').innerHTML = `<span class="clickable-hash text-blue-400 hover:text-blue-300 break-all" onclick="openWalletModal('${tx.to}')">${tx.to}</span>`;
+        document.getElementById('tx-modal-timestamp').innerText = tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleString() : 'N/A';
+        document.getElementById('tx-modal-status').innerText = tx.status || 'Pending';
+        document.getElementById('tx-modal-etherscan').href = `https://sepolia.etherscan.io/tx/${tx.id}`;
+
+        const featuresGrid = document.getElementById('tx-features-grid');
+        const featuresSection = document.getElementById('tx-features-section');
+        
+        if (tx.raw_transaction && typeof tx.raw_transaction === 'object') {
+            const features = tx.raw_transaction;
+            featuresGrid.innerHTML = Object.entries(features)
+                .filter(([key]) => !['from', 'to', 'value', 'timestamp', 'status', 'id', 'hash', 'saved_to_chain'].includes(key.toLowerCase()))
+                .map(([key, value]) => `
+                <div class="feature-item">
+                    <div class="feature-label">${key.replace(/_/g, ' ')}</div>
+                    <div class="feature-value break-all">${typeof value === 'number' ? value.toFixed(4) : value}</div>
+                </div>
+            `).join('');
+            featuresSection.style.display = 'block';
+        } else {
+            featuresSection.style.display = 'none';
+        }
+
+        const container = document.getElementById('tx-modal-explanation-container');
+        const contentDiv = document.getElementById('tx-modal-explanation');
+        const loadingOverlay = document.getElementById('ai-loading-overlay');
+        const aiBtn = document.getElementById('btn-get-ai');
+
+        container.style.display = 'block';
+        if (loadingOverlay) loadingOverlay.classList.add('hidden');
+        if (aiBtn) aiBtn.style.display = 'flex';
+
+        contentDiv.innerHTML = '<span class="text-gray-500 italic">Analyzing feature patterns...</span>';
+        document.getElementById('tx-modal').classList.add('active');
+
+        try {
+            const explanations = await loadTxExplanation(tx);
+            if (explanations && explanations.length > 0) {
+                const formattedText = explanations[0].replace(/\*\*(.*?)\*\*/g, '<span class="text-blue-400 font-semibold">$1</span>');
+                contentDiv.innerHTML = formattedText;
+            } else {
+                contentDiv.innerHTML = '<span class="text-gray-500">Standard transaction pattern detected.</span>';
+            }
+        } catch (err) {
+            contentDiv.innerHTML = '<span class="text-gray-500">Analysis unavailable.</span>';
+        }
+    }
+    
+    // --- AI BUTTON LOGIC ---
+    async function fetchAiExplanation() {
+        if (!currentOpenTx) return;
+
+        const contentDiv = document.getElementById('tx-modal-explanation');
+        const loadingOverlay = document.getElementById('ai-loading-overlay');
+        const btn = document.getElementById('btn-get-ai');
+
+        loadingOverlay.classList.remove('hidden');
+        btn.style.display = 'none';
+
+        const raw = currentOpenTx.raw_transaction || {};
+        const features = {
+            Transaction_Value: Number(raw.Transaction_Value || currentOpenTx.value || 0),
+            Transaction_Fees: Number(raw.Transaction_Fees || 0),
+            Number_of_Inputs: Number(raw.Number_of_Inputs || 1),
+            Number_of_Outputs: Number(raw.Number_of_Outputs || 1),
+            Gas_Price: Number(raw.Gas_Price || 0),
+            Value_to_Fee_Ratio: Number(raw.Value_to_Fee_Ratio || 0),
+            Gas_Efficiency: Number(raw.Gas_Efficiency || 0),
+            Final_Balance: Number(raw.Final_Balance || 0),
+            BMax_BMin_per_NT: Number(raw.BMax_BMin_per_NT || 0),
+            Wallet_Age_Days: Number(raw.Wallet_Age_Days || 0),
+            Transaction_Velocity: Number(raw.Transaction_Velocity || 0)
+        };
+
+        try {
+            const res = await fetch('/explain/transaction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    features: features,
+                    risk_score: (currentOpenTx.riskScore * 10).toFixed(0),
+                    risk_prob: currentOpenTx.riskScore
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.explanation) {
+                const formatted = data.explanation.replace(/\*\*(.*?)\*\*/g, '<span class="text-purple-400 font-bold">$1</span>');
+                contentDiv.innerHTML = `
+                    <div class="animate-fadeIn">
+                        <div class="text-xs text-purple-400 font-bold mb-2 uppercase tracking-wider">✨ AI Executive Summary</div>
+                        ${formatted}
+                    </div>
+                `;
+            } else {
+                alert("AI could not generate a summary.");
+                btn.style.display = 'flex';
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Failed to connect to AI service.");
+            btn.style.display = 'flex';
+        } finally {
+            loadingOverlay.classList.add('hidden');
+        }
+    }
+    
+    // --- WALLET MODAL (Standard) ---
+    function openWalletModal(address) {
+        const wallet = allWalletsData.find(w => w.address.toLowerCase() === address.toLowerCase()) || walletsData.find(w => w.address.toLowerCase() === address.toLowerCase());
+        document.getElementById('wallet-modal-address').innerText = address;
+        
+        if (wallet) {
+            const score = (wallet.score * 100).toFixed(0);
+            const isTrusted = wallet.score >= 0.5;
+            const statusText = isTrusted ? 'Trusted' : 'High Risk';
+            const scoreColor = isTrusted ? 'text-green-400' : 'text-red-400';
+            const barColor = isTrusted ? 'bg-green-500' : 'bg-red-500';
+            const borderColor = isTrusted ? 'border-green-900/30' : 'border-red-900/30';
+            
+            document.getElementById('wallet-trust-section').className = `mb-6 p-4 rounded-lg border ${borderColor}`;
+            document.getElementById('wallet-modal-score').className = `text-3xl font-bold ${scoreColor}`;
+            document.getElementById('wallet-modal-score').innerText = score + '/100';
+            document.getElementById('wallet-modal-status').className = `text-xl font-bold ${scoreColor}`;
+            document.getElementById('wallet-modal-status').innerText = statusText;
+            document.getElementById('wallet-modal-trust-percent').innerText = score + '%';
+            document.getElementById('wallet-modal-trust-bar').className = `h-full rounded-full transition-all duration-500 ${barColor}`;
+            document.getElementById('wallet-modal-trust-bar').style.width = score + '%';
+            
+            document.getElementById('wallet-modal-first-seen').innerText = wallet.first_seen ? new Date(wallet.first_seen * 1000).toLocaleString() : 'N/A';
+            document.getElementById('wallet-modal-last-seen').innerText = wallet.last_seen ? new Date(wallet.last_seen * 1000).toLocaleString() : 'N/A';
+            
+            let ageText = 'N/A';
+            if (wallet.age_days) {
+                ageText = wallet.age_days + ' days';
+            } else if (wallet.first_seen) {
+                const diffDays = Math.ceil(Math.abs(new Date() - new Date(wallet.first_seen * 1000)) / (1000 * 60 * 60 * 24));
+                ageText = diffDays + ' days';
+            }
+            document.getElementById('wallet-modal-age').innerText = ageText;
+            
+            // Latest TX
+            const walletTxs = allTxsData.filter(t => (t.from && t.from.toLowerCase() === address.toLowerCase()) || (t.to && t.to.toLowerCase() === address.toLowerCase()));
+            const latestTxContent = document.getElementById('wallet-latest-tx-content');
+            
+            if (walletTxs.length > 0) {
+                const latestTx = walletTxs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
+                const riskColor = latestTx.riskScore > 0.7 ? 'text-red-400' : latestTx.riskScore > 0.4 ? 'text-yellow-400' : 'text-green-400';
+                latestTxContent.innerHTML = `
+                    <div class="bg-gray-800/30 border border-gray-700/50 rounded-lg p-4">
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div><span class="text-gray-500 block mb-1">TX Hash</span><span class="text-[#4682b4] cursor-pointer break-all" onclick="openTransactionModal('${latestTx.id}')">${latestTx.id.substring(0, 10)}...</span></div>
+                            <div><span class="text-gray-500 block mb-1">Value</span><span class="text-white">${parseFloat(latestTx.value).toFixed(4)} ETH</span></div>
+                            <div><span class="text-gray-500 block mb-1">Risk</span><span class="${riskColor} font-bold">${(latestTx.riskScore * 100).toFixed(1)}%</span></div>
+                            <div><span class="text-gray-500 block mb-1">Time</span><span class="text-gray-300">${latestTx.timestamp ? new Date(latestTx.timestamp * 1000).toLocaleDateString() : 'N/A'}</span></div>
+                        </div>
+                    </div>`;
+            } else {
+                latestTxContent.innerHTML = '<div class="text-gray-500 text-center py-4">No recent transactions found</div>';
+            }
+        } else {
+            // Not found state
+            document.getElementById('wallet-trust-section').className = 'mb-6 p-4 rounded-lg border border-gray-700/30';
+            document.getElementById('wallet-modal-score').innerText = 'N/A';
+            document.getElementById('wallet-modal-status').innerText = 'Unknown';
+            document.getElementById('wallet-modal-trust-bar').style.width = '0%';
+            document.getElementById('wallet-modal-age').innerText = 'N/A';
+            document.getElementById('wallet-latest-tx-content').innerHTML = '<div class="text-gray-500 text-center py-4">Wallet not found in database</div>';
+        }
+        
+        document.getElementById('wallet-modal-etherscan').href = `https://sepolia.etherscan.io/address/${address}`;
+        document.getElementById('wallet-modal').classList.add('active');
+    }
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(modal => modal.classList.remove('active')); });
+    
+    function initScrollReveal() {
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); }}); }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { loadData(); initScrollReveal(); });
+    setInterval(loadData, 30000);
+
+</script>
+</body>
+</html>

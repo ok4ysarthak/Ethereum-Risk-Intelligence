@@ -10,6 +10,7 @@ class Config:
     ETHEREUM_PROVIDER_URL = f'https://eth-mainnet.g.alchemy.com/v2/{ALCHEMY_API_KEY}'
     SEPOLIA_RPC_URL = os.getenv('SEPOLIA_RPC_URL')  # For testnet
     ETHERSCAN_API_KEY = os.getenv('ETHERSCAN_API_KEY')
+    GOOGLE_API_KEY = "AIzaSyDJ-TYmYs_-1zjJIZ1GjxKFbD5WiJt86-w"
     
     # Wallet Keys (Keep these secure!)
     SEPOLIA_PRIVATE_KEY = os.getenv('SEPOLIA_PRIVATE_KEY')
