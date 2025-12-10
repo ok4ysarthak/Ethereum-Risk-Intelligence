@@ -4477,3 +4477,7 @@ ModuleNotFoundError: No module named 'Database'
 2025-12-10 20:05:26,537 - INFO - 127.0.0.1 - - [10/Dec/2025 20:05:26] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
 2025-12-10 20:05:29,648 - INFO - 127.0.0.1 - - [10/Dec/2025 20:05:29] "POST /predict/transaction HTTP/1.1" 200 -
 2025-12-10 20:05:49,421 - INFO - 127.0.0.1 - - [10/Dec/2025 20:05:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:13:57,357 - INFO - 127.0.0.1 - - [10/Dec/2025 20:13:57] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:15:58,499 - INFO - 127.0.0.1 - - [10/Dec/2025 20:15:58] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:16:17,454 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:17] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:16:18,577 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:18] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
