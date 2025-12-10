@@ -4481,3 +4481,388 @@ ModuleNotFoundError: No module named 'Database'
 2025-12-10 20:15:58,499 - INFO - 127.0.0.1 - - [10/Dec/2025 20:15:58] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
 2025-12-10 20:16:17,454 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:17] "POST /predict/transaction HTTP/1.1" 200 -
 2025-12-10 20:16:18,577 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:18] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:16:51,638 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:16:52,709 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:52] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:16:59,609 - INFO - 127.0.0.1 - - [10/Dec/2025 20:16:59] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:00,767 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:00] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:08,423 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:08] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:09,433 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:09] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:23,292 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:23] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:24,043 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:24] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:33,224 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:33] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:34,247 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:34] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:38,349 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:38] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:39,369 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:39] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:41,482 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:41] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:42,606 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:42] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:46,085 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:46] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:47,271 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:47] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:17:50,929 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:50] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:17:52,173 - INFO - 127.0.0.1 - - [10/Dec/2025 20:17:52] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:18:47,003 - INFO - 127.0.0.1 - - [10/Dec/2025 20:18:47] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:18:48,105 - INFO - 127.0.0.1 - - [10/Dec/2025 20:18:48] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:18:51,831 - INFO - 127.0.0.1 - - [10/Dec/2025 20:18:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:18:52,898 - INFO - 127.0.0.1 - - [10/Dec/2025 20:18:52] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:18:58,454 - INFO - 127.0.0.1 - - [10/Dec/2025 20:18:58] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:20:59,685 - INFO - 127.0.0.1 - - [10/Dec/2025 20:20:59] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:21:28,793 - INFO - 127.0.0.1 - - [10/Dec/2025 20:21:28] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:21:29,576 - INFO - 127.0.0.1 - - [10/Dec/2025 20:21:29] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:21:35,050 - INFO - 127.0.0.1 - - [10/Dec/2025 20:21:35] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:21:35,796 - INFO - 127.0.0.1 - - [10/Dec/2025 20:21:35] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:22:05,730 - INFO - 127.0.0.1 - - [10/Dec/2025 20:22:05] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:22:06,490 - INFO - 127.0.0.1 - - [10/Dec/2025 20:22:06] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 20:22:17,657 - INFO - 127.0.0.1 - - [10/Dec/2025 20:22:17] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 20:22:18,682 - INFO - 127.0.0.1 - - [10/Dec/2025 20:22:18] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:02:59,783 - INFO - 127.0.0.1 - - [10/Dec/2025 21:02:59] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:03:00,988 - INFO - 127.0.0.1 - - [10/Dec/2025 21:03:00] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:03:07,471 - INFO - 127.0.0.1 - - [10/Dec/2025 21:03:07] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:04:37,238 - INFO - 127.0.0.1 - - [10/Dec/2025 21:04:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:04:45,856 - INFO - 127.0.0.1 - - [10/Dec/2025 21:04:45] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:05:01,417 - INFO - 127.0.0.1 - - [10/Dec/2025 21:05:01] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:05:04,264 - INFO - 127.0.0.1 - - [10/Dec/2025 21:05:04] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:05:52,777 - INFO - 127.0.0.1 - - [10/Dec/2025 21:05:52] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:05:55,147 - INFO - 127.0.0.1 - - [10/Dec/2025 21:05:55] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:06:13,581 - INFO - 127.0.0.1 - - [10/Dec/2025 21:06:13] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:06:15,989 - INFO - 127.0.0.1 - - [10/Dec/2025 21:06:15] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:06:50,025 - INFO - 127.0.0.1 - - [10/Dec/2025 21:06:50] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:06:59,606 - INFO - 127.0.0.1 - - [10/Dec/2025 21:06:59] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:07:37,937 - INFO - 127.0.0.1 - - [10/Dec/2025 21:07:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:07:41,365 - INFO - 127.0.0.1 - - [10/Dec/2025 21:07:41] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:08:25,476 - INFO - 127.0.0.1 - - [10/Dec/2025 21:08:25] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:08:27,805 - INFO - 127.0.0.1 - - [10/Dec/2025 21:08:27] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:08:49,495 - INFO - 127.0.0.1 - - [10/Dec/2025 21:08:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:09:00,899 - INFO - 127.0.0.1 - - [10/Dec/2025 21:09:00] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:10:37,805 - INFO - 127.0.0.1 - - [10/Dec/2025 21:10:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:10:57,040 - INFO - 127.0.0.1 - - [10/Dec/2025 21:10:57] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:11:13,601 - INFO - 127.0.0.1 - - [10/Dec/2025 21:11:13] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:11:27,716 - INFO - 127.0.0.1 - - [10/Dec/2025 21:11:27] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:11:49,399 - INFO - 127.0.0.1 - - [10/Dec/2025 21:11:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:12:07,416 - INFO - 127.0.0.1 - - [10/Dec/2025 21:12:07] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:12:26,409 - INFO - 127.0.0.1 - - [10/Dec/2025 21:12:26] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:12:45,516 - INFO - 127.0.0.1 - - [10/Dec/2025 21:12:45] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:13:01,333 - INFO - 127.0.0.1 - - [10/Dec/2025 21:13:01] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:13:49,257 - INFO - 127.0.0.1 - - [10/Dec/2025 21:13:49] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:14:13,644 - INFO - 127.0.0.1 - - [10/Dec/2025 21:14:13] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:14:22,945 - INFO - 127.0.0.1 - - [10/Dec/2025 21:14:22] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:14:49,639 - INFO - 127.0.0.1 - - [10/Dec/2025 21:14:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:15:04,576 - INFO - 127.0.0.1 - - [10/Dec/2025 21:15:04] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:15:26,461 - INFO - 127.0.0.1 - - [10/Dec/2025 21:15:26] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:15:30,532 - INFO - 127.0.0.1 - - [10/Dec/2025 21:15:30] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:16:13,738 - INFO - 127.0.0.1 - - [10/Dec/2025 21:16:13] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:16:22,044 - INFO - 127.0.0.1 - - [10/Dec/2025 21:16:22] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:16:37,554 - INFO - 127.0.0.1 - - [10/Dec/2025 21:16:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:16:42,246 - INFO - 127.0.0.1 - - [10/Dec/2025 21:16:42] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:17:01,852 - INFO - 127.0.0.1 - - [10/Dec/2025 21:17:01] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:17:24,573 - INFO - 127.0.0.1 - - [10/Dec/2025 21:17:24] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:17:49,337 - INFO - 127.0.0.1 - - [10/Dec/2025 21:17:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:18:28,269 - INFO - 127.0.0.1 - - [10/Dec/2025 21:18:28] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:18:32,724 - INFO - Creating database tables if not exist...
+2025-12-10 21:18:32,724 - INFO - Creating database tables if not exist...
+2025-12-10 21:18:32,844 - INFO - Database initialized!
+2025-12-10 21:18:32,844 - INFO - Database initialized!
+2025-12-10 21:18:44,949 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:18:44,949 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:18:44,951 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:18:45,031 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:18:45,032 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:18:51,260 - INFO - 127.0.0.1 - - [10/Dec/2025 21:18:51] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:19:01,017 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:01] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:19:08,727 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:08] "[36mGET / HTTP/1.1[0m" 304 -
+2025-12-10 21:19:09,922 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:09] "GET /transactions?limit=500 HTTP/1.1" 200 -
+2025-12-10 21:19:10,151 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:10] "GET /socket.io/?EIO=4&transport=polling&t=Pi8yxmd HTTP/1.1" 200 -
+2025-12-10 21:19:10,507 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:10] "POST /socket.io/?EIO=4&transport=polling&t=Pi8yxsB&sid=Y106kldGBfXIepVLAAAC HTTP/1.1" 200 -
+2025-12-10 21:19:10,535 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:10] "GET /socket.io/?EIO=4&transport=polling&t=Pi8yxsD&sid=Y106kldGBfXIepVLAAAC HTTP/1.1" 200 -
+2025-12-10 21:19:10,737 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:10] "GET /socket.io/?EIO=4&transport=polling&t=Pi8yxyN&sid=Y106kldGBfXIepVLAAAC HTTP/1.1" 200 -
+2025-12-10 21:19:11,951 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:11] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:19:12,245 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:12] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:19:12,351 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:12] "GET /socket.io/?EIO=4&transport=websocket&sid=Y106kldGBfXIepVLAAAC HTTP/1.1" 200 -
+2025-12-10 21:19:12,982 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:12] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:19:13,308 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:13] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:19:16,475 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:16] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:19:37,387 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:37] "POST /explain/transaction HTTP/1.1" 200 -
+2025-12-10 21:19:42,602 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:42] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:19:42,991 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:42] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:19:49,264 - INFO - 127.0.0.1 - - [10/Dec/2025 21:19:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:20:01,253 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:01] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:20:12,982 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:12] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:20:13,377 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:13] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:20:43,013 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:43] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:20:43,400 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:43] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:20:49,284 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:20:55,573 - INFO - 127.0.0.1 - - [10/Dec/2025 21:20:55] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:21:04,415 - INFO - 127.0.0.1 - - [10/Dec/2025 21:21:04] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:21:12,911 - INFO - 127.0.0.1 - - [10/Dec/2025 21:21:12] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:21:13,999 - INFO - 127.0.0.1 - - [10/Dec/2025 21:21:13] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:21:37,763 - INFO - 127.0.0.1 - - [10/Dec/2025 21:21:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:21:43,021 - INFO - 127.0.0.1 - - [10/Dec/2025 21:21:43] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:21:43,402 - INFO - 127.0.0.1 - - [10/Dec/2025 21:21:43] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:22:05,229 - INFO - 127.0.0.1 - - [10/Dec/2025 21:22:05] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:22:13,003 - INFO - 127.0.0.1 - - [10/Dec/2025 21:22:13] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:22:13,387 - INFO - 127.0.0.1 - - [10/Dec/2025 21:22:13] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:22:25,429 - INFO - 127.0.0.1 - - [10/Dec/2025 21:22:25] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:22:32,030 - INFO - 127.0.0.1 - - [10/Dec/2025 21:22:32] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:22:49,375 - INFO - 127.0.0.1 - - [10/Dec/2025 21:22:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:23:13,912 - INFO - 127.0.0.1 - - [10/Dec/2025 21:23:13] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:23:39,327 - INFO - 127.0.0.1 - - [10/Dec/2025 21:23:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:23:39,649 - INFO - 127.0.0.1 - - [10/Dec/2025 21:23:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:23:49,320 - INFO - 127.0.0.1 - - [10/Dec/2025 21:23:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:23:54,777 - INFO - 127.0.0.1 - - [10/Dec/2025 21:23:54] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:24:13,697 - INFO - 127.0.0.1 - - [10/Dec/2025 21:24:13] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:24:21,500 - INFO - 127.0.0.1 - - [10/Dec/2025 21:24:21] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:24:37,374 - INFO - 127.0.0.1 - - [10/Dec/2025 21:24:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:24:39,020 - INFO - 127.0.0.1 - - [10/Dec/2025 21:24:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:24:39,407 - INFO - 127.0.0.1 - - [10/Dec/2025 21:24:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:24:54,988 - INFO - 127.0.0.1 - - [10/Dec/2025 21:24:54] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:25:39,025 - INFO - 127.0.0.1 - - [10/Dec/2025 21:25:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:25:39,400 - INFO - 127.0.0.1 - - [10/Dec/2025 21:25:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:25:42,843 - INFO - 127.0.0.1 - - [10/Dec/2025 21:25:42] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:25:52,360 - INFO - 127.0.0.1 - - [10/Dec/2025 21:25:52] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:26:13,733 - INFO - 127.0.0.1 - - [10/Dec/2025 21:26:13] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:26:14,740 - INFO - Creating database tables if not exist...
+2025-12-10 21:26:14,740 - INFO - Creating database tables if not exist...
+2025-12-10 21:26:14,825 - INFO - Database initialized!
+2025-12-10 21:26:14,825 - INFO - Database initialized!
+2025-12-10 21:26:16,630 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:26:16,630 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:26:16,630 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:26:16,657 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:26:16,658 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:26:37,313 - INFO - 127.0.0.1 - - [10/Dec/2025 21:26:37] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:26:39,014 - INFO - 127.0.0.1 - - [10/Dec/2025 21:26:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:26:39,388 - INFO - 127.0.0.1 - - [10/Dec/2025 21:26:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:27:01,763 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:01] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:27:16,437 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:16] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:27:20,360 - INFO - Creating database tables if not exist...
+2025-12-10 21:27:20,360 - INFO - Creating database tables if not exist...
+2025-12-10 21:27:20,446 - INFO - Database initialized!
+2025-12-10 21:27:20,446 - INFO - Database initialized!
+2025-12-10 21:27:22,072 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:27:22,074 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:27:22,074 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:27:22,107 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:27:22,109 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:27:25,741 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:25] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:27:26,149 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:26] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:27:27,173 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:27] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:27:28,161 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:28] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:27:28,619 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:28] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:27:45,157 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:45] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:27:49,965 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:27:58,443 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:58] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:27:58,759 - INFO - 127.0.0.1 - - [10/Dec/2025 21:27:58] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:28:18,471 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:18] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:28:26,870 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:26] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:28:28,442 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:28] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:28:28,738 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:28] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:28:49,927 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:49] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:28:59,021 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:59] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:28:59,416 - INFO - 127.0.0.1 - - [10/Dec/2025 21:28:59] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:29:06,792 - INFO - 127.0.0.1 - - [10/Dec/2025 21:29:06] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:29:25,769 - INFO - 127.0.0.1 - - [10/Dec/2025 21:29:25] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:29:29,018 - INFO - 127.0.0.1 - - [10/Dec/2025 21:29:29] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:29:29,411 - INFO - 127.0.0.1 - - [10/Dec/2025 21:29:29] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:29:59,004 - INFO - 127.0.0.1 - - [10/Dec/2025 21:29:59] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:29:59,391 - INFO - 127.0.0.1 - - [10/Dec/2025 21:29:59] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:30:29,008 - INFO - 127.0.0.1 - - [10/Dec/2025 21:30:29] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:30:29,387 - INFO - 127.0.0.1 - - [10/Dec/2025 21:30:29] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:31:39,339 - INFO - 127.0.0.1 - - [10/Dec/2025 21:31:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:31:39,650 - INFO - 127.0.0.1 - - [10/Dec/2025 21:31:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:31:50,737 - INFO - 127.0.0.1 - - [10/Dec/2025 21:31:50] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:32:37,737 - INFO - 127.0.0.1 - - [10/Dec/2025 21:32:37] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:32:39,016 - INFO - 127.0.0.1 - - [10/Dec/2025 21:32:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:32:39,392 - INFO - 127.0.0.1 - - [10/Dec/2025 21:32:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:33:39,010 - INFO - 127.0.0.1 - - [10/Dec/2025 21:33:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:33:39,406 - INFO - 127.0.0.1 - - [10/Dec/2025 21:33:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:34:39,010 - INFO - 127.0.0.1 - - [10/Dec/2025 21:34:39] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:34:39,394 - INFO - 127.0.0.1 - - [10/Dec/2025 21:34:39] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:34:41,957 - INFO - 127.0.0.1 - - [10/Dec/2025 21:34:41] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:34:59,659 - INFO - 127.0.0.1 - - [10/Dec/2025 21:34:59] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:35:00,074 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:00] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:35:01,595 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:01] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:35:03,917 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:03] "[36mGET /live HTTP/1.1[0m" 304 -
+2025-12-10 21:35:04,060 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:04] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:35:26,596 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:26] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:35:29,189 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:29] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:35:50,027 - INFO - 127.0.0.1 - - [10/Dec/2025 21:35:50] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:36:45,783 - INFO - 127.0.0.1 - - [10/Dec/2025 21:36:45] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:36:51,717 - INFO - Creating database tables if not exist...
+2025-12-10 21:36:51,717 - INFO - Creating database tables if not exist...
+2025-12-10 21:36:51,802 - INFO - Database initialized!
+2025-12-10 21:36:51,802 - INFO - Database initialized!
+2025-12-10 21:36:53,541 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:36:53,541 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:36:53,541 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:36:53,565 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:36:53,565 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:36:57,413 - INFO - 127.0.0.1 - - [10/Dec/2025 21:36:57] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:36:58,517 - INFO - 127.0.0.1 - - [10/Dec/2025 21:36:58] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:36:58,827 - INFO - 127.0.0.1 - - [10/Dec/2025 21:36:58] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:37:02,440 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:02] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:37:02,440 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:02] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:37:24,332 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:24] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:37:28,025 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:28] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:37:28,419 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:28] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:37:33,579 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:33] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:37:41,498 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:41] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:37:42,203 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:42] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:37:42,680 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:42] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:37:55,794 - INFO - 127.0.0.1 - - [10/Dec/2025 21:37:55] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:38:00,305 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:00] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:38:01,683 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:01] "[35m[1mPOST /transactions HTTP/1.1[0m" 201 -
+2025-12-10 21:38:05,257 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:05] "POST /explain/transaction HTTP/1.1" 200 -
+2025-12-10 21:38:12,468 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:12] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:38:12,766 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:12] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:38:43,160 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:43] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:38:43,536 - INFO - 127.0.0.1 - - [10/Dec/2025 21:38:43] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:39:13,015 - INFO - 127.0.0.1 - - [10/Dec/2025 21:39:13] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:39:13,409 - INFO - 127.0.0.1 - - [10/Dec/2025 21:39:13] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:39:43,031 - INFO - 127.0.0.1 - - [10/Dec/2025 21:39:43] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:39:43,420 - INFO - 127.0.0.1 - - [10/Dec/2025 21:39:43] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:13,013 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:13] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:13,415 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:13] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:24,306 - INFO - Creating database tables if not exist...
+2025-12-10 21:40:24,306 - INFO - Creating database tables if not exist...
+2025-12-10 21:40:24,390 - INFO - Database initialized!
+2025-12-10 21:40:24,390 - INFO - Database initialized!
+2025-12-10 21:40:26,191 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:40:26,192 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:40:26,193 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:40:26,221 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:40:26,221 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:40:29,862 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:29] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:40:30,799 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:30] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:31,282 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:31] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:33,316 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:33] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:40:39,679 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:39] "GET /activity HTTP/1.1" 200 -
+2025-12-10 21:40:40,310 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:40] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:40,499 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:40] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:40:43,259 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:43] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:40:55,014 - INFO - 127.0.0.1 - - [10/Dec/2025 21:40:55] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:41:11,322 - INFO - 127.0.0.1 - - [10/Dec/2025 21:41:11] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:41:11,623 - INFO - 127.0.0.1 - - [10/Dec/2025 21:41:11] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:41:41,016 - INFO - 127.0.0.1 - - [10/Dec/2025 21:41:41] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:41:41,429 - INFO - 127.0.0.1 - - [10/Dec/2025 21:41:41] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:42:11,017 - INFO - 127.0.0.1 - - [10/Dec/2025 21:42:11] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:42:11,404 - INFO - 127.0.0.1 - - [10/Dec/2025 21:42:11] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:42:41,013 - INFO - 127.0.0.1 - - [10/Dec/2025 21:42:41] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:42:41,413 - INFO - 127.0.0.1 - - [10/Dec/2025 21:42:41] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:11,005 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:11] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:11,402 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:11] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:41,005 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:41] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:41,384 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:41] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:45,323 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:45] "[36mGET /activity HTTP/1.1[0m" 304 -
+2025-12-10 21:43:46,124 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:46] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:46,560 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:46] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:43:46,668 - INFO - Creating database tables if not exist...
+2025-12-10 21:43:46,668 - INFO - Creating database tables if not exist...
+2025-12-10 21:43:46,777 - INFO - Database initialized!
+2025-12-10 21:43:46,777 - INFO - Database initialized!
+2025-12-10 21:43:48,830 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:43:48,831 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:43:48,831 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:43:48,854 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:43:48,855 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:43:51,721 - INFO - 127.0.0.1 - - [10/Dec/2025 21:43:51] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:44:11,294 - INFO - 127.0.0.1 - - [10/Dec/2025 21:44:11] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:44:15,913 - INFO - 127.0.0.1 - - [10/Dec/2025 21:44:15] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:44:16,388 - INFO - 127.0.0.1 - - [10/Dec/2025 21:44:16] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:44:46,016 - INFO - 127.0.0.1 - - [10/Dec/2025 21:44:46] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:44:46,388 - INFO - 127.0.0.1 - - [10/Dec/2025 21:44:46] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:45:16,003 - INFO - 127.0.0.1 - - [10/Dec/2025 21:45:16] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:45:16,405 - INFO - 127.0.0.1 - - [10/Dec/2025 21:45:16] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:45:46,029 - INFO - 127.0.0.1 - - [10/Dec/2025 21:45:46] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:45:46,406 - INFO - 127.0.0.1 - - [10/Dec/2025 21:45:46] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:47:03,726 - INFO - Creating database tables if not exist...
+2025-12-10 21:47:03,726 - INFO - Creating database tables if not exist...
+2025-12-10 21:47:03,822 - INFO - Database initialized!
+2025-12-10 21:47:03,822 - INFO - Database initialized!
+2025-12-10 21:47:05,684 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:47:05,686 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:47:05,686 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:47:05,714 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:47:05,714 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:47:10,424 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:10] "GET /activity HTTP/1.1" 200 -
+2025-12-10 21:47:10,533 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:10] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 200 -
+2025-12-10 21:47:11,392 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:11] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:47:11,938 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:11] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:47:15,187 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:15] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:47:42,314 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:42] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:47:42,627 - INFO - 127.0.0.1 - - [10/Dec/2025 21:47:42] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:47:59,200 - INFO - Creating database tables if not exist...
+2025-12-10 21:47:59,200 - INFO - Creating database tables if not exist...
+2025-12-10 21:47:59,297 - INFO - Database initialized!
+2025-12-10 21:47:59,297 - INFO - Database initialized!
+2025-12-10 21:48:01,147 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:48:01,147 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:48:01,148 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:48:01,184 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:48:01,184 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:48:03,974 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:03] "GET /activity HTTP/1.1" 200 -
+2025-12-10 21:48:04,045 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:04] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 200 -
+2025-12-10 21:48:04,809 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:04] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:48:05,340 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:05] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:48:15,961 - ERROR - Error during transaction prediction: name 'List' is not defined
+2025-12-10 21:48:15,962 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:15] "[31m[1mPOST /predict/transaction HTTP/1.1[0m" 400 -
+2025-12-10 21:48:22,195 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:22] "POST /explain/transaction HTTP/1.1" 200 -
+2025-12-10 21:48:26,371 - ERROR - Error during transaction prediction: name 'List' is not defined
+2025-12-10 21:48:26,373 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:26] "[31m[1mPOST /predict/transaction HTTP/1.1[0m" 400 -
+2025-12-10 21:48:35,318 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:35] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:48:35,648 - INFO - 127.0.0.1 - - [10/Dec/2025 21:48:35] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:49:04,764 - INFO - 127.0.0.1 - - [10/Dec/2025 21:49:04] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:49:05,156 - INFO - 127.0.0.1 - - [10/Dec/2025 21:49:05] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:49:35,010 - INFO - 127.0.0.1 - - [10/Dec/2025 21:49:35] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:49:35,413 - INFO - 127.0.0.1 - - [10/Dec/2025 21:49:35] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:49:53,726 - INFO - Creating database tables if not exist...
+2025-12-10 21:49:53,726 - INFO - Creating database tables if not exist...
+2025-12-10 21:49:53,798 - INFO - Database initialized!
+2025-12-10 21:49:53,798 - INFO - Database initialized!
+2025-12-10 21:49:56,216 - INFO - Model expects features: [np.str_('Transaction_Value'), np.str_('Transaction_Fees'), np.str_('Number_of_Inputs'), np.str_('Number_of_Outputs'), np.str_('Gas_Price'), np.str_('Wallet_Age_Days'), np.str_('Wallet_Balance'), np.str_('Transaction_Velocity'), np.str_('Exchange_Rate'), np.str_('BMax_BMin_per_NT'), np.str_('Value_to_Fee_Ratio'), np.str_('Gas_Efficiency'), np.str_('Input_Output_Ratio'), np.str_('Balance_Utilization'), np.str_('Tx_Frequency_Score'), np.str_('Value_Velocity_Interaction'), np.str_('Volatility_Age_Interaction'), np.str_('Gas_Complexity'), np.str_('Log_Transaction_Value'), np.str_('Log_Wallet_Balance'), np.str_('Is_Young_Wallet'), np.str_('Is_High_Velocity')]
+2025-12-10 21:49:56,216 - INFO - ML Model loaded successfully from ../ml_models/saved_models/noise_fraud_detector_model.pkl
+2025-12-10 21:49:56,216 - INFO - Ethereum Fraud Detection API starting...
+2025-12-10 21:49:56,255 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.102:5000
+2025-12-10 21:49:56,256 - INFO - [33mPress CTRL+C to quit[0m
+2025-12-10 21:50:05,356 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:05] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:50:05,664 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:05] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:50:18,131 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:18] "GET /activity HTTP/1.1" 200 -
+2025-12-10 21:50:18,443 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:18] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 200 -
+2025-12-10 21:50:19,496 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:19] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:50:19,811 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:19] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:50:33,073 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:33] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:50:45,742 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:45] "POST /predict/transaction HTTP/1.1" 200 -
+2025-12-10 21:50:49,137 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:49] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:50:49,532 - INFO - 127.0.0.1 - - [10/Dec/2025 21:50:49] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:51:20,012 - INFO - 127.0.0.1 - - [10/Dec/2025 21:51:20] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:51:20,404 - INFO - 127.0.0.1 - - [10/Dec/2025 21:51:20] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:51:50,013 - INFO - 127.0.0.1 - - [10/Dec/2025 21:51:50] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:51:50,411 - INFO - 127.0.0.1 - - [10/Dec/2025 21:51:50] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:52:20,017 - INFO - 127.0.0.1 - - [10/Dec/2025 21:52:20] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:52:20,408 - INFO - 127.0.0.1 - - [10/Dec/2025 21:52:20] "GET /transactions?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:52:50,018 - INFO - 127.0.0.1 - - [10/Dec/2025 21:52:50] "GET /wallets?limit=1000 HTTP/1.1" 200 -
+2025-12-10 21:52:50,402 - INFO - 127.0.0.1 - - [10/Dec/2025 21:52:50] "GET /transactions?limit=1000 HTTP/1.1" 200 -

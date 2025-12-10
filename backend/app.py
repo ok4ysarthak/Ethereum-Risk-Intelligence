@@ -21,7 +21,11 @@ import google.generativeai as genai  # OR import openai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold # <--- NEW
 from config import Config
 
-app = Flask(__name__, static_folder='../frontend/static')
+base_dir = os.path.abspath(os.path.dirname(__file__))
+frontend_static_dir = os.path.join(base_dir, '../frontend/static')
+
+
+app = Flask(__name__, template_folder=frontend_static_dir, static_folder=frontend_static_dir)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -219,18 +223,19 @@ def build_complete_feature_vector(raw_features_dict):
 # ---------------------------
 
 @app.route('/')
-def serve_index(): return send_from_directory(app.static_folder, 'index.html')
+def serve_index(): return send_from_directory(frontend_static_dir, 'index.html')
 
 @app.route('/activity')
-def serve_activity_page(): return send_from_directory(app.static_folder, 'activity.html')
+def serve_activity_page(): return send_from_directory(frontend_static_dir, 'activity.html')
 
 @app.route('/live')
-def serve_live_page(): return send_from_directory(app.static_folder, 'live.html')
+def serve_live_page(): return send_from_directory(frontend_static_dir, 'live.html')
 
 @app.route('/<path:path>')
 def serve_static_files(path):
-    try: return send_from_directory(app.static_folder, path)
-    except: return send_from_directory(app.static_folder, 'index.html')
+    try: return send_from_directory(frontend_static_dir, path)
+    except: return send_from_directory(frontend_static_dir, 'index.html')
+
 
 # --- 1. DB ROUTES (FETCHING) ---
 
@@ -377,133 +382,203 @@ def explain_transaction_ai():
         return jsonify({"error": str(e)}), 500
 
 # --- RISK EXPLANATION ---
+
+# -----------------------------------------------------------------------------
+# PRODUCTION-GRADE EXPLANATION ENGINE
+# -----------------------------------------------------------------------------
 def get_risk_explanation_rules(features: dict, risk_score: int):
     """
-    Smart Rule-Based Engine: Analyzes the 'tug-of-war' between Risk Drivers and Trust Signals.
-    Explains WHY the score is High, Low, or Medium based on which side won.
-    """
-    # 1. Weights (Adjusted for better balance)
-    # Positive = Increases Risk | Negative = Decreases Risk (Trust)
-    weights = {
-        "Transaction_Value": 0.5,       # Lowered slightly so huge values don't dominate everything
-        "Transaction_Fees": 0.6,
-        "Number_of_Inputs": 0.4,        # Inputs usually indicate complexity
-        "Number_of_Outputs": 0.4,
-        "Gas_Price": 0.7,
-        "Value_to_Fee_Ratio": 0.8,
-        "Gas_Efficiency": 0.9,
-        "Final_Balance": -0.8,          # High balance = Trust
-        "BMax_BMin_per_NT": 1.2,        # Volatility = Risk
-        "Wallet_Age_Days": -1.5,        # Age is a very strong trust signal
-        "Transaction_Velocity": 1.1     # Velocity is a strong risk signal
-    }
-
-    # 2. Smart Templates (Context-Aware)
-    # {0} = Feature Name, {1} = Feature Value
+    Context-Aware Explanation Engine (v4.0 Production)
     
-    # Templates for when a feature INCREASES Risk
-    risk_descs = {
-        "Transaction_Value": "unusually large transfer amount ({1} ETH)",
-        "Transaction_Fees": "suspiciously high network fees",
-        "Number_of_Inputs": "complex input mixing",
-        "Gas_Price": "aggressive gas bidding",
-        "Value_to_Fee_Ratio": "abnormal value-to-fee ratio",
-        "Gas_Efficiency": "automated/bot-like gas usage",
-        "Final_Balance": "critically low wallet balance",
-        "BMax_BMin_per_NT": "highly volatile balance history",
-        "Wallet_Age_Days": "freshly created wallet ({1} days old)",
-        "Transaction_Velocity": "high transaction frequency ({1} tx/day)"
-    }
+    Generates a dynamic, non-binary narrative by analyzing the 'net pressure' 
+    of risk vs. trust factors. Uses logistic scaling to avoid brittle hard thresholds.
+    
+    Returns: [Narrative String, Detailed Dictionary]
+    """
 
-    # Templates for when a feature INCREASES Trust (Decreases Risk)
-    trust_descs = {
-        "Transaction_Value": "standard transfer size",
-        "Final_Balance": "substantial wallet reserves ({1} ETH)",
-        "BMax_BMin_per_NT": "stable balance history",
-        "Wallet_Age_Days": "long-established history ({1} days)",
-        "Transaction_Velocity": "normal transaction pacing",
-        "Gas_Price": "standard gas pricing"
-    }
+    # --- 1. INTERNAL HELPER UTILITIES ---
+    def safe_float(x, default=0.0):
+        try:
+            if x is None: return float(default)
+            val = float(x)
+            return val if math.isfinite(val) else float(default)
+        except:
+            return float(default)
 
-    # 3. Calculate Contributions (The "Tug of War")
-    drivers = []      # Pushing Score UP (Bad)
-    mitigators = []   # Pushing Score DOWN (Good)
+    def logistic_scale(x, x_mid, steep=1.0, out_min=0.0, out_max=2.0):
+        """
+        Maps input 'x' to a score between [out_min, out_max] using a S-curve.
+        - x_mid: The point where the score flips or reaches the middle.
+        - steep: How fast the score changes (higher = sharper transition).
+        """
+        try:
+            val = 1.0 / (1.0 + math.exp(-steep * (x - x_mid)))
+        except OverflowError:
+            val = 0.0 if (steep * (x - x_mid)) < 0 else 1.0
+        return out_min + (out_max - out_min) * val
 
-    for feat, weight in weights.items():
-        val = float(features.get(feat, 0))
-        
-        # Special Handling for Age & Balance (Logarithmic scaling prevents huge numbers from breaking logic)
-        # e.g. 1000 days age shouldn't just be -1500 points, we cap its impact slightly
-        if feat == "Wallet_Age_Days":
-            impact = min(val, 3650) * weight * 0.1 # Scaled down for calculation
-        elif feat == "Transaction_Velocity":
-             impact = min(val, 1000) * weight * 0.1
-        else:
-            impact = val * weight
+    def add_factor(container, score, desc, category):
+        # Clamp score reasonable bounds (0 to 3) for safety
+        score = max(0.0, min(3.0, float(score)))
+        container.append((score, desc, category))
 
-        # Format Value for Text
-        readable_val = f"{val:.2f}"
-        if feat in ["Wallet_Age_Days", "Transaction_Velocity"]: 
-            readable_val = f"{int(val)}"
+    # --- 2. PARSE & CLEAN INPUTS (Defensive Coding) ---
+    age = safe_float(features.get("Wallet_Age_Days", 0))
+    velocity = safe_float(features.get("Transaction_Velocity", 0))
+    balance = safe_float(features.get("Final_Balance", 0))
+    value = safe_float(features.get("Transaction_Value", 0))
+    inputs = safe_float(features.get("Number_of_Inputs", 1))
+    outputs = safe_float(features.get("Number_of_Outputs", 1))
+    gas_eff = safe_float(features.get("Gas_Efficiency", 0))
+    volatility = safe_float(features.get("BMax_BMin_per_NT", 0))
+    gas_price = safe_float(features.get("Gas_Price", 0))
 
-        # Categorize
-        if impact > 0.1: # It's a Driver
-            text = risk_descs.get(feat, feat.replace("_", " ")).format(feat, readable_val)
-            drivers.append((impact, text))
-        elif impact < -0.1: # It's a Mitigator
-            text = trust_descs.get(feat, feat.replace("_", " ")).format(feat, readable_val)
-            mitigators.append((abs(impact), text))
+    # Placeholders for future graph/context features (Defaults to False/0 for now)
+    is_contract = bool(features.get("Is_Contract", False))
+    cluster_score = safe_float(features.get("Known_Cluster_Score", 0.0)) 
+    
+    # --- 3. IMPACT ANALYSIS (Fuzzy Logic Containers) ---
+    # Stores tuples: (ImpactScore, Description, Category['risk'|'trust'])
+    factors = [] 
 
-    # Sort by impact magnitude
+    # === LOGIC BLOCK A: WALLET AGE (Contextual) ===
+    # "Newness" Risk: High if age < 7, fades to 0 as age approaches 30
+    age_risk = logistic_scale(-age, -7, steep=0.25, out_min=0.0, out_max=1.8)
+    
+    # "History" Trust: Low if age < 90, grows strong as age approaches 365
+    age_trust = logistic_scale(age, 365, steep=0.02, out_min=0.0, out_max=1.8)
+
+    if age_risk > 0.2:
+        add_factor(factors, age_risk, f"newly created wallet ({int(age)} days)", "risk")
+    
+    if age_trust > 0.5:
+        add_factor(factors, age_trust * 0.9, f"long-established history ({int(age)} days)", "trust")
+
+    # === LOGIC BLOCK B: VELOCITY (Dynamic) ===
+    # High velocity is risky, BUT if wallet is ancient (Trust > 1.0), we tolerate it more.
+    tolerance = 1.0 if age_trust > 1.0 else 0.3
+    
+    # Logistic curve: Velocity becomes risky around 10-15 tx/day
+    vel_score = logistic_scale(velocity, 15.0, steep=0.15, out_min=0.0, out_max=2.0)
+    
+    if vel_score > (0.5 * tolerance): 
+        add_factor(factors, vel_score, f"high transaction frequency ({int(velocity)} tx/day)", "risk")
+    elif velocity < 2 and age > 30:
+        add_factor(factors, 0.4, "stable transaction pacing", "trust")
+
+    # === LOGIC BLOCK C: FINANCIALS (Balance & Value) ===
+    # Low Balance Risk (Dust)
+    if balance < 0.005:
+        add_factor(factors, 1.2, "dust/near-zero balance", "risk")
+    # High Balance Trust (Whale)
+    elif balance > 10.0:
+        add_factor(factors, 1.5, f"substantial reserves ({balance:.1f} ETH)", "trust")
+    
+    # Value Transfer Magnitude
+    val_score = logistic_scale(value, 5.0, steep=0.4, out_min=0.0, out_max=1.8)
+    if val_score > 0.4:
+        desc = f"significant value transfer ({value:.1f} ETH)"
+        # Interaction: New wallet moving big money is VERY bad
+        if age < 30: 
+            val_score *= 1.5
+            desc += " via new wallet"
+        add_factor(factors, val_score, desc, "risk")
+
+    # === LOGIC BLOCK D: BEHAVIORAL PATTERNS ===
+    # Input/Output Complexity (Layering)
+    if inputs > 5:
+        add_factor(factors, 0.8, "complex input mixing", "risk")
+    
+    if outputs > 10:
+        add_factor(factors, 1.2, "mass-distribution output behavior", "risk")
+    
+    # Volatility (Stability check)
+    vol_score = logistic_scale(volatility, 0.4, steep=5.0, out_min=0.0, out_max=1.2)
+    if vol_score > 0.6:
+        add_factor(factors, vol_score, "highly volatile balance history", "risk")
+    elif volatility < 0.05 and age > 30:
+        add_factor(factors, 0.5, "consistent accumulation pattern", "trust")
+
+    # Gas Aggression (Bot check)
+    if gas_price > 100: # Gwei
+        add_factor(factors, 1.0, "aggressive gas bidding", "risk")
+
+    # --- 4. CATEGORIZE & SORT ---
+    drivers = [f for f in factors if f[2] == "risk"]
+    mitigators = [f for f in factors if f[2] == "trust"]
+
     drivers.sort(key=lambda x: x[0], reverse=True)
     mitigators.sort(key=lambda x: x[0], reverse=True)
 
-    # 4. Generate Narrative based on the "Winner"
-    narrative = ""
+    # --- 5. COMPUTE RULE-DERIVED SCORE (for Comparison) ---
+    # We calculate a 'Shadow Score' from these rules to see if it agrees with the ML model
+    def dim_sum(items):
+        total = 0.0
+        for i, (sc, _, _) in enumerate(items):
+            total += sc * (0.85 ** i) # Diminishing returns for multiple factors
+        return total
 
-    # SCENARIO A: LOW RISK (Trust > Risk)
-    if risk_score <= 4:
-        narrative = f"This transaction is classified as **Low Risk**."
-        
+    rule_risk_total = dim_sum(drivers)
+    rule_trust_total = dim_sum(mitigators)
+    
+    # Net Score (0-10 scale approximation)
+    net_rule_score = max(0.0, min(10.0, (rule_risk_total - (rule_trust_total * 0.8)) * 2.5))
+
+    # --- 6. NARRATIVE GENERATION ---
+    narrative_parts = []
+    
+    # A. Severity Header
+    severity = "Critical" if risk_score >= 7 else "High" if risk_score >= 5 else "Medium" if risk_score >= 3 else "Low"
+    narrative_parts.append(f"**{severity} Risk** Analysis (Model Score: {risk_score}/10).")
+
+    # B. Driver Explanation (Why is it risky?)
+    if risk_score >= 5:
+        # High Risk Scenario
+        if drivers:
+            top = drivers[0]
+            narrative_parts.append(f"The primary driver is **{top[1]}**.")
+            if len(drivers) > 1:
+                narrative_parts.append(f"Risk is compounded by **{drivers[1][1]}**.")
+        else:
+            narrative_parts.append("Risk is driven by a combination of minor behavioral anomalies.")
+            
         if mitigators:
-            top_trust = mitigators[0][1]
-            narrative += f" The strongest signal of legitimacy is the **{top_trust}**, which effectively neutralizes potential concerns."
+            narrative_parts.append(f"While **{mitigators[0][1]}** is positive, it does not outweigh the risk factors.")
+            
+    else:
+        # Low/Medium Risk Scenario
+        if mitigators:
+            top = mitigators[0]
+            narrative_parts.append(f"The score is suppressed by **{top[1]}**.")
+            if len(mitigators) > 1:
+                narrative_parts.append(f"Supported by **{mitigators[1][1]}**.")
             
             if drivers:
-                narrative += f" Although **{drivers[0][1]}** was detected, it was insufficient to raise the risk level."
-            else:
-                narrative += " No significant risk patterns were identified."
-        else:
-            narrative += " The transaction pattern appears standard with no anomalies."
-
-    # SCENARIO B: HIGH RISK (Risk > Trust)
-    elif risk_score >= 7:
-        narrative = f"**Critical Alert**: This transaction carries a **High Risk** score."
-        
-        if drivers:
-            top_risk = drivers[0][1]
-            narrative += f" The primary cause is **{top_risk}**."
-            
-            if len(drivers) > 1:
-                narrative += f" This is compounded by **{drivers[1][1]}**, suggesting potential automated or illicit activity."
-            
-            if mitigators:
-                narrative += f" While the **{mitigators[0][1]}** is positive, it is not enough to outweigh the risk factors."
-        else:
-            narrative += " Multiple anomalous features accumulated to trigger this score."
-
-    # SCENARIO C: MEDIUM RISK (Conflict)
-    else:
-        narrative = f"The model assigned a **Medium Risk** score due to conflicting patterns."
-        
-        if drivers and mitigators:
-            narrative += f" While **{drivers[0][1]}** raises suspicion, the **{mitigators[0][1]}** provides a counter-balance, preventing a critical alert."
+                narrative_parts.append(f"Although **{drivers[0][1]}** was detected, it remains within safe tolerances.")
         elif drivers:
-            narrative += f" Moderate risk indicators were found, specifically **{drivers[0][1]}**."
+            narrative_parts.append(f"Minor risk signals like **{drivers[0][1]}** were detected but are insufficient to trigger an alert.")
         else:
-            narrative += " The transaction shows unusual behavior but lacks definitive fraud markers."
+            narrative_parts.append("The transaction exhibits standard behavioral patterns.")
 
-    return [narrative]  
+    # C. Model Alignment Check (Sanity Check)
+    # If ML says 9/10 but Rules say 2/10, warn the user.
+    if abs(risk_score - net_rule_score) > 3.5:
+        narrative_parts.append("(Note: The ML model detects hidden patterns not fully explained by standard heuristics).")
+
+    # Combine into single string
+    full_narrative = " ".join(narrative_parts)
+
+    # --- 7. RETURN STRUCTURE ---
+    # Returns a list: [Narrative String, Debug Details Dictionary]
+    # Frontend only uses index 0, but index 1 is available for future 'Advanced View'
+    return [
+        full_narrative,
+        {
+            "rule_score": round(net_rule_score, 2),
+            "drivers": drivers,
+            "mitigators": mitigators
+        }
+    ]
 
 # --- 3. PREDICTION ENDPOINT (Used by Oracle) ---
 @app.route('/predict/transaction', methods=['POST'])
