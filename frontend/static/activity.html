@@ -3,82 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicted History - ETH Fraud Detection</title>
+    <title>Shield Intelligence - ETH Fraud Defense</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="chainguard.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        surface: "#131313",
+                        "on-surface": "#e5e2e1",
+                        "surface-container": "#20201f",
+                        outline: "#8e9192",
+                        secondary: "#c6c6c7",
+                        error: "#ffb4ab"
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk"],
+                        body: ["Inter"],
+                        label: ["Space Grotesk"]
+                    }
+                }
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    /* DEFINING THE "RETRO-ASPIRATIONAL" PALETTE */
+    /* DASHBOARD-ALIGNED PALETTE */
     :root {
-        --bg-deep: #0e0e10;       /* Almost black, slightly warm */
-        --bg-panel: #18181b;      /* Matte Charcoal */
-        --text-main: #e4e4e7;     /* Off-white/Cream - easier on eyes */
-        --text-muted: #a1a1aa;    /* Soft Grey */
-        
-        /* Accents - The "Aspiring" colors */
-        --accent-gold: #fbbf24;   /* Vintage Amber (warmth/success) */
-        --accent-sage: #a7f3d0;   /* Soothing Green */
-        --accent-clay: #f87171;   /* Muted Red */
-        --border-subtle: rgba(255, 255, 255, 0.08);
+        --bg-deep: #131313;
+        --bg-panel: #20201f;
+        --text-main: #e5e2e1;
+        --text-muted: #8e9192;
+        --accent-gold: #ffffff;
+        --accent-sage: #c6c6c7;
+        --accent-clay: #ffb4ab;
+        --border-subtle: rgba(255, 255, 255, 0.05);
     }
 
     body { 
         background-color: var(--bg-deep);
-        /* A static, subtle vignette instead of spinning gradients */
-        background-image: radial-gradient(circle at 50% 0%, #27272a 0%, var(--bg-deep) 80%);
-        font-family: 'Space Grotesk', sans-serif; /* Aspiring, retro-future font */
+        background-image: none;
+        font-family: 'Inter', sans-serif;
         min-height: 100vh;
         color: var(--text-main);
-        letter-spacing: 0.02em; /* Slightly airy */
+        letter-spacing: 0.01em;
     }
     
-    /* REPLACED GLASSMORPHISM WITH "MATTE CARDS" */
     .glass-panel { 
-        background: var(--bg-panel);
-        backdrop-filter: none; 
+        background: rgba(32, 32, 31, 0.92);
+        backdrop-filter: blur(12px);
         border: 1px solid var(--border-subtle);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 
-                    0 4px 20px rgba(0,0,0,0.4);
-        border-radius: 8px; /* Slightly sharper corners */
+        box-shadow: none;
+        border-radius: 0;
     }
     
     .gradient-bg { background: transparent; }
     
-    /* Hover effects - Subtle lift */
     .hover-lift {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid transparent;
+        transition: all 0.2s ease;
+        border: 1px solid var(--border-subtle);
     }
     
     .hover-lift:hover {
-        transform: translateY(-2px);
-        border-color: var(--accent-gold); /* Gold border on hover */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transform: none;
+        border-color: rgba(255, 255, 255, 0.12);
+        background: #2a2a2a;
+        box-shadow: none;
     }
     
-    /* Custom scrollbar - Blocky and Retro */
     ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+        width: 4px;
+        height: 4px;
     }
     
     ::-webkit-scrollbar-track {
         background: var(--bg-deep);
-        border-left: 1px solid var(--border-subtle);
+        border-left: none;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #3f3f46;
-        border: 2px solid var(--bg-deep);
-        border-radius: 0px; 
+        background: #353535;
+        border: none;
+        border-radius: 0;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: var(--accent-gold); 
+        background: #5d5f5f;
     }
     
     @keyframes pulse-glow {
@@ -100,21 +118,20 @@
         to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Icon styling - Minimalist */
     .icon-wrapper {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 44px;
-        height: 44px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.03);
+        width: 40px;
+        height: 40px;
+        border-radius: 0;
+        background: #2a2a2a;
         border: 1px solid var(--border-subtle);
     }
     
     .icon-wrapper svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         stroke: var(--accent-gold);
         stroke-width: 1.5; 
         fill: none;
@@ -130,17 +147,17 @@
     }
     
     .badge-trusted {
-        background: rgba(167, 243, 208, 0.05);
-        border: 1px solid rgba(167, 243, 208, 0.2);
-        color: var(--accent-sage);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #e5e2e1;
         font-family: 'JetBrains Mono', monospace;
         letter-spacing: -0.05em;
     }
     
     /* Search Styling */
     .search-glow:focus-within {
-        box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3);
-        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.22);
     }
     .font-mono, .detail-value, .feature-value {
         font-family: 'JetBrains Mono', monospace; 
@@ -170,14 +187,14 @@
     }
     
     .modal-content {
-        background: #18181b;
-        border: 1px solid var(--border-subtle);
-        border-radius: 8px;
+        background: #20201f;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0;
         max-width: 800px;
         width: 100%;
         max-height: 90vh;
         overflow-y: auto;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        box-shadow: none;
         transform: scale(0.95);
         transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -194,8 +211,8 @@
     }
     
     .clickable-hash:hover {
-        color: var(--accent-gold) !important;
-        border-bottom: 1px solid var(--accent-gold);
+        color: #ffffff !important;
+        border-bottom: 1px solid #ffffff;
         text-decoration: none;
     }
     
@@ -236,9 +253,9 @@
     }
     
     .feature-item {
-        background: rgba(255,255,255,0.02);
+        background: rgba(42, 42, 42, 0.8);
         border: 1px solid var(--border-subtle);
-        border-radius: 6px;
+        border-radius: 0;
         padding: 1rem;
     }
     
@@ -262,7 +279,7 @@
     }
     
     .gradient-text {
-        background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #c6c6c7 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -290,37 +307,61 @@
     
     </style>
 </head>
-<body class="text-gray-300">
-
-    <header class="glass-panel sticky top-0 z-50 border-b border-gray-800/50">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-white flex items-center gap-2">
-                <div class="icon-wrapper w-10 h-10">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/>
-                    </svg>
-                </div>
-                DeTrust<span class="text-[#008B8B]">ETH</span>
-                <span class="text-xs bg-[#008B8B]/20 text-[#008B8B] px-2 py-0.5 rounded ml-2 border border-[#008B8B]/30">Smart Contract View</span>
-            </h1>
-            <div class="flex space-x-6 text-sm font-medium">
-                <a href="/" class="text-gray-400 hover:text-white transition-colors">Dashboard</a>
-                <a href="/activity" class="text-[#008B8B] border-b-2 border-[#008B8B] pb-1">Predicted History</a>
-                <a href="/live" class="text-gray-400 hover:text-white transition-colors">Live Sepolia Feed</a>
+<body class="bg-surface text-on-surface antialiased">
+    <div class="cg-shell">
+        <aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-white/5 bg-[#131313] z-50">
+            <div class="p-8">
+                <div class="font-['Space_Grotesk'] font-bold text-xl text-white tracking-tighter mb-1">ChainGuard AI</div>
+                <div class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px] text-[#C6C6C7] opacity-60">Fraud Intelligence</div>
             </div>
-        </nav>
-    </header>
+            <nav class="flex-1 px-4 space-y-2">
+                <a class="flex items-center gap-4 px-4 py-3 text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300" href="/">
+                    <span class="material-symbols-outlined text-lg">dashboard</span>
+                    <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Command</span>
+                </a>
+                <a class="flex items-center gap-4 px-4 py-3 text-white bg-[#2A2A2A] border-l-2 border-white transition-all duration-300" href="/shield">
+                    <span class="material-symbols-outlined text-lg">security</span>
+                    <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Shield</span>
+                </a>
+                <a class="flex items-center gap-4 px-4 py-3 text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300" href="/graph">
+                    <span class="material-symbols-outlined text-lg">hub</span>
+                    <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Graph Intelligence</span>
+                </a>
+                <a class="flex items-center gap-4 px-4 py-3 text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300" href="/live">
+                    <span class="material-symbols-outlined text-lg">analytics</span>
+                    <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Intel</span>
+                </a>
+            </nav>
+            <div class="px-8 mb-8">
+                <button class="w-full py-3 bg-white text-surface font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary transition-colors">Upgrade Node</button>
+            </div>
+        </aside>
 
-    <main class="container mx-auto px-4 py-8">
+        <div class="ml-64 min-h-screen flex flex-col w-full">
+            <header class="sticky top-0 z-50 flex justify-between items-center px-8 h-16 w-full border-b border-white/5 bg-[#131313]/80 backdrop-blur-xl font-['Space_Grotesk'] font-medium text-sm text-white">
+                <div class="flex items-center bg-surface-container px-4 py-1.5 focus-within:ring-1 focus-within:ring-white/20 transition-all">
+                    <span class="material-symbols-outlined text-outline text-lg mr-3">search</span>
+                    <input class="bg-transparent border-none focus:ring-0 text-[11px] tracking-widest uppercase w-64 placeholder:text-outline/50" placeholder="QUERY CHAIN DATA..." type="text"/>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-4">
+                        <button class="hover:text-white transition-colors duration-200 text-[#C6C6C7] opacity-70"><span class="material-symbols-outlined">sensors</span></button>
+                        <button class="hover:text-white transition-colors duration-200 text-[#C6C6C7] opacity-70 relative"><span class="material-symbols-outlined">notifications</span><span class="absolute top-0 right-0 w-1.5 h-1.5 bg-error rounded-full"></span></button>
+                    </div>
+                    <div class="h-8 w-[1px] bg-white/10"></div>
+                    <div class="flex items-center gap-3"><span class="text-[11px] tracking-widest uppercase">Analyst // 042</span></div>
+                </div>
+            </header>
+
+            <main class="container mx-auto px-4 py-8 cg-content">
         
         <div class="mb-8">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
                 <div>
-                    <h2 class="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-[#008B8B] to-[#4682b4] bg-clip-text text-transparent">
-                        Predicted History
+                    <h2 class="font-['Space_Grotesk'] text-4xl font-bold text-white mb-2 tracking-tight uppercase">
+                        Shield Intelligence
                     </h2>
-                    <p class="text-gray-400">Real-time fraud detection analytics and wallet trust scores</p>
+                    <p class="text-gray-400">Defensive analytics for anomaly detection, wallet risk exposure, and trust verification</p>
                 </div>
                 
                 <div class="flex gap-2 w-full lg:w-auto search-glow rounded-lg transition-shadow">
@@ -332,9 +373,9 @@
                             </svg>
                         </div>
                         <input type="text" id="db-search" placeholder="Search for Wallet or Transaction Hash..." 
-                               class="w-full bg-gray-800/50 border border-gray-700/50 text-sm rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-[#008B8B] focus:border-transparent outline-none text-white placeholder-gray-500 backdrop-blur-sm">
+                               class="w-full bg-surface-container border border-white/10 text-sm rounded-none pl-10 pr-4 py-3 focus:ring-1 focus:ring-white/20 focus:border-white/20 outline-none text-white placeholder:text-outline/50">
                     </div>
-                    <button onclick="searchDB()" class="bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50">
+                    <button onclick="searchDB()" class="bg-white text-surface px-6 py-3 rounded-none text-sm font-['Space_Grotesk'] font-bold uppercase tracking-widest hover:bg-secondary transition-colors">
                         Search
                     </button>
                 </div>
@@ -379,21 +420,21 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
             <div class="glass-panel p-6 rounded-xl hover-lift reveal">
                 <h3 class="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-[#008B8B] rounded-full animate-pulse"></span>
+                    <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                     Transaction Risk Distribution
                 </h3>
                 <div id="risk-distribution-chart" class="w-full h-64"></div>
             </div>
             <div class="glass-panel p-6 rounded-xl hover-lift reveal">
                 <h3 class="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-[#4682b4] rounded-full animate-pulse"></span>
+                    <span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
                     Wallet Trust Levels
                 </h3>
                 <div id="trust-distribution-chart" class="w-full h-64"></div>
             </div>
             <div class="glass-panel p-6 rounded-xl hover-lift reveal">
                 <h3 class="text-lg font-semibold text-gray-200 mb-4 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+                    <span class="w-2 h-2 bg-error rounded-full animate-pulse"></span>
                     Average Risk Trend
                 </h3>
                 <div id="risk-trend-chart" class="w-full h-64"></div>
@@ -402,7 +443,7 @@
 
         <div class="mb-10">
             <div class="flex items-center gap-3 mb-4">
-                <div class="h-1 w-12 bg-gradient-to-r from-purple-500 to-transparent rounded"></div>
+                <div class="h-1 w-12 bg-gradient-to-r from-white to-transparent rounded"></div>
                 <h3 class="text-2xl font-bold text-white">Scored Transactions</h3>
             </div>
             <div class="glass-panel rounded-xl overflow-hidden hover-lift reveal">
@@ -421,7 +462,7 @@
                     </table>
                 </div>
                 <div class="px-6 py-3 bg-gray-900/30 border-t border-gray-700/50 text-center">
-                    <button id="btn-load-more-tx" onclick="loadMoreTransactions()" class="text-xs text-[#008B8B] hover:text-white font-medium transition-colors uppercase tracking-wider">
+                    <button id="btn-load-more-tx" onclick="loadMoreTransactions()" class="text-xs text-secondary hover:text-white font-medium transition-colors uppercase tracking-wider">
                         Load More Transactions ↓
                     </button>
                 </div>
@@ -430,7 +471,7 @@
 
         <div class="mb-10">
             <div class="flex items-center gap-3 mb-4">
-                <div class="h-1 w-12 bg-gradient-to-r from-[#008B8B] to-transparent rounded"></div>
+                <div class="h-1 w-12 bg-gradient-to-r from-white to-transparent rounded"></div>
                 <h3 class="text-2xl font-bold text-white">Scored Wallets</h3>
             </div>
             <div class="glass-panel rounded-xl overflow-hidden hover-lift reveal">
@@ -448,21 +489,23 @@
                     </table>
                 </div>
                 <div class="px-6 py-3 bg-gray-900/30 border-t border-gray-700/50 text-center">
-                    <button id="btn-load-more-wallets" onclick="loadMoreWallets()" class="text-xs text-[#008B8B] hover:text-white font-medium transition-colors uppercase tracking-wider">
+                    <button id="btn-load-more-wallets" onclick="loadMoreWallets()" class="text-xs text-secondary hover:text-white font-medium transition-colors uppercase tracking-wider">
                         Load More Wallets ↓
                     </button>
                 </div>
             </div>
         </div>
 
-    </main>
+            </main>
+        </div>
+    </div>
 
     <div id="tx-modal" class="modal-overlay" onclick="closeModal(event, 'tx-modal')">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="p-6 border-b border-gray-700/50">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                        <svg class="w-6 h-6 text-[#008B8B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10v4h10v-4M6 14v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3M12 14v4"/>
                         </svg>
                         Transaction Details
@@ -503,11 +546,11 @@
                 <div id="tx-modal-explanation-container" style="display: none;" class="mt-6">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-2">
-                            <div class="h-4 w-1 bg-gradient-to-b from-blue-400 to-blue-600 rounded-full"></div>
+                            <div class="h-4 w-1 bg-gradient-to-b from-white to-secondary rounded-full"></div>
                             <h3 class="text-sm font-bold text-white uppercase tracking-wider">Risk Analysis</h3>
                         </div>
                         
-                        <button id="btn-get-ai" onclick="fetchAiExplanation()" class="flex items-center gap-2 px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/40 border border-purple-500/50 rounded-lg text-xs text-purple-300 transition-all">
+                        <button id="btn-get-ai" onclick="fetchAiExplanation()" class="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/15 border border-white/20 rounded-none text-xs text-white transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                             Get AI Insight
                         </button>
@@ -518,11 +561,11 @@
                         </div>
                         
                         <div id="ai-loading-overlay" class="absolute inset-0 bg-gray-900/90 flex flex-col items-center justify-center z-20 hidden">
-                            <svg class="animate-spin h-6 w-6 text-purple-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <svg class="animate-spin h-6 w-6 text-white mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            <span class="text-xs text-purple-300 font-mono animate-pulse">GENERATING INSIGHT...</span>
+                            <span class="text-xs text-white/80 font-mono animate-pulse">GENERATING INSIGHT...</span>
                         </div>
                     </div>
                 </div>
@@ -536,13 +579,13 @@
                     <div class="detail-row">
                         <div class="detail-label">From</div>
                         <div class="detail-value">
-                            <span class="clickable-hash text-[#4682b4] break-all" id="tx-modal-from"></span>
+                            <span class="clickable-hash text-white/90 break-all" id="tx-modal-from"></span>
                         </div>
                     </div>
                     <div class="detail-row">
                         <div class="detail-label">To</div>
                         <div class="detail-value">
-                            <span class="clickable-hash text-[#4682b4] break-all" id="tx-modal-to"></span>
+                            <span class="clickable-hash text-white/90 break-all" id="tx-modal-to"></span>
                         </div>
                     </div>
                     <div class="detail-row">
@@ -561,8 +604,8 @@
                 </div>
                 
                 <div class="flex gap-3">
-                    <a id="tx-modal-etherscan" target="_blank" rel="noopener noreferrer" 
-                       class="flex-1 bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50 text-center">
+                          <a id="tx-modal-etherscan" target="_blank" rel="noopener noreferrer" 
+                              class="flex-1 bg-white text-surface px-4 py-3 rounded-none text-sm font-['Space_Grotesk'] font-bold uppercase tracking-wider hover:bg-secondary transition-colors text-center">
                         View on Sepolia Etherscan
                     </a>
                     <button onclick="closeModal(event, 'tx-modal')" 
@@ -579,7 +622,7 @@
             <div class="p-6 border-b border-gray-700/50">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                        <svg class="w-6 h-6 text-[#008B8B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2ZM3 7h18"/>
                         </svg>
                         Wallet Details
@@ -632,6 +675,12 @@
                         <div class="detail-value" id="wallet-modal-age"></div>
                     </div>
                 </div>
+
+                <div class="mb-6 p-4 rounded-lg border border-blue-500/30 bg-blue-500/5" id="wallet-shap-section">
+                    <h3 class="text-sm font-semibold text-blue-300 mb-3 uppercase tracking-wider">Wallet SHAP Explanation</h3>
+                    <div id="wallet-shap-content" class="text-sm text-gray-200"></div>
+                    <div id="wallet-linked-tx" class="text-xs text-blue-200/80 mt-3"></div>
+                </div>
                 
                 <div class="mb-6" id="wallet-latest-tx-section">
                     <h3 class="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Latest Transaction</h3>
@@ -639,8 +688,8 @@
                 </div>
                 
                 <div class="flex gap-3">
-                    <a id="wallet-modal-etherscan" target="_blank" rel="noopener noreferrer" 
-                       class="flex-1 bg-gradient-to-r from-[#008B8B] to-[#4682b4] hover:from-[#4682b4] hover:to-[#008B8B] text-white px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#008B8B]/50 text-center">
+                          <a id="wallet-modal-etherscan" target="_blank" rel="noopener noreferrer" 
+                              class="flex-1 bg-white text-surface px-4 py-3 rounded-none text-sm font-['Space_Grotesk'] font-bold uppercase tracking-wider hover:bg-secondary transition-colors text-center">
                         View on Sepolia Etherscan
                     </a>
                     <button onclick="closeModal(event, 'wallet-modal')" 
@@ -665,19 +714,147 @@
     // --- PAGINATION LIMITS ---
     let txDisplayLimit = 5;      // Start with 5 transactions
     let walletDisplayLimit = 5;  // Start with 5 wallets
+    let latestLoadRequestId = 0;
 
     let riskChartInstance = null;
     let trustChartInstance = null;
     let trendChartInstance = null;
 
+    function safeNumber(value, fallback = 0) {
+        const n = Number(value);
+        return Number.isFinite(n) ? n : fallback;
+    }
+
+    function normalizeRiskProbability(source) {
+        let risk = safeNumber(
+            source.riskScore,
+            safeNumber(
+                source.fraud_probability,
+                safeNumber(source.risk_probability, safeNumber(source.risk_score, 0))
+            )
+        );
+        if (risk > 1 && risk <= 10) risk = risk / 10;
+        return Math.max(0, Math.min(1, risk));
+    }
+
+    function normalizeTransactionRecord(source) {
+        const tx = source && typeof source === 'object' ? source : {};
+        const rawTransaction = (tx.raw_transaction && typeof tx.raw_transaction === 'object')
+            ? tx.raw_transaction
+            : (tx.raw_payload && typeof tx.raw_payload === 'object' ? tx.raw_payload : {});
+
+        return {
+            ...tx,
+            id: tx.id || tx.transaction_hash || tx.tx_hash || tx.hash || '',
+            transaction_hash: tx.transaction_hash || tx.id || tx.tx_hash || tx.hash || '',
+            from: tx.from || tx.from_address || '',
+            to: tx.to || tx.to_address || '',
+            value: safeNumber(tx.value, safeNumber(tx.Transaction_Value, 0)),
+            riskScore: normalizeRiskProbability(tx),
+            walletScore: (() => {
+                let score = safeNumber(tx.walletScore, safeNumber(tx.temporal_score_normalized, safeNumber(tx.wallet_trust_score, 0)));
+                if (score > 1 && score <= 100) score = score / 100;
+                return Math.max(0, Math.min(1, score));
+            })(),
+            raw_transaction: rawTransaction,
+            transaction_shap_explanation:
+                tx.transaction_shap_explanation
+                || rawTransaction.transaction_shap_explanation
+                || tx.shap_explanation
+                || rawTransaction.shap_explanation
+                || null,
+            wallet_shap_explanation:
+                tx.wallet_shap_explanation
+                || rawTransaction.wallet_shap_explanation
+                || null,
+            shap_explanation:
+                tx.shap_explanation
+                || rawTransaction.shap_explanation
+                || null,
+        };
+    }
+
+    function normalizeWalletRecord(source) {
+        const wallet = source && typeof source === 'object' ? source : {};
+        const walletMetadata = (wallet.metadata && typeof wallet.metadata === 'object')
+            ? wallet.metadata
+            : ((wallet.metadata_json && typeof wallet.metadata_json === 'object') ? wallet.metadata_json : {});
+        let score = safeNumber(wallet.score, safeNumber(wallet.trust_score, 0));
+        if (score > 1 && score <= 100) score = score / 100;
+        return {
+            ...wallet,
+            address: wallet.address || wallet.wallet_address || '',
+            score: Math.max(0, Math.min(1, score)),
+            metadata: walletMetadata,
+            wallet_shap_explanation:
+                wallet.wallet_shap_explanation
+                || walletMetadata.wallet_shap_explanation
+                || null,
+        };
+    }
+
+    function dedupeWallets(rows) {
+        const byAddress = new Map();
+        for (const wallet of rows || []) {
+            const address = (wallet.address || '').toLowerCase();
+            if (!address) continue;
+            const existing = byAddress.get(address);
+            if (!existing) {
+                byAddress.set(address, wallet);
+                continue;
+            }
+            const existingLastSeen = Number(existing.last_seen || 0);
+            const incomingLastSeen = Number(wallet.last_seen || 0);
+            if (incomingLastSeen >= existingLastSeen) {
+                byAddress.set(address, wallet);
+            }
+        }
+        return Array.from(byAddress.values()).sort((a, b) => Number(b.last_seen || 0) - Number(a.last_seen || 0));
+    }
+
+    function dedupeTransactions(rows) {
+        const byId = new Map();
+        for (const tx of rows || []) {
+            const id = tx.id || tx.transaction_hash || '';
+            if (!id) continue;
+            const existing = byId.get(id);
+            if (!existing) {
+                byId.set(id, tx);
+                continue;
+            }
+            const existingTs = Number(existing.timestamp || 0);
+            const incomingTs = Number(tx.timestamp || 0);
+            if (incomingTs >= existingTs) {
+                byId.set(id, tx);
+            }
+        }
+        return Array.from(byId.values()).sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0));
+    }
+
     async function loadData() {
+        const requestId = ++latestLoadRequestId;
+        const nonce = Date.now();
         try {
             // Fetch large batch for stats/charts
-            const wRes = await fetch('/wallets?limit=1000'); 
-            allWalletsData = await wRes.json();
+            const wRes = await fetch(`/wallets?limit=1000&_=${nonce}`, { cache: 'no-store' }); 
+            const walletPayload = await wRes.json();
             
-            const tRes = await fetch('/transactions?limit=1000');
-            allTxsData = await tRes.json();
+            const tRes = await fetch(`/transactions?limit=1000&_=${nonce}`, { cache: 'no-store' });
+            const txPayload = await tRes.json();
+
+            if (requestId !== latestLoadRequestId) {
+                return;
+            }
+
+            const normalizedWallets = Array.isArray(walletPayload)
+                ? walletPayload.map(normalizeWalletRecord).filter((wallet) => wallet.address)
+                : [];
+            allWalletsData = dedupeWallets(normalizedWallets);
+
+            const normalizedTxs = Array.isArray(txPayload)
+                ? txPayload.map(normalizeTransactionRecord).filter((tx) => tx.id)
+                : [];
+            allTxsData = dedupeTransactions(normalizedTxs);
             
             // Initialize display data
             walletsData = [...allWalletsData];
@@ -781,10 +958,10 @@
                 <tr class="hover:bg-gray-800/30 transition-colors table-row-enter" style="animation-delay: ${idx * 0.05}s">
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-2">
-                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[#008B8B] to-[#4682b4] flex items-center justify-center text-xs font-bold">
+                            <div class="flex-shrink-0 w-8 h-8 bg-surface-container-high border border-white/10 flex items-center justify-center text-xs font-bold">
                                 ${w.address.substring(2, 4).toUpperCase()}
                             </div>
-                            <span class="font-mono text-[#4682b4] text-sm clickable-hash break-all" onclick="openWalletModal('${w.address}')">
+                            <span class="font-mono text-white/90 text-sm clickable-hash break-all" onclick="openWalletModal('${w.address}')">
                                 ${w.address}
                             </span>
                         </div>
@@ -856,7 +1033,7 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <button onclick="openTransactionModal('${t.id}')" 
-                                class="text-xs bg-gray-700/50 hover:bg-[#008B8B]/30 border border-gray-600 hover:border-[#008B8B] px-4 py-2 rounded-lg transition-all duration-300 text-gray-300 hover:text-white">
+                                class="text-xs bg-gray-700/40 hover:bg-white/10 border border-white/10 hover:border-white/20 px-4 py-2 rounded-none transition-all duration-300 text-gray-300 hover:text-white">
                             View
                         </button>
                     </td>
@@ -888,13 +1065,13 @@
             riskChartInstance = new ApexCharts(document.querySelector("#risk-distribution-chart"), {
                 series: riskSeries,
                 labels: ['High Risk', 'Medium Risk', 'Low Risk'],
-                colors: ['#ef4444', '#f59e0b', '#22c55e'],
+                colors: ['#f87171', '#fbbf24', '#9ca3af'],
                 chart: { type: 'donut', height: 256, background: 'transparent', animations: { enabled: true } },
                 theme: { mode: 'dark' },
                 dataLabels: { enabled: true },
                 plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'Total', color: '#9ca3af' }}}} },
                 legend: { position: 'bottom', labels: { colors: '#9ca3af' } },
-                stroke: { width: 2, colors: ['#1a1f2e'] }
+                stroke: { width: 2, colors: ['#20201f'] }
             });
             riskChartInstance.render();
         }
@@ -905,13 +1082,13 @@
             trustChartInstance = new ApexCharts(document.querySelector("#trust-distribution-chart"), {
                 series: trustSeries,
                 labels: ['Trusted', 'Neutral', 'Untrusted'],
-                colors: ['#22c55e', '#4682b4', '#ef4444'],
+                colors: ['#e5e2e1', '#9ca3af', '#f87171'],
                 chart: { type: 'donut', height: 256, background: 'transparent', animations: { enabled: true } },
                 theme: { mode: 'dark' },
                 dataLabels: { enabled: true },
                 plotOptions: { pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'Total', color: '#9ca3af' }}}} },
                 legend: { position: 'bottom', labels: { colors: '#9ca3af' } },
-                stroke: { width: 2, colors: ['#1a1f2e'] }
+                stroke: { width: 2, colors: ['#20201f'] }
             });
             trustChartInstance.render();
         }
@@ -922,9 +1099,9 @@
                 series: [{ name: 'Risk Score', data: trendData }],
                 chart: { type: 'area', height: 256, background: 'transparent', toolbar: { show: false }, animations: { enabled: true } },
                 theme: { mode: 'dark' },
-                stroke: { curve: 'smooth', width: 3, colors: ['#a855f7'] },
+                stroke: { curve: 'smooth', width: 3, colors: ['#e5e2e1'] },
                 fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.2, stops: [0, 90, 100] } },
-                colors: ['#a855f7'],
+                colors: ['#e5e2e1'],
                 dataLabels: { enabled: false },
                 xaxis: { categories: trendCategories, labels: { style: { colors: '#9ca3af', fontSize: '10px' } } },
                 yaxis: { labels: { style: { colors: '#9ca3af' }, formatter: (val) => Number(val).toFixed(0) + '%' } },
@@ -954,8 +1131,147 @@
             const res = await fetch('/predict/transaction', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ features: mappedFeatures }) });
             if (!res.ok) throw new Error("Analysis failed");
             const data = await res.json();
-            return data.explanation || [];
-        } catch (err) { return ["Could not generate detailed analysis."]; }
+            return data;
+        } catch (err) {
+            return { explanation: ["Could not generate detailed analysis."] };
+        }
+    }
+
+    function normalizeShapPayload(shapExplanation, expectedKind = '') {
+        if (shapExplanation === null || shapExplanation === undefined) {
+            return null;
+        }
+
+        let payload = null;
+        if (Array.isArray(shapExplanation)) {
+            payload = { top_features: shapExplanation };
+        } else if (typeof shapExplanation === 'string') {
+            payload = { summary: shapExplanation };
+        } else if (typeof shapExplanation === 'object') {
+            payload = shapExplanation;
+        }
+
+        if (!payload) {
+            return null;
+        }
+
+        const detectedKind = typeof payload.kind === 'string' ? payload.kind.trim().toLowerCase() : '';
+        if (expectedKind && detectedKind && detectedKind !== expectedKind) {
+            return null;
+        }
+
+        const summary = (typeof payload.summary === 'string' && payload.summary.trim())
+            ? payload.summary.trim()
+            : '';
+        const topFeatures = Array.isArray(payload.top_features) ? payload.top_features.slice(0, 5) : [];
+
+        return {
+            kind: expectedKind || detectedKind || 'generic',
+            summary: summary || 'SHAP summary unavailable.',
+            top_features: topFeatures,
+        };
+    }
+
+    function findWalletRecord(address) {
+        if (!address) return null;
+        const normalized = String(address).toLowerCase();
+        return (
+            allWalletsData.find((w) => (w.address || '').toLowerCase() === normalized)
+            || walletsData.find((w) => (w.address || '').toLowerCase() === normalized)
+            || null
+        );
+    }
+
+    function findLatestWalletTransaction(address) {
+        if (!address) return null;
+        const normalized = String(address).toLowerCase();
+        const walletTxs = allTxsData.filter(
+            (t) => (t.from && t.from.toLowerCase() === normalized) || (t.to && t.to.toLowerCase() === normalized)
+        );
+        if (!walletTxs.length) return null;
+        return walletTxs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
+    }
+
+    function resolveTransactionShap(txRecord, analysis) {
+        const tx = txRecord && typeof txRecord === 'object' ? txRecord : {};
+        const persisted = (tx.raw_transaction && typeof tx.raw_transaction === 'object') ? tx.raw_transaction : {};
+        const modelAnalysis = analysis && typeof analysis === 'object' ? analysis : {};
+
+        const candidates = [
+            persisted.transaction_shap_explanation,
+            tx.transaction_shap_explanation,
+            persisted.shap_explanation,
+            tx.shap_explanation,
+            modelAnalysis.transaction_shap_explanation,
+            modelAnalysis.shap_explanation,
+        ];
+
+        for (const candidate of candidates) {
+            const normalized = normalizeShapPayload(candidate, 'transaction');
+            if (normalized) return normalized;
+        }
+
+        return null;
+    }
+
+    function resolveWalletShap(walletRecord, txRecord, analysis) {
+        const wallet = walletRecord && typeof walletRecord === 'object' ? walletRecord : {};
+        const tx = txRecord && typeof txRecord === 'object' ? txRecord : {};
+        const persisted = (tx.raw_transaction && typeof tx.raw_transaction === 'object') ? tx.raw_transaction : {};
+        const modelAnalysis = analysis && typeof analysis === 'object' ? analysis : {};
+        const walletMetadata = (wallet.metadata && typeof wallet.metadata === 'object')
+            ? wallet.metadata
+            : ((wallet.metadata_json && typeof wallet.metadata_json === 'object') ? wallet.metadata_json : {});
+
+        const candidates = [
+            wallet.wallet_shap_explanation,
+            walletMetadata.wallet_shap_explanation,
+            persisted.wallet_shap_explanation,
+            tx.wallet_shap_explanation,
+            modelAnalysis.wallet_shap_explanation,
+        ];
+
+        for (const candidate of candidates) {
+            const normalized = normalizeShapPayload(candidate, 'wallet');
+            if (normalized) return normalized;
+        }
+
+        return null;
+    }
+
+    function renderShapBlock(shapExplanation, options = {}) {
+        const expectedKind = options.expectedKind || '';
+        const emptyMessage = options.emptyMessage || 'SHAP explanation unavailable.';
+        const normalized = normalizeShapPayload(shapExplanation, expectedKind);
+
+        if (!normalized) {
+            return `<div class="text-gray-500 text-sm">${emptyMessage}</div>`;
+        }
+
+        const summary = normalized.summary;
+        const top = normalized.top_features;
+
+        const topItems = top.map((f) => {
+            const meaning = f.meaning || f.feature || 'Unknown feature';
+            const impact = f.impact || 'n/a';
+            const isIncrease = f.direction === 'increases_risk';
+            const isReduce = f.direction === 'reduces_risk';
+            const direction = isIncrease ? 'increases risk' : (isReduce ? 'reduces risk' : 'mixed impact');
+            const impactClass = isIncrease ? 'text-red-400' : (isReduce ? 'text-green-400' : 'text-gray-300');
+            return `
+                <li class="flex items-start justify-between gap-3 text-sm border-b border-gray-700/50 pb-1">
+                    <span class="text-gray-300">${meaning}</span>
+                    <span class="${impactClass} font-semibold whitespace-nowrap">${impact} (${direction})</span>
+                </li>
+            `;
+        }).join('');
+
+        return `
+            <div class="space-y-2">
+                <div class="text-gray-200 text-sm leading-relaxed">${summary}</div>
+                ${topItems ? `<ul class="space-y-1 mt-2">${topItems}</ul>` : '<div class="text-gray-500 text-sm">No SHAP top features available.</div>'}
+            </div>
+        `;
     }
 
     function closeModal(event, modalId) {
@@ -996,29 +1312,16 @@
         riskBar.style.width = riskPercent + '%';
         
         document.getElementById('tx-modal-value').innerText = parseFloat(tx.value).toFixed(4) + ' ETH';
-        document.getElementById('tx-modal-from').innerHTML = `<span class="clickable-hash text-blue-400 hover:text-blue-300 break-all" onclick="openWalletModal('${tx.from}')">${tx.from}</span>`;
-        document.getElementById('tx-modal-to').innerHTML = `<span class="clickable-hash text-blue-400 hover:text-blue-300 break-all" onclick="openWalletModal('${tx.to}')">${tx.to}</span>`;
+        document.getElementById('tx-modal-from').innerHTML = `<span class="clickable-hash text-white/90 hover:text-secondary break-all" onclick="openWalletModal('${tx.from}')">${tx.from}</span>`;
+        document.getElementById('tx-modal-to').innerHTML = `<span class="clickable-hash text-white/90 hover:text-secondary break-all" onclick="openWalletModal('${tx.to}')">${tx.to}</span>`;
         document.getElementById('tx-modal-timestamp').innerText = tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleString() : 'N/A';
         document.getElementById('tx-modal-status').innerText = tx.status || 'Pending';
         document.getElementById('tx-modal-etherscan').href = `https://sepolia.etherscan.io/tx/${tx.id}`;
 
         const featuresGrid = document.getElementById('tx-features-grid');
         const featuresSection = document.getElementById('tx-features-section');
-        
-        if (tx.raw_transaction && typeof tx.raw_transaction === 'object') {
-            const features = tx.raw_transaction;
-            featuresGrid.innerHTML = Object.entries(features)
-                .filter(([key]) => !['from', 'to', 'value', 'timestamp', 'status', 'id', 'hash', 'saved_to_chain'].includes(key.toLowerCase()))
-                .map(([key, value]) => `
-                <div class="feature-item">
-                    <div class="feature-label">${key.replace(/_/g, ' ')}</div>
-                    <div class="feature-value break-all">${typeof value === 'number' ? value.toFixed(4) : value}</div>
-                </div>
-            `).join('');
-            featuresSection.style.display = 'block';
-        } else {
-            featuresSection.style.display = 'none';
-        }
+        featuresGrid.innerHTML = '';
+        featuresSection.style.display = 'none';
 
         const container = document.getElementById('tx-modal-explanation-container');
         const contentDiv = document.getElementById('tx-modal-explanation');
@@ -1033,13 +1336,45 @@
         document.getElementById('tx-modal').classList.add('active');
 
         try {
-            const explanations = await loadTxExplanation(tx);
-            if (explanations && explanations.length > 0) {
-                const formattedText = explanations[0].replace(/\*\*(.*?)\*\*/g, '<span class="text-blue-400 font-semibold">$1</span>');
-                contentDiv.innerHTML = formattedText;
-            } else {
-                contentDiv.innerHTML = '<span class="text-gray-500">Standard transaction pattern detected.</span>';
-            }
+            const analysis = await loadTxExplanation(tx);
+            const persisted = (tx.raw_transaction && typeof tx.raw_transaction === 'object') ? tx.raw_transaction : {};
+
+            const connectedWalletAddress = tx.from || persisted.wallet_address || persisted.from_address || '';
+
+            const transactionShapSource = resolveTransactionShap(tx, analysis);
+            const rawNarrative =
+                (typeof analysis.explanation === 'string' && analysis.explanation.trim())
+                    ? analysis.explanation.trim()
+                    : (Array.isArray(analysis.explanation) ? String(analysis.explanation[0] || '').trim() : '');
+            const shapSummaryText =
+                rawNarrative
+                || ((transactionShapSource && transactionShapSource.summary) ? transactionShapSource.summary : 'Transaction SHAP explanation unavailable.');
+
+            const transactionShapHtml = renderShapBlock(transactionShapSource, {
+                expectedKind: 'transaction',
+                emptyMessage: 'Transaction SHAP explanation unavailable.',
+            });
+
+            const walletLinkHtml = connectedWalletAddress
+                ? `<span class="clickable-hash text-white/90 hover:text-secondary cursor-pointer break-all" onclick="openWalletModal('${connectedWalletAddress}')">${connectedWalletAddress}</span>`
+                : '<span class="text-gray-500">Unavailable</span>';
+
+            contentDiv.innerHTML = `
+                <div class="space-y-4 animate-fadeIn">
+                    <div>
+                        <div class="text-xs text-blue-400 font-bold mb-1 uppercase tracking-wider">SHAP-Based Analysis</div>
+                        <div class="text-gray-200 leading-relaxed">${shapSummaryText}</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-emerald-400 font-bold mb-1 uppercase tracking-wider">Transaction SHAP Explanation</div>
+                        ${transactionShapHtml}
+                    </div>
+                    <div>
+                        <div class="text-xs text-blue-400 font-bold mb-1 uppercase tracking-wider">Linked Wallet Context</div>
+                        <div class="text-xs text-gray-400">${walletLinkHtml}</div>
+                    </div>
+                </div>
+            `;
         } catch (err) {
             contentDiv.innerHTML = '<span class="text-gray-500">Analysis unavailable.</span>';
         }
@@ -1085,10 +1420,10 @@
             const data = await res.json();
 
             if (data.explanation) {
-                const formatted = data.explanation.replace(/\*\*(.*?)\*\*/g, '<span class="text-purple-400 font-bold">$1</span>');
+                const formatted = data.explanation.replace(/\*\*(.*?)\*\*/g, '<span class="text-white font-semibold">$1</span>');
                 contentDiv.innerHTML = `
                     <div class="animate-fadeIn">
-                        <div class="text-xs text-purple-400 font-bold mb-2 uppercase tracking-wider">✨ AI Executive Summary</div>
+                        <div class="text-xs text-secondary font-bold mb-2 uppercase tracking-wider">AI Executive Summary</div>
                         ${formatted}
                     </div>
                 `;
@@ -1142,14 +1477,17 @@
             // Latest TX
             const walletTxs = allTxsData.filter(t => (t.from && t.from.toLowerCase() === address.toLowerCase()) || (t.to && t.to.toLowerCase() === address.toLowerCase()));
             const latestTxContent = document.getElementById('wallet-latest-tx-content');
+            const walletShapContent = document.getElementById('wallet-shap-content');
+            const walletLinkedTx = document.getElementById('wallet-linked-tx');
+            let latestTx = null;
             
             if (walletTxs.length > 0) {
-                const latestTx = walletTxs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
+                latestTx = walletTxs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
                 const riskColor = latestTx.riskScore > 0.7 ? 'text-red-400' : latestTx.riskScore > 0.4 ? 'text-yellow-400' : 'text-green-400';
                 latestTxContent.innerHTML = `
                     <div class="bg-gray-800/30 border border-gray-700/50 rounded-lg p-4">
                         <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div><span class="text-gray-500 block mb-1">TX Hash</span><span class="text-[#4682b4] cursor-pointer break-all" onclick="openTransactionModal('${latestTx.id}')">${latestTx.id.substring(0, 10)}...</span></div>
+                            <div><span class="text-gray-500 block mb-1">TX Hash</span><span class="text-white/90 cursor-pointer break-all" onclick="openTransactionModal('${latestTx.id}')">${latestTx.id.substring(0, 10)}...</span></div>
                             <div><span class="text-gray-500 block mb-1">Value</span><span class="text-white">${parseFloat(latestTx.value).toFixed(4)} ETH</span></div>
                             <div><span class="text-gray-500 block mb-1">Risk</span><span class="${riskColor} font-bold">${(latestTx.riskScore * 100).toFixed(1)}%</span></div>
                             <div><span class="text-gray-500 block mb-1">Time</span><span class="text-gray-300">${latestTx.timestamp ? new Date(latestTx.timestamp * 1000).toLocaleDateString() : 'N/A'}</span></div>
@@ -1157,6 +1495,24 @@
                     </div>`;
             } else {
                 latestTxContent.innerHTML = '<div class="text-gray-500 text-center py-4">No recent transactions found</div>';
+            }
+
+            const walletShapSource = resolveWalletShap(wallet, latestTx, null);
+            walletShapContent.innerHTML = renderShapBlock(walletShapSource, {
+                expectedKind: 'wallet',
+                emptyMessage: 'Wallet SHAP explanation unavailable.',
+            });
+
+            if (latestTx) {
+                const linkedTxId = latestTx.id || '';
+                walletLinkedTx.innerHTML = `
+                    Linked transaction:
+                    <span class="clickable-hash text-white/90 hover:text-secondary cursor-pointer break-all" onclick="openTransactionModal('${linkedTxId}')">
+                        ${linkedTxId ? linkedTxId.substring(0, 16) + '...' : 'Unavailable'}
+                    </span>
+                `;
+            } else {
+                walletLinkedTx.innerHTML = '<span class="text-blue-200/70">No recent linked transaction available.</span>';
             }
         } else {
             // Not found state
@@ -1166,6 +1522,8 @@
             document.getElementById('wallet-modal-trust-bar').style.width = '0%';
             document.getElementById('wallet-modal-age').innerText = 'N/A';
             document.getElementById('wallet-latest-tx-content').innerHTML = '<div class="text-gray-500 text-center py-4">Wallet not found in database</div>';
+            document.getElementById('wallet-shap-content').innerHTML = '<div class="text-gray-500 text-sm">Wallet SHAP explanation unavailable.</div>';
+            document.getElementById('wallet-linked-tx').innerHTML = '<span class="text-blue-200/70">Linked transaction unavailable.</span>';
         }
         
         document.getElementById('wallet-modal-etherscan').href = `https://sepolia.etherscan.io/address/${address}`;

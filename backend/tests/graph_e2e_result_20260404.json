@@ -1,0 +1,41 @@
+{
+  "predict_status": 200,
+  "predict_has_shap": true,
+  "ingest_statuses": [
+    201,
+    201,
+    201,
+    201,
+    201,
+    201,
+    201
+  ],
+  "ingest_graph_flags": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "wallet_graph_status": 200,
+  "wallet_nodes": 48,
+  "wallet_edges": 207,
+  "wallet_alert_types": [
+    "CIRCULAR",
+    "FUNDING"
+  ],
+  "trace_status": 200,
+  "trace_paths": 0,
+  "path_status": 200,
+  "path": [
+    "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "0xcccccccccccccccccccccccccccccccccccccccc"
+  ],
+  "high_risk_status": 200,
+  "high_risk_count": 20,
+  "ui_graph_status": 200,
+  "ui_contains_title": true
+}

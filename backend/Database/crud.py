@@ -5,9 +5,13 @@ from sqlalchemy.dialects.postgresql import insert
 from web3 import Web3
 import logging
 import json
+import re
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+TX_HASH_RE = re.compile(r"^0x[a-fA-F0-9]{64}$")
+PLACEHOLDER_TX_HASH_RE = re.compile(r"^0x([a-fA-F0-9])\1{63}$")
 
 def _normalize_address(addr):
     """Normalize to a lowercase 0x-prefixed hex string for stable DB keys."""
@@ -19,6 +23,35 @@ def _normalize_address(addr):
     if not a.startswith("0x"):
         a = "0x" + a
     return a.lower()
+
+
+def _normalize_tx_hash(tx_hash):
+    if tx_hash is None:
+        return None
+    value = str(tx_hash).strip().lower()
+    if not value:
+        return None
+    if not value.startswith("0x"):
+        value = "0x" + value
+    return value
+
+
+def _is_placeholder_tx_hash(tx_hash):
+    normalized = _normalize_tx_hash(tx_hash)
+    if not normalized:
+        return False
+    return bool(PLACEHOLDER_TX_HASH_RE.match(normalized))
+
+
+def _is_valid_tx_hash(tx_hash):
+    normalized = _normalize_tx_hash(tx_hash)
+    if not normalized:
+        return False
+    if not TX_HASH_RE.match(normalized):
+        return False
+    if _is_placeholder_tx_hash(normalized):
+        return False
+    return True
 
 def _to_dt(ts):
     """Convert unix int or iso string to datetime or return None."""
@@ -43,12 +76,15 @@ def create_transaction(session, data):
     """
     try:
         # basic validations
-        tx_hash = data.get("transaction_hash") or data.get("transactionHash") or data.get("hash")
-        if not tx_hash:
+        tx_hash_raw = data.get("transaction_hash") or data.get("transactionHash") or data.get("hash")
+        if not tx_hash_raw:
             raise ValueError("Missing transaction_hash")
 
-        # normalize tx_hash
-        tx_hash = tx_hash if tx_hash.startswith("0x") else "0x" + tx_hash
+        tx_hash = _normalize_tx_hash(tx_hash_raw)
+        if not _is_valid_tx_hash(tx_hash):
+            raise ValueError(
+                "Invalid transaction_hash: expected a non-placeholder 0x-prefixed 32-byte hex hash"
+            )
 
         # addresses: normalize to lowercase 0x format
         from_addr = data.get("from_address") or data.get("from") or None
@@ -58,12 +94,21 @@ def create_transaction(session, data):
 
         # numeric fields
         try:
-            risk_score = float(data.get("risk_probability")) if data.get("risk_probability") is not None else None
+            risk_val = data.get("risk_probability")
+            if risk_val is None:
+                risk_val = data.get("fraud_probability")
+            risk_score = float(risk_val) if risk_val is not None else None
         except Exception:
             risk_score = None
 
         try:
-            wallet_trust_score = float(data.get("wallet_trust_score")) if data.get("wallet_trust_score") is not None else None
+            trust_val = data.get("wallet_trust_score")
+            if trust_val is None:
+                trust_val = data.get("temporal_score_normalized")
+            if trust_val is None and data.get("temporal_score") is not None:
+                trust_raw = float(data.get("temporal_score"))
+                trust_val = trust_raw / 10.0 if trust_raw > 1.0 else trust_raw
+            wallet_trust_score = float(trust_val) if trust_val is not None else None
         except Exception:
             wallet_trust_score = None
 
@@ -116,10 +161,11 @@ def create_transaction(session, data):
 
         # Upsert wallet (sender). We will NOT overwrite existing trust_score with NULL.
         if from_addr:
+            now_dt = datetime.utcnow()
             wallet_vals = {
                 "address": from_addr,
                 "first_seen": ts_dt or datetime.utcnow(),
-                "last_seen": ts_dt or datetime.utcnow(),
+                "last_seen": now_dt,
             }
 
             # If we have a non-null trust score, include it in the update set.
@@ -140,6 +186,22 @@ def create_transaction(session, data):
                     }
                 )
             session.execute(stmt_w)
+
+        # Upsert recipient wallet existence for graph traversal and relationship queries.
+        if to_addr:
+            now_dt = datetime.utcnow()
+            to_wallet_vals = {
+                "address": to_addr,
+                "first_seen": ts_dt or datetime.utcnow(),
+                "last_seen": now_dt,
+            }
+            stmt_to = insert(Wallet).values(**to_wallet_vals).on_conflict_do_update(
+                index_elements=['address'],
+                set_={
+                    "last_seen": to_wallet_vals["last_seen"],
+                }
+            )
+            session.execute(stmt_to)
 
         # At this point, caller may commit (but commit here to be safer if caller forgets)
         try:
@@ -201,8 +263,8 @@ def mark_tx_onchain(session, tx_hash, onchain_record_hash):
     """
     from database.models_db import Transaction
     
-    norm_hash = _normalize_address(tx_hash)
-    if not norm_hash:
+    norm_hash = _normalize_tx_hash(tx_hash)
+    if not _is_valid_tx_hash(norm_hash):
         logger.warning(f"mark_tx_onchain received invalid tx_hash: {tx_hash}")
         return None
         

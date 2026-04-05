@@ -70,7 +70,7 @@ class ProductionXGBoostFraudDetector:
 # 2. ADVANCED EVALUATION LOGIC
 # =============================================================================
 
-MODEL_PATH = '../saved_models/best_fraud_detector_model.pkl'  # <--- CHECK THIS PATH
+MODEL_PATH = '../saved_models/noise_fraud_detector_model.pkl'  # <--- CHECK THIS PATH
 DATASET_PATH = 'transaction_dataset.csv'
 
 class AdvancedEvaluator:

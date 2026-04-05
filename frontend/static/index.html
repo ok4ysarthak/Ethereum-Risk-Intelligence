@@ -1,579 +1,1745 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html class="dark" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - ETH Fraud Detection</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ChainGuard AI | Fraud Intelligence Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <style>
-        /* --- DESIGN SYSTEM FROM ACTIVITY.HTML --- */
-        :root {
-            --bg-deep: #0e0e10;       /* Almost black, slightly warm */
-            --bg-panel: #18181b;      /* Matte Charcoal */
-            --text-main: #e4e4e7;     /* Off-white/Cream */
-            --text-muted: #a1a1aa;    /* Soft Grey */
-            
-            /* Accents */
-            --accent-gold: #fbbf24;   /* Vintage Amber */
-            --accent-sage: #a7f3d0;   /* Soothing Green */
-            --accent-clay: #f87171;   /* Muted Red */
-            --border-subtle: rgba(255, 255, 255, 0.08);
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-    
-        body { 
-            background-color: var(--bg-deep);
-            background-image: radial-gradient(circle at 50% 0%, #27272a 0%, var(--bg-deep) 80%);
-            font-family: 'Space Grotesk', sans-serif;
-            min-height: 100vh;
-            color: var(--text-main);
-            letter-spacing: 0.02em;
+        .tonal-shift {
+            background-color: #1C1B1B;
         }
-        
-        /* Matte Cards instead of Glassmorphism */
-        .glass-panel { 
-            background: var(--bg-panel);
-            backdrop-filter: none; 
-            border: 1px solid var(--border-subtle);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 
-                        0 4px 20px rgba(0,0,0,0.4);
-            border-radius: 8px;
-        }
-        
-        /* Hover effects */
-        .hover-lift {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border-subtle);
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-gold);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 4px;
         }
-        
         ::-webkit-scrollbar-track {
-            background: var(--bg-deep);
-            border-left: 1px solid var(--border-subtle);
+            background: #131313;
         }
-        
         ::-webkit-scrollbar-thumb {
-            background: #3f3f46;
-            border: 2px solid var(--bg-deep);
-            border-radius: 0px;
+            background: #353535;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-gold);
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
-        
-        /* Animations */
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.95); }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(28, 27, 27, 0.7);
         }
-        
-        .pulse-glow {
-            animation: pulse-glow 4s ease-in-out infinite;
-        }
-    
-        /* Scroll Reveal */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
             will-change: opacity, transform;
         }
-    
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-        
-        /* Icons */
-        .icon-wrapper {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-subtle);
-        }
-        
-        .icon-wrapper svg {
-            width: 20px;
-            height: 20px;
-            stroke: var(--accent-gold);
-            stroke-width: 1.5;
-            fill: none;
-        }
-        
-        /* Typography utilities */
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace; 
-            letter-spacing: -0.03em;
-        }
-        
-        /* Feature Cards specific to Dashboard */
-        .feature-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            border-color: var(--accent-gold);
-            background: rgba(255,255,255,0.04);
-        }
-        
-        /* Gold Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Tech Stack Badges */
-        .badge-tech {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            border: 1px solid var(--border-subtle);
-            background: rgba(255,255,255,0.03);
-            color: var(--text-muted);
-        }
     </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#91002d",
+                      "surface-bright": "#393939",
+                      "secondary-fixed": "#e2e2e2",
+                      "tertiary-fixed-dim": "#ffb2b8",
+                      "surface-container": "#20201f",
+                      "on-surface-variant": "#c4c7c8",
+                      "inverse-surface": "#e5e2e1",
+                      "secondary": "#c6c6c7",
+                      "error-container": "#93000a",
+                      "surface-tint": "#c6c6c7",
+                      "on-primary": "#2f3131",
+                      "on-tertiary-fixed": "#40000f",
+                      "surface-container-low": "#1c1b1b",
+                      "on-secondary-fixed-variant": "#454747",
+                      "surface-dim": "#131313",
+                      "outline": "#8e9192",
+                      "tertiary": "#ffffff",
+                      "error": "#ffb4ab",
+                      "primary": "#ffffff",
+                      "on-primary-fixed-variant": "#454747",
+                      "primary-fixed": "#e2e2e2",
+                      "inverse-primary": "#5d5f5f",
+                      "surface-container-high": "#2a2a2a",
+                      "outline-variant": "#444748",
+                      "on-tertiary": "#67001d",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary": "#2f3131",
+                      "surface": "#131313",
+                      "tertiary-container": "#ffdadb",
+                      "on-background": "#e5e2e1",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "primary-container": "#e2e2e2",
+                      "on-error-container": "#ffdad6",
+                      "background": "#131313",
+                      "primary-fixed-dim": "#c6c6c7",
+                      "surface-container-highest": "#353535",
+                      "surface-variant": "#353535",
+                      "on-secondary-container": "#b4b5b5",
+                      "inverse-on-surface": "#313030",
+                      "on-tertiary-container": "#c90041",
+                      "tertiary-fixed": "#ffdadb",
+                      "on-primary-container": "#636565",
+                      "on-error": "#690005",
+                      "secondary-container": "#454747",
+                      "on-primary-fixed": "#1a1c1c",
+                      "surface-container-lowest": "#0e0e0e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Space Grotesk"],
+                      "body": ["Inter"],
+                      "label": ["Space Grotesk"]
+              }
+            },
+          },
+        }
+      </script>
 </head>
-<body class="text-gray-300">
-
-    <header class="glass-panel sticky top-0 z-50 border-b border-gray-800/50">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-white flex items-center gap-2">
-                <div class="icon-wrapper w-10 h-10">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/>
-                    </svg>
-                </div>
-                DeTrust<span class="text-[#008B8B]">ETH</span>
-                <span class="text-xs bg-[#008B8B]/20 text-[#008B8B] px-2 py-0.5 rounded ml-2 border border-[#008B8B]/30">Dashboard</span>
-            </h1>
-            <div class="flex space-x-6 text-sm font-medium">
-                <a href="/" class="text-[#008B8B] border-b-2 border-[#008B8B] pb-1">Dashboard</a>
-                <a href="/activity" class="text-gray-400 hover:text-white transition-colors">Predicted History</a>
-                <a href="/live" class="text-gray-400 hover:text-white transition-colors">Live Sepolia Feed</a>
-            </div>
+<body class="bg-surface text-on-surface antialiased">
+    <aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-white/5 bg-[#131313] z-50">
+        <div class="p-8">
+            <div class="font-['Space_Grotesk'] font-bold text-xl text-white tracking-tighter mb-1">ChainGuard AI</div>
+            <div class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px] text-[#C6C6C7] opacity-60">Fraud Intelligence</div>
+        </div>
+        <nav class="flex-1 px-4 space-y-2">
+            <a class="flex items-center gap-4 px-4 py-3 text-white bg-[#2A2A2A] border-l-2 border-white transition-all duration-300" href="/">
+                <span class="material-symbols-outlined text-lg">dashboard</span>
+                <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Command</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300" href="/shield">
+                <span class="material-symbols-outlined text-lg">security</span>
+                <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Shield</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300" href="/graph">
+                <span class="material-symbols-outlined text-lg">hub</span>
+                <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Graph Intelligence</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300" href="/live">
+                <span class="material-symbols-outlined text-lg">analytics</span>
+                <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Intel</span>
+            </a>
         </nav>
-    </header>
+        <div class="px-8 mb-8">
+            <button class="w-full py-3 bg-white text-surface font-headline font-bold uppercase tracking-widest text-[10px] hover:bg-secondary transition-colors">
+                Upgrade Node
+            </button>
+        </div>
+        <div class="px-4 pb-8 space-y-2 border-t border-white/5 pt-6">
+            <a class="flex items-center gap-4 px-4 py-2 text-[#C6C6C7] opacity-60 hover:opacity-100 transition-all" href="#">
+                <span class="material-symbols-outlined text-lg">settings</span>
+                <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Settings</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-2 text-[#C6C6C7] opacity-60 hover:opacity-100 transition-all" href="#">
+                <span class="material-symbols-outlined text-lg">help</span>
+                <span class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px]">Support</span>
+            </a>
+        </div>
+    </aside>
 
-    <main class="container mx-auto px-4 py-8 space-y-8">
-        
-        <section class="reveal">
-            <div class="text-center mb-12">
-                <h1 class="text-5xl font-bold text-white mb-4">
-                    Ethereum <span class="gradient-text">Fraud Detection</span> System
-                </h1>
-                <p class="text-gray-400 text-lg max-w-3xl mx-auto font-light">
-                    Real-time ML-powered fraud detection for Ethereum transactions with advanced risk scoring and wallet trust analysis.
-                </p>
+    <main class="ml-64 min-h-screen flex flex-col">
+        <header class="sticky top-0 z-50 flex justify-between items-center px-8 h-16 w-full border-b border-white/5 bg-[#131313]/80 backdrop-blur-xl font-['Space_Grotesk'] font-medium text-sm text-white">
+            <div class="flex items-center bg-surface-container px-4 py-1.5 focus-within:ring-1 focus-within:ring-white/20 transition-all">
+                <span class="material-symbols-outlined text-outline text-lg mr-3">search</span>
+                <input class="bg-transparent border-none focus:ring-0 text-[11px] tracking-widest uppercase w-64 placeholder:text-outline/50" id="command-search-input" placeholder="QUERY CHAIN DATA..." type="text"/>
             </div>
-        </section>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <button class="hover:text-white transition-colors duration-200 text-[#C6C6C7] opacity-70">
+                        <span class="material-symbols-outlined">sensors</span>
+                    </button>
+                    <button class="hover:text-white transition-colors duration-200 text-[#C6C6C7] opacity-70 relative">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-0 right-0 w-1.5 h-1.5 bg-error rounded-full"></span>
+                    </button>
+                </div>
+                <div class="h-8 w-[1px] bg-white/10"></div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[11px] tracking-widest uppercase">Analyst // 042</span>
+                    <img alt="Analyst Profile" class="w-8 h-8 object-cover grayscale brightness-125 border border-white/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChLoiM5VPK9x8h1jjJQ0y8GnWIVD94jUlHZYQTegAXbnXsl1ReQN6KcGGcEpFfM2vjhCmw907uJ-iw3q0dM5lzT1kqzRSqtVP0kIy-BSkDgeGc7YqTaFYn2dBeNeV8koxO3_RGSpIBI7wywFbrEBLZ9d4_rJAPRvsMBUdjvgRi63m2xu72pTQTFI5j987rxRcODxjfpRN0rGERy9qWppfZJ9X0hGakxF9h5jFAZTUoygoLUU634DkV0NjzX5hs5P248h0bP_F5hsM"/>
+                </div>
+            </div>
+        </header>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="icon-wrapper">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 10v4h10v-4"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 14v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14v4"/>
-                        </svg>
+        <div class="p-8 space-y-8">
+            <section class="grid grid-cols-12 gap-0 border border-white/5 reveal">
+                <div class="col-span-8 p-12 relative overflow-hidden bg-surface-container-low min-h-[360px]">
+                    <div class="absolute inset-0 opacity-20 pointer-events-none">
+                        <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_70%)]"></div>
                     </div>
-                    <span class="text-xs text-gray-500 uppercase tracking-wider">Total Scanned</span>
-                </div>
-                <div class="text-4xl font-bold text-white mb-2 font-mono" id="stat-total-tx">-</div>
-                <div class="text-xs text-gray-400">Transactions analyzed</div>
-                <div class="mt-4 flex items-center gap-2 text-[#a7f3d0] text-xs uppercase tracking-wide">
-                    <span class="w-1.5 h-1.5 bg-[#a7f3d0] rounded-full animate-pulse"></span>
-                    <span>Live monitoring</span>
-                </div>
-            </div>
-            
-            <div class="glass-panel p-6 rounded-xl hover-lift reveal border-red-900/30">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1)); border-color: rgba(239,68,68,0.2);">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #ef4444;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 17h.01"/>
-                        </svg>
-                    </div>
-                    <span class="text-xs text-gray-500 uppercase tracking-wider">High Risk</span>
-                </div>
-                <div class="text-4xl font-bold text-[#f87171] mb-2 font-mono pulse-glow" id="stat-high-tx">-</div>
-                <div class="text-xs text-gray-400">Flagged as suspicious</div>
-                <div class="mt-4 flex items-center gap-2 text-[#f87171] text-xs uppercase tracking-wide">
-                    <span class="w-1.5 h-1.5 bg-[#f87171] rounded-full animate-pulse"></span>
-                    <span>Action Required</span>
-                </div>
-            </div>
-            
-            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); border-color: rgba(251,191,36,0.2);">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="stroke: #fbbf24;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18"/>
-                        </svg>
-                    </div>
-                    <span class="text-xs text-gray-500 uppercase tracking-wider">Unique Wallets</span>
-                </div>
-                <div class="text-4xl font-bold text-[#fbbf24] mb-2 font-mono" id="stat-total-wallets">-</div>
-                <div class="text-xs text-gray-400">Addresses tracked</div>
-                <div class="mt-4 flex items-center gap-2 text-[#fbbf24] text-xs uppercase tracking-wide">
-                    <span class="w-1.5 h-1.5 bg-[#fbbf24] rounded-full animate-pulse"></span>
-                    <span>Scoring Active</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 glass-panel p-8 rounded-xl hover-lift reveal">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="h-1 w-12 bg-gradient-to-r from-[#fbbf24] to-transparent rounded"></div>
-                    <h2 class="text-2xl font-bold text-white">Project Overview</h2>
-                </div>
-                <p class="text-gray-400 leading-relaxed mb-6 font-light">
-                    The Ethereum Fraud Detection System uses advanced Machine Learning (XGBoost) to analyze transaction patterns in real-time on the Sepolia Testnet. It assigns a <strong class="text-[#fbbf24]">Risk Score</strong> to every transaction and builds a persistent <strong class="text-[#a7f3d0]">Trust Score</strong> for every wallet.
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="feature-card p-5">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-[#a7f3d0] font-mono text-xs uppercase tracking-wider">Capabilities</span>
+                    <div class="relative z-10 space-y-6">
+                        <div class="font-headline text-[11px] tracking-[0.3em] uppercase text-outline">Network Pulse // Real-Time</div>
+                        <h1 class="font-headline text-7xl font-bold tracking-tighter leading-none max-w-2xl">GLOBAL MESH ANALYSIS.</h1>
+                        <p class="font-body text-on-surface-variant max-w-2xl text-sm leading-relaxed" id="mesh-analysis-summary">Loading live network analysis...</p>
+                        <div class="pt-4 flex gap-8">
+                            <div>
+                                <div class="font-headline text-3xl font-light" id="mesh-integrity-score">--%</div>
+                                <div class="font-headline text-[9px] tracking-widest uppercase text-outline">Integrity Score</div>
+                            </div>
+                            <div class="w-[1px] bg-white/10"></div>
+                            <div>
+                                <div class="font-headline text-3xl font-light" id="mesh-latency-peak">--</div>
+                                <div class="font-headline text-[9px] tracking-widest uppercase text-outline">Latency Peak</div>
+                            </div>
                         </div>
-                        <ul class="text-sm text-gray-400 space-y-2 font-mono">
-                            <li class="flex items-start gap-2">
-                                <span class="text-[#a7f3d0]">+</span>
-                                <span>Real-time Oracle Interception</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-[#a7f3d0]">+</span>
-                                <span>Feature Engineering (Velocity/Age)</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-[#a7f3d0]">+</span>
-                                <span>ML Probability Prediction</span>
-                            </li>
-                        </ul>
                     </div>
-                    
-                    <div class="feature-card p-5 border-red-900/20">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-[#f87171] font-mono text-xs uppercase tracking-wider">Limitations</span>
+                </div>
+                <div class="col-span-4 p-12 bg-surface-container-high border-l border-white/5 flex flex-col justify-between">
+                    <div class="space-y-8">
+                        <div>
+                            <div class="font-headline text-[11px] tracking-[0.2em] uppercase text-outline mb-4">Active Threat Level</div>
+                            <div class="text-error font-headline text-5xl font-bold tracking-tighter" id="active-threat-level">ANALYZING</div>
                         </div>
-                        <ul class="text-sm text-gray-400 space-y-2 font-mono">
-                            <li class="flex items-start gap-2">
-                                <span class="text-[#f87171]">-</span>
-                                <span>No blocking (Detection Only)</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-[#f87171]">-</span>
-                                <span>No private key access</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-[#f87171]">-</span>
-                                <span>Probabilistic (Not Absolute)</span>
-                            </li>
-                        </ul>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-end">
+                                <span class="text-[10px] uppercase tracking-widest text-on-surface-variant">Sybil Attack Risk</span>
+                                <span class="text-[11px] font-mono text-error" id="sybil-risk-percent">--%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 w-full"><div class="h-full bg-error w-[0%]" id="sybil-risk-bar"></div></div>
+                        </div>
                     </div>
+                    <a class="w-full py-4 border border-white text-white font-headline font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-surface transition-all text-center block" href="/shield">Open Shield Console</a>
                 </div>
-                
-                <div class="mt-6 pt-6 border-t border-gray-800">
-                    <h4 class="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">Technology Stack</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="badge-tech">XGBoost ML</span>
-                        <span class="badge-tech">Web3.js</span>
-                        <span class="badge-tech">Flask API</span>
-                        <span class="badge-tech">Sepolia</span>
-                        <span class="badge-tech">SQLAlchemy</span>
-                        <span class="badge-tech">Socket.IO</span>
-                    </div>
-                </div>
-            </div>
+            </section>
 
-            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-semibold text-white">Live Activity</h3>
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+                <div class="bg-surface-container-low p-8 border border-white/5 hover:bg-surface-container transition-colors group">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="material-symbols-outlined text-outline group-hover:text-white transition-colors">database</span>
+                        <span class="text-[10px] text-primary font-mono bg-primary/10 px-2 py-0.5">+12.4%</span>
+                    </div>
+                    <div class="font-headline text-4xl font-bold tracking-tighter mb-1" id="stat-total-tx">0</div>
+                    <div class="font-headline text-[10px] tracking-widest uppercase text-outline">Total Scanned Volume</div>
+                </div>
+                <div class="bg-surface-container-low p-8 border border-white/5 hover:bg-surface-container transition-colors group">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="material-symbols-outlined text-error group-hover:scale-110 transition-transform">warning</span>
+                        <span class="text-[10px] text-error font-mono bg-error/10 px-2 py-0.5">CRITICAL</span>
+                    </div>
+                    <div class="font-headline text-4xl font-bold tracking-tighter text-error mb-1" id="stat-high-tx">0</div>
+                    <div class="font-headline text-[10px] tracking-widest uppercase text-outline">High-Risk Detections</div>
+                </div>
+                <div class="bg-surface-container-low p-8 border border-white/5 hover:bg-surface-container transition-colors group">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="material-symbols-outlined text-outline group-hover:text-white transition-colors">router</span>
+                        <span class="text-[10px] text-on-surface-variant font-mono">NOMINAL</span>
+                    </div>
+                    <div class="font-headline text-4xl font-bold tracking-tighter mb-1" id="stat-total-wallets">0</div>
+                    <div class="font-headline text-[10px] tracking-widest uppercase text-outline">Active Wallet Nodes</div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 reveal">
+                <div class="lg:col-span-8 bg-surface-container-low border border-white/5 p-8 flex flex-col min-h-[520px]">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                        <div>
+                            <h3 class="font-headline text-[11px] tracking-[0.2em] uppercase text-outline">Transaction & Wallet Trends</h3>
+                            <p class="text-xs text-on-surface-variant mt-2">Simplified view: transaction risk trend and wallet trust trend separated for faster interpretation.</p>
+                        </div>
+                        <div class="text-[10px] uppercase tracking-widest text-outline">Last 60 minutes, 5-minute bins</div>
+                    </div>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <div class="border border-white/5 bg-surface-container-high/40 p-4">
+                            <div class="text-[10px] uppercase tracking-widest text-outline mb-3">Transaction Risk Trend</div>
+                            <div id="tx-trend-chart" class="w-full h-[330px]"></div>
+                        </div>
+                        <div class="border border-white/5 bg-surface-container-high/40 p-4">
+                            <div class="text-[10px] uppercase tracking-widest text-outline mb-3">Wallet Trust & Activity Trend</div>
+                            <div id="wallet-trend-chart" class="w-full h-[330px]"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 bg-surface-container-low border border-white/5 p-8 flex flex-col min-h-[520px]">
+                    <h3 class="font-headline text-[11px] tracking-[0.2em] uppercase text-outline mb-8">Live Transaction Stream</h3>
+                    <div class="flex-1 space-y-px overflow-y-auto pr-2" id="live-activity">
+                        <div class="text-center text-gray-500 text-sm py-8 font-mono">Waiting for transactions...</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 gap-8 reveal">
+                <div class="bg-surface-container-low border border-white/5 p-8 flex flex-col min-h-[760px]">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                        <div>
+                            <h3 class="font-headline text-[11px] tracking-[0.2em] uppercase text-outline">Geospatial Threat Mapping</h3>
+                            <p class="text-xs text-on-surface-variant mt-2">Interactive world map of real on-chain flows with flagged wallets and flagged transactions highlighted.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="flex items-center gap-2 text-[9px] uppercase tracking-widest"><span class="w-1.5 h-1.5 bg-[#22c55e] rounded-full"></span> Normal</span>
+                            <span class="flex items-center gap-2 text-[9px] uppercase tracking-widest"><span class="w-1.5 h-1.5 bg-[#a7f3d0] rounded-full"></span> Verified</span>
+                            <span class="flex items-center gap-2 text-[9px] uppercase tracking-widest"><span class="w-1.5 h-1.5 bg-[#38bdf8] rounded-full"></span> Inferred Geo</span>
+                            <span class="flex items-center gap-2 text-[9px] uppercase tracking-widest"><span class="w-1.5 h-1.5 bg-[#ef4444] rounded-full animate-pulse"></span> Flagged</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 relative bg-[#0b0f14] border border-white/5 overflow-hidden min-h-[620px]">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.08),transparent_70%)]"></div>
+                        <div id="geo-map-layer" class="absolute inset-0"></div>
+                        <div id="geo-tooltip" class="hidden absolute z-40 pointer-events-none bg-black/85 border border-white/20 text-[11px] text-white px-3 py-2 max-w-xs"></div>
+
+                        <div class="absolute top-4 left-4 p-3 bg-surface-container-highest/85 backdrop-blur border border-white/10 w-72">
+                            <div class="text-[9px] font-mono text-outline mb-2 uppercase">Top Country Corridors</div>
+                            <div id="geo-top-zones" class="space-y-1 text-[10px] text-on-surface-variant">Awaiting telemetry...</div>
+                            <div class="text-[9px] font-mono text-outline mt-3 uppercase">Geo Resolution</div>
+                            <div id="geo-resolution-note" class="text-[10px] text-on-surface-variant mt-1">Building geospatial inference...</div>
+                        </div>
+
+                        <div class="absolute top-4 right-4 p-3 bg-surface-container-highest/85 backdrop-blur border border-white/10 w-72">
+                            <div class="text-[9px] font-mono text-outline mb-2 uppercase">Flagged Intelligence</div>
+                            <div id="geo-flagged-summary" class="space-y-1 text-[10px] text-on-surface-variant">Awaiting telemetry...</div>
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 p-3 bg-surface-container-highest/90 backdrop-blur border border-white/10 w-80 space-y-3">
+                            <div class="text-[9px] font-mono text-outline uppercase">Validation Controls</div>
+                            <label class="flex items-center justify-between text-[10px] uppercase tracking-wider text-on-surface-variant">
+                                <span>Only Validated Vectors</span>
+                                <input id="geo-only-validated" type="checkbox" class="accent-white" checked>
+                            </label>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">
+                                    Min Confidence: <span id="geo-min-confidence-label" class="text-white">60%</span>
+                                </div>
+                                <input id="geo-min-confidence" type="range" min="25" max="95" value="60" class="w-full">
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Window</div>
+                                <select id="geo-time-window" class="w-full bg-surface-container-low border border-white/10 text-[11px] text-white h-8 px-2">
+                                    <option value="1h">Last 1 Hour</option>
+                                    <option value="24h" selected>Last 24 Hours</option>
+                                    <option value="7d">Last 7 Days</option>
+                                    <option value="all">All Available</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-4 left-[22.5rem] p-3 bg-surface-container-highest/90 backdrop-blur border border-white/10 w-[26rem]">
+                            <div id="geo-selected-title" class="text-[9px] font-mono text-outline uppercase mb-2">Validation Trace</div>
+                            <div id="geo-selected-body" class="space-y-1 text-[10px] text-on-surface-variant">
+                                Click a flow or country marker to inspect evidence, confidence, and transaction validation details.
+                            </div>
+                            <a id="geo-selected-link" class="hidden mt-3 inline-block text-[10px] uppercase tracking-wider text-[#93c5fd] hover:text-[#bfdbfe]" target="_blank" rel="noopener noreferrer">Open on Etherscan</a>
+                        </div>
+
+                        <div class="absolute bottom-4 right-4 p-4 bg-surface-container-highest/85 backdrop-blur border border-white/10">
+                            <div class="text-[9px] font-mono text-outline mb-1 uppercase">LAST FLAGGED VECTOR</div>
+                            <div class="text-[11px] font-headline text-white tracking-widest" id="geo-last-vector">SYNCING...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="mt-auto p-8 border-t border-white/5 bg-[#131313] flex justify-between items-center">
+            <div class="flex gap-12">
+                <div>
+                    <div class="text-[9px] font-mono text-outline uppercase mb-1">Status</div>
                     <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 bg-[#a7f3d0] rounded-full animate-pulse"></span>
-                        <span class="text-xs text-[#a7f3d0] font-mono uppercase">Socket Connected</span>
+                        <span class="w-1.5 h-1.5 bg-[#4caf50] rounded-full"></span>
+                        <span class="text-[10px] font-headline uppercase tracking-widest">Core Synchronized</span>
                     </div>
                 </div>
-                
-                <div class="space-y-3" id="live-activity">
-                    <div class="text-center text-gray-500 text-sm py-8 font-mono">
-                        // Waiting for transactions...
-                    </div>
+                <div>
+                    <div class="text-[9px] font-mono text-outline uppercase mb-1">Latency</div>
+                    <div class="text-[10px] font-headline uppercase tracking-widest" id="footer-latency">-- // SYNCING</div>
+                </div>
+                <div>
+                    <div class="text-[9px] font-mono text-outline uppercase mb-1">Encrypted Hash</div>
+                    <div class="text-[10px] font-mono text-on-surface-variant truncate w-32">f42...9a11bc84</div>
                 </div>
             </div>
-        </section>
-
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
-                        <div class="w-1 h-4 bg-[#f87171]"></div>
-                        Transaction Risk
-                    </h3>
-                    <span class="text-xs text-gray-500 font-mono">DISTRIBUTION</span>
-                </div>
-                <div id="tx-risk-donut-chart" class="w-full h-80"></div>
-            </div>
-            
-            <div class="glass-panel p-6 rounded-xl hover-lift reveal">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
-                        <div class="w-1 h-4 bg-[#fbbf24]"></div>
-                        Wallet Trust
-                    </h3>
-                    <span class="text-xs text-gray-500 font-mono">SCORES</span>
-                </div>
-                <div id="wallet-trust-donut-chart" class="w-full h-80"></div>
-            </div>
-        </section>
-
+            <div class="text-[9px] font-mono text-outline/50 uppercase">© ChainGuard AI // 2026.v6.2.0</div>
+        </footer>
     </main>
 
     <script>
-        const CONFIG = { API_BASE: '', REFRESH_INTERVAL: 10000 };
-        const CACHE_KEY = 'detrust_live_feed_v1'; // Key for LocalStorage
+        const CONFIG = { REFRESH_INTERVAL: 10000, TX_LIMIT: 600, WALLET_LIMIT: 500 };
+        const CACHE_KEY = 'detrust_live_feed_v1';
+        const GEO_COUNTRY_POINTS = [
+            { code: 'US', label: 'United States', lon: -97.0, lat: 38.0 },
+            { code: 'CA', label: 'Canada', lon: -106.3, lat: 56.1 },
+            { code: 'BR', label: 'Brazil', lon: -51.9, lat: -14.2 },
+            { code: 'GB', label: 'United Kingdom', lon: -1.5, lat: 52.4 },
+            { code: 'DE', label: 'Germany', lon: 10.0, lat: 51.0 },
+            { code: 'NG', label: 'Nigeria', lon: 8.6, lat: 9.1 },
+            { code: 'AE', label: 'United Arab Emirates', lon: 54.3, lat: 24.3 },
+            { code: 'IN', label: 'India', lon: 78.9, lat: 22.9 },
+            { code: 'SG', label: 'Singapore', lon: 103.8, lat: 1.3 },
+            { code: 'CN', label: 'China', lon: 103.8, lat: 36.5 },
+            { code: 'JP', label: 'Japan', lon: 138.2, lat: 36.2 },
+            { code: 'AU', label: 'Australia', lon: 133.8, lat: -25.2 },
+        ];
+        const GEO_MAP_STATE = {
+            initialized: false,
+            failed: false,
+            initPromise: null,
+            svg: null,
+            root: null,
+            projection: null,
+            width: 0,
+            height: 0,
+        };
+
+        const ETH_ADDRESS_RE = /^0x[a-fA-F0-9]{40}$/;
+        const TX_HASH_RE = /^0x[a-fA-F0-9]{64}$/;
+        const PLACEHOLDER_TX_HASH_RE = /^0x([a-fA-F0-9])\1{63}$/;
+        const GEO_WINDOW_SECONDS = {
+            '1h': 3600,
+            '24h': 86400,
+            '7d': 7 * 86400,
+            all: null,
+        };
+        const GEO_KNOWN_ENTITY_MAP = {
+            // Public exchange-attributed wallet examples used as hard anchors.
+            '0xf977814e90da44bfa03b6295a0616a897441acec': {
+                entity: 'Binance Hot Wallet 8',
+                countryCode: 'MT',
+                countryLabel: 'Malta',
+                lon: 14.4,
+                lat: 35.9,
+                source: 'Etherscan public exchange label',
+            },
+            '0x3cd751e6b0078be393132286c442345e5dc49699': {
+                entity: 'Coinbase 10',
+                countryCode: 'US',
+                countryLabel: 'United States',
+                lon: -97.0,
+                lat: 38.0,
+                source: 'Etherscan public exchange label',
+            },
+            '0x2910543af39aba0cd09dbb2d50200b3e800a63d2': {
+                entity: 'Kraken 3',
+                countryCode: 'US',
+                countryLabel: 'United States',
+                lon: -97.0,
+                lat: 38.0,
+                source: 'Etherscan public exchange label',
+            },
+        };
+        const GEO_RUNTIME_STATE = {
+            txValidationCache: new Map(),
+            selectedTraceId: null,
+        };
+
         let socket;
-        let riskChartInstance = null;
-        let trustChartInstance = null;
+        let txTrendChartInstance = null;
+        let walletTrendChartInstance = null;
+        let refreshTimer = null;
+        let geoControlsWired = false;
 
-        // --- 1. CACHING LOGIC ---
+        function safeNumber(value, fallback = 0) {
+            const num = Number(value);
+            return Number.isFinite(num) ? num : fallback;
+        }
 
-        // Load data from LocalStorage on page load
+        function hashString(input) {
+            const value = String(input || '');
+            let hash = 0;
+            for (let i = 0; i < value.length; i += 1) {
+                hash = ((hash << 5) - hash + value.charCodeAt(i)) | 0;
+            }
+            return Math.abs(hash);
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+
+        function normalizeAddress(value) {
+            if (!value) return '';
+            let text = String(value).trim().toLowerCase();
+            if (!text.startsWith('0x')) text = `0x${text}`;
+            return ETH_ADDRESS_RE.test(text) ? text : '';
+        }
+
+        function isValidTxHash(value) {
+            if (!value) return false;
+            const normalized = String(value).trim().toLowerCase();
+            return TX_HASH_RE.test(normalized) && !PLACEHOLDER_TX_HASH_RE.test(normalized);
+        }
+
+        function normalizeRiskProbability(value) {
+            let risk = safeNumber(value, 0);
+            if (risk > 1 && risk <= 10) risk /= 10;
+            return clamp(risk, 0, 1);
+        }
+
+        function normalizeTrustScore(value) {
+            let trust = safeNumber(value, 0);
+            if (trust > 1 && trust <= 100) trust /= 100;
+            return clamp(trust, 0, 1);
+        }
+
+        function normalizeTxForGeo(tx) {
+            const source = tx && typeof tx === 'object' ? tx : {};
+            const txHash = String(source.transaction_hash || source.id || source.tx_hash || source.hash || '').toLowerCase();
+            return {
+                ...source,
+                transaction_hash: txHash,
+                id: txHash,
+                from: normalizeAddress(source.from || source.from_address || source.wallet_address),
+                to: normalizeAddress(source.to || source.to_address),
+                value: safeNumber(source.value, safeNumber(source.Transaction_Value, 0)),
+                riskScore: normalizeRiskProbability(
+                    source.riskScore ?? source.risk_score ?? source.risk_probability ?? source.fraud_probability,
+                ),
+                walletScore: normalizeTrustScore(
+                    source.walletScore ?? source.wallet_trust_score ?? source.temporal_score_normalized,
+                ),
+                timestamp: safeNumber(source.timestamp, 0),
+            };
+        }
+
+        function getGeoControlState() {
+            const onlyValidated = document.getElementById('geo-only-validated')?.checked ?? true;
+            const minConfidenceRaw = safeNumber(document.getElementById('geo-min-confidence')?.value, 60);
+            const minConfidence = clamp(minConfidenceRaw / 100, 0.25, 0.95);
+            const windowKey = String(document.getElementById('geo-time-window')?.value || '24h').toLowerCase();
+            const windowSeconds = Object.prototype.hasOwnProperty.call(GEO_WINDOW_SECONDS, windowKey)
+                ? GEO_WINDOW_SECONDS[windowKey]
+                : GEO_WINDOW_SECONDS['24h'];
+            return { onlyValidated, minConfidence, windowKey, windowSeconds };
+        }
+
+        function updateGeoControlLabels() {
+            const slider = document.getElementById('geo-min-confidence');
+            const label = document.getElementById('geo-min-confidence-label');
+            if (!slider || !label) return;
+            label.textContent = `${Math.round(safeNumber(slider.value, 60))}%`;
+        }
+
+        function formatRelativeAge(timestampSeconds) {
+            const ts = safeNumber(timestampSeconds, 0);
+            if (!ts) return 'n/a';
+            const diff = Math.max(0, Math.floor(Date.now() / 1000) - ts);
+            if (diff < 60) return `${diff}s ago`;
+            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+            return `${Math.floor(diff / 86400)}d ago`;
+        }
+
+        function computeHourlyEntropy(hours) {
+            const list = Array.isArray(hours) ? hours : [];
+            const total = list.reduce((sum, value) => sum + safeNumber(value), 0);
+            if (!total) return 0;
+            let entropy = 0;
+            list.forEach((value) => {
+                if (!value) return;
+                const p = value / total;
+                entropy -= p * Math.log2(p);
+            });
+            return clamp(entropy / Math.log2(24), 0, 1);
+        }
+
+        function setGeoValidationTrace({ title, lines, txHash = null }) {
+            const titleEl = document.getElementById('geo-selected-title');
+            const bodyEl = document.getElementById('geo-selected-body');
+            const linkEl = document.getElementById('geo-selected-link');
+            if (!titleEl || !bodyEl || !linkEl) return;
+
+            titleEl.textContent = title || 'Validation Trace';
+            const content = Array.isArray(lines) && lines.length
+                ? lines.map((line) => `<div>${line}</div>`).join('')
+                : 'No validation details available.';
+            bodyEl.innerHTML = content;
+
+            if (txHash && isValidTxHash(txHash)) {
+                linkEl.href = `https://sepolia.etherscan.io/tx/${txHash}`;
+                linkEl.textContent = 'Open Transaction Proof';
+                linkEl.classList.remove('hidden');
+            } else {
+                linkEl.classList.add('hidden');
+                linkEl.removeAttribute('href');
+            }
+        }
+
+        async function fetchTxValidationDetails(txHash) {
+            const normalized = String(txHash || '').toLowerCase();
+            if (!isValidTxHash(normalized)) return null;
+
+            if (GEO_RUNTIME_STATE.txValidationCache.has(normalized)) {
+                return GEO_RUNTIME_STATE.txValidationCache.get(normalized);
+            }
+
+            try {
+                const res = await fetch(`/api/proxy/transaction/${normalized}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const payload = await res.json();
+                GEO_RUNTIME_STATE.txValidationCache.set(normalized, payload);
+                return payload;
+            } catch (error) {
+                const fallback = { hash: normalized, status: 'Unavailable', error: String(error) };
+                GEO_RUNTIME_STATE.txValidationCache.set(normalized, fallback);
+                return fallback;
+            }
+        }
+
+        function formatLatency(ms) {
+            if (!Number.isFinite(ms) || ms <= 0) return '--';
+            if (ms < 1000) return `${Math.round(ms)}ms`;
+            return `${(ms / 1000).toFixed(2)}s`;
+        }
+
         function loadCachedFeed() {
             try {
                 const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
-                if (cached.length > 0) {
-                    const feed = document.getElementById('live-activity');
-                    feed.innerHTML = ''; // Clear "Waiting..." message
-                    
-                    // Render in reverse order (Oldest -> Newest) because renderFeedItem prepends (inserts at top)
-                    [...cached].reverse().forEach(tx => renderFeedItem(tx, false));
-                }
-            } catch (e) { console.error("Cache load error", e); }
+                if (!Array.isArray(cached) || cached.length === 0) return;
+                const feed = document.getElementById('live-activity');
+                feed.innerHTML = '';
+                [...cached].reverse().forEach((tx) => renderFeedItem(tx, false));
+            } catch (e) {
+                console.error('Cache load error', e);
+            }
         }
 
-        // Save new transaction to LocalStorage
         function saveToCache(tx) {
             try {
                 let current = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
-                
-                // Add timestamp if missing so we don't always show "Just now" on reload
-                if (!tx.timestamp) tx.localTime = new Date().toLocaleTimeString();
-                
-                // Add to beginning of array
+                if (!Array.isArray(current)) current = [];
+                if (!tx.timestamp && !tx.localTime) tx.localTime = new Date().toLocaleTimeString();
                 current.unshift(tx);
-                
-                // Keep only top 5
                 if (current.length > 5) current = current.slice(0, 5);
-                
                 localStorage.setItem(CACHE_KEY, JSON.stringify(current));
-            } catch (e) { console.error("Cache save error", e); }
+            } catch (e) {
+                console.error('Cache save error', e);
+            }
         }
 
-        // --- 2. RENDERING LOGIC ---
-
-        // Helper to generate the HTML card
         function renderFeedItem(tx, animate = true) {
             const feed = document.getElementById('live-activity');
-            
-            // Remove "Waiting..." placeholder if it exists
             const placeholder = feed.querySelector('.text-center');
             if (placeholder && placeholder.innerText.includes('Waiting')) {
                 feed.innerHTML = '';
             }
 
-            const riskColor = tx.riskScore > 0.7 ? 'text-[#f87171]' : tx.riskScore > 0.4 ? 'text-[#fbbf24]' : 'text-[#a7f3d0]';
-            const riskBorder = tx.riskScore > 0.7 ? 'border-red-900/30' : tx.riskScore > 0.4 ? 'border-yellow-900/30' : 'border-green-900/30';
-            
-            // Display time: Use blockchain timestamp, or local cached time, or "Just now"
+            const risk = safeNumber(tx.riskScore);
+            const riskColor = risk > 0.7 ? 'text-[#f87171]' : risk > 0.4 ? 'text-[#fbbf24]' : 'text-[#a7f3d0]';
+            const riskBorder = risk > 0.7 ? 'border-red-900/30' : risk > 0.4 ? 'border-yellow-900/30' : 'border-green-900/30';
+            const txHash = tx.transaction_hash || tx.id || 'unknown';
+            const txValue = safeNumber(tx.value).toFixed(4);
+
             let timeDisplay = 'Just now';
-            if (tx.timestamp) timeDisplay = new Date(tx.timestamp * 1000).toLocaleTimeString();
-            else if (tx.localTime) timeDisplay = tx.localTime;
+            if (tx.timestamp) {
+                timeDisplay = new Date(Number(tx.timestamp) * 1000).toLocaleTimeString();
+            } else if (tx.localTime) {
+                timeDisplay = tx.localTime;
+            }
 
             const item = document.createElement('div');
-            // Only pulse animation for fresh live events
             const animClass = animate ? 'animate-pulse' : '';
-            
-            item.className = `p-3 rounded-lg border ${riskBorder} bg-[rgba(255,255,255,0.02)] ${animClass}`;
-            
-            // Stop pulsing after 2 seconds
+            item.className = `p-4 bg-surface-container-high border-l ${riskBorder} ${animClass}`;
+
             if (animate) {
                 setTimeout(() => item.classList.remove('animate-pulse'), 2000);
             }
 
             item.innerHTML = `
                 <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs text-gray-500 font-mono">NEW TRANSACTION</span>
-                    <span class="text-xs ${riskColor} font-bold font-mono">${(tx.riskScore * 100).toFixed(0)}% RISK</span>
+                    <span class="text-[10px] font-mono text-outline uppercase tracking-widest">Live TX</span>
+                    <span class="text-xs ${riskColor} font-bold font-mono">${(risk * 100).toFixed(0)}% RISK</span>
                 </div>
-                <div class="text-sm font-mono text-gray-300 truncate tracking-tight">${tx.transaction_hash || tx.id}</div>
-                <div class="flex items-center justify-between mt-2 text-xs text-gray-500">
-                    <span class="text-white">${tx.value ? parseFloat(tx.value).toFixed(4) : '0.0000'} ETH</span>
+                <div class="text-[11px] font-mono text-white mb-0.5 truncate">${txHash}</div>
+                <div class="flex items-center justify-between text-[10px] text-outline uppercase tracking-wider">
+                    <span>${txValue} ETH</span>
                     <span>${timeDisplay}</span>
                 </div>
             `;
-            
-            // Insert at the top
+
             feed.insertBefore(item, feed.firstChild);
-            
-            // Keep DOM clean (Visual limit)
             if (feed.children.length > 5) feed.removeChild(feed.lastChild);
         }
 
-        // Main handler called by Socket
         function updateLiveActivity(tx) {
-            saveToCache(tx);      // 1. Save to storage
-            renderFeedItem(tx, true); // 2. Render with animation
+            saveToCache(tx);
+            renderFeedItem(tx, true);
         }
-
-        // --- 3. EXISTING CHART & DATA LOGIC ---
 
         function initScrollReveal() {
             const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
+            const observer = new IntersectionObserver((entries, observerRef) => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
+                        observerRef.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        }
+
+        function computeSybilRiskIndex(txs) {
+            const pairCounts = new Map();
+            txs.forEach((tx) => {
+                const from = String(tx.from || '').toLowerCase();
+                const to = String(tx.to || '').toLowerCase();
+                if (!from || !to) return;
+                const key = `${from}->${to}`;
+                pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
+            });
+
+            const repeatedPairs = Array.from(pairCounts.values()).filter((count) => count >= 3).length;
+            const denominator = Math.max(1, Math.floor(txs.length * 0.18));
+            return clamp(repeatedPairs / denominator, 0, 1);
+        }
+
+        function computeLatencyPeak(txs) {
+            const stamps = txs
+                .map((tx) => safeNumber(tx.timestamp, 0))
+                .filter((ts) => ts > 0)
+                .sort((a, b) => b - a);
+
+            if (stamps.length < 3) return 0;
+
+            const intervals = [];
+            for (let i = 0; i < stamps.length - 1; i += 1) {
+                const delta = Math.max(0, stamps[i] - stamps[i + 1]);
+                if (delta > 0) intervals.push(delta * 1000);
+            }
+
+            if (!intervals.length) return 0;
+            intervals.sort((a, b) => a - b);
+            const idx = Math.floor(intervals.length * 0.95);
+            return intervals[Math.min(intervals.length - 1, idx)];
+        }
+
+        function computeMeshSummary(txs, wallets) {
+            const txCount = txs.length;
+            const walletCount = wallets.length;
+            const highRisk = txs.filter((tx) => safeNumber(tx.riskScore) >= 0.7).length;
+            const mediumRisk = txs.filter((tx) => {
+                const risk = safeNumber(tx.riskScore);
+                return risk >= 0.4 && risk < 0.7;
+            }).length;
+
+            const avgRisk = txCount
+                ? txs.reduce((sum, tx) => sum + safeNumber(tx.riskScore), 0) / txCount
+                : 0;
+
+            const outboundCounts = new Map();
+            txs.forEach((tx) => {
+                const from = String(tx.from || '').toLowerCase();
+                if (!from) return;
+                outboundCounts.set(from, (outboundCounts.get(from) || 0) + 1);
+            });
+            const topFlow = Array.from(outboundCounts.values()).sort((a, b) => b - a).slice(0, 10);
+            const concentration = txCount ? topFlow.reduce((a, b) => a + b, 0) / txCount : 0;
+
+            const sybilIndex = computeSybilRiskIndex(txs);
+            const threatScore = clamp(avgRisk * 0.45 + sybilIndex * 0.35 + concentration * 0.2, 0, 1);
+            const integrity = Math.max(0, 100 - threatScore * 100);
+
+            const level = threatScore >= 0.72
+                ? 'CRITICAL'
+                : threatScore >= 0.5
+                    ? 'ELEVATED'
+                    : threatScore >= 0.3
+                        ? 'GUARDED'
+                        : 'NOMINAL';
+
+            const latestTs = txs.reduce((max, tx) => Math.max(max, safeNumber(tx.timestamp, 0)), 0);
+            const freshnessSec = latestTs ? Math.max(0, Math.floor(Date.now() / 1000) - latestTs) : null;
+            const latencyPeak = computeLatencyPeak(txs);
+
+            return {
+                txCount,
+                walletCount,
+                highRisk,
+                mediumRisk,
+                avgRisk,
+                concentration,
+                sybilIndex,
+                threatScore,
+                level,
+                integrity,
+                latencyPeak,
+                freshnessSec,
+            };
+        }
+
+        function updateCommandMetrics(summary) {
+            document.getElementById('stat-total-tx').innerText = String(summary.txCount);
+            document.getElementById('stat-high-tx').innerText = String(summary.highRisk);
+            document.getElementById('stat-total-wallets').innerText = String(summary.walletCount);
+
+            document.getElementById('active-threat-level').textContent = summary.level;
+            document.getElementById('sybil-risk-percent').textContent = `${Math.round(summary.sybilIndex * 100)}%`;
+            document.getElementById('sybil-risk-bar').style.width = `${Math.round(summary.sybilIndex * 100)}%`;
+
+            document.getElementById('mesh-integrity-score').textContent = `${summary.integrity.toFixed(2)}%`;
+            const latencyText = `${formatLatency(summary.latencyPeak)}`;
+            document.getElementById('mesh-latency-peak').textContent = latencyText;
+            document.getElementById('footer-latency').textContent = `${latencyText} // ${summary.level}`;
+
+            const freshnessText = summary.freshnessSec === null
+                ? 'no live timestamp available'
+                : `${summary.freshnessSec}s freshness window`;
+
+            document.getElementById('mesh-analysis-summary').textContent =
+                `Analyzing ${summary.txCount} scored transactions across ${summary.walletCount} wallets. ` +
+                `High-risk density is ${summary.txCount ? ((summary.highRisk / summary.txCount) * 100).toFixed(1) : '0.0'}%, ` +
+                `Sybil pressure index is ${Math.round(summary.sybilIndex * 100)}%, and concentration index is ${Math.round(summary.concentration * 100)}%. ` +
+                `Signal freshness: ${freshnessText}.`;
+        }
+
+        function getCountryByCode(code) {
+            return GEO_COUNTRY_POINTS.find((row) => row.code === code) || null;
+        }
+
+        function inferWalletGeo(address, profile) {
+            if (!profile || !Array.isArray(profile.hours) || !profile.hours.length) return null;
+
+            const normalizedAddress = normalizeAddress(address);
+            if (!normalizedAddress) return null;
+
+            const avgRisk = profile.riskSum / Math.max(1, profile.count);
+            const txProofs = Array.from(profile.txHashes || []).filter((hash) => isValidTxHash(hash)).slice(0, 6);
+            const knownAnchor = GEO_KNOWN_ENTITY_MAP[normalizedAddress];
+
+            if (knownAnchor) {
+                return {
+                    address: normalizedAddress,
+                    countryCode: knownAnchor.countryCode,
+                    countryLabel: knownAnchor.countryLabel,
+                    lon: knownAnchor.lon,
+                    lat: knownAnchor.lat,
+                    utcOffset: null,
+                    confidence: 0.97,
+                    method: 'labeled-entity-anchor',
+                    validationTier: 'verified',
+                    validated: true,
+                    source: knownAnchor.source,
+                    entity: knownAnchor.entity,
+                    txCount: profile.count,
+                    avgRisk,
+                    flaggedWallet: avgRisk >= 0.7 || profile.flaggedCount >= Math.max(2, Math.ceil(profile.count * 0.35)),
+                    lastTs: profile.lastTs,
+                    firstTs: profile.firstTs,
+                    counterparties: profile.counterparties ? profile.counterparties.size : 0,
+                    evidence: {
+                        source: knownAnchor.source,
+                        rationale: 'Address matched a publicly labeled exchange wallet.',
+                        txProofs,
+                    },
+                };
+            }
+
+            const peakCount = Math.max(...profile.hours);
+            const peakHour = profile.hours.indexOf(peakCount);
+            const expectedLocalPeak = 14;
+            let utcOffset = peakHour - expectedLocalPeak;
+            while (utcOffset < -12) utcOffset += 24;
+            while (utcOffset > 14) utcOffset -= 24;
+
+            const inferredLon = clamp(utcOffset * 15, -170, 170);
+            let nearestCountry = GEO_COUNTRY_POINTS[0];
+            let nearestDistance = Number.POSITIVE_INFINITY;
+            GEO_COUNTRY_POINTS.forEach((country) => {
+                const dist = Math.abs(country.lon - inferredLon);
+                if (dist < nearestDistance) {
+                    nearestDistance = dist;
+                    nearestCountry = country;
+                }
+            });
+
+            const entropy = computeHourlyEntropy(profile.hours);
+            const peakShare = peakCount / Math.max(1, profile.count);
+            const observedDays = Math.max(0, (safeNumber(profile.lastTs) - safeNumber(profile.firstTs)) / 86400);
+            const counterpartyFactor = Math.min(0.22, (profile.counterparties ? profile.counterparties.size : 0) / 30);
+            const confidence = clamp(
+                0.12
+                + Math.min(0.28, profile.count / 45)
+                + Math.min(0.24, peakShare)
+                + (1 - entropy) * 0.16
+                + Math.min(0.08, observedDays / 14)
+                + counterpartyFactor,
+                0.12,
+                0.89,
+            );
+
+            const validationTier = confidence >= 0.72 && profile.count >= 6
+                ? 'validated-inference'
+                : confidence >= 0.52
+                    ? 'inference'
+                    : 'weak-inference';
+
+            return {
+                address: normalizedAddress,
+                countryCode: nearestCountry.code,
+                countryLabel: nearestCountry.label,
+                lon: nearestCountry.lon,
+                lat: nearestCountry.lat,
+                utcOffset,
+                confidence,
+                method: 'temporal-activity-inference',
+                validationTier,
+                validated: validationTier !== 'weak-inference',
+                source: 'On-chain temporal activity profile',
+                entity: null,
+                txCount: profile.count,
+                avgRisk,
+                flaggedWallet: avgRisk >= 0.7 || profile.flaggedCount >= Math.max(2, Math.ceil(profile.count * 0.35)),
+                lastTs: profile.lastTs,
+                firstTs: profile.firstTs,
+                counterparties: profile.counterparties ? profile.counterparties.size : 0,
+                evidence: {
+                    source: 'Temporal peak-hour and consistency model',
+                    rationale: `Peak UTC hour ${peakHour}, entropy ${(entropy * 100).toFixed(1)}%, nearest corridor ${nearestCountry.code}.`,
+                    txProofs,
+                },
+            };
+        }
+
+        function inferWalletLocations(txs) {
+            const profileMap = new Map();
+            (txs || []).forEach((tx) => {
+                const normalizedTx = normalizeTxForGeo(tx);
+                const timestamp = safeNumber(normalizedTx.timestamp, Math.floor(Date.now() / 1000));
+                const risk = clamp(safeNumber(normalizedTx.riskScore), 0, 1);
+                const txHash = String(normalizedTx.transaction_hash || '').toLowerCase();
+                const edgePairs = [
+                    [normalizedTx.from, normalizedTx.to],
+                    [normalizedTx.to, normalizedTx.from],
+                ].filter(([address]) => Boolean(address));
+
+                edgePairs.forEach(([address, counterparty]) => {
+                    if (!profileMap.has(address)) {
+                        profileMap.set(address, {
+                            hours: Array(24).fill(0),
+                            count: 0,
+                            riskSum: 0,
+                            flaggedCount: 0,
+                            txHashes: new Set(),
+                            counterparties: new Set(),
+                            firstTs: 0,
+                            lastTs: 0,
+                        });
+                    }
+                    const profile = profileMap.get(address);
+                    const hour = new Date(timestamp * 1000).getUTCHours();
+                    profile.hours[hour] += 1;
+                    profile.count += 1;
+                    profile.riskSum += risk;
+                    if (risk >= 0.7) profile.flaggedCount += 1;
+                    if (counterparty) profile.counterparties.add(counterparty);
+                    if (isValidTxHash(txHash)) profile.txHashes.add(txHash);
+                    profile.firstTs = profile.firstTs ? Math.min(profile.firstTs, timestamp) : timestamp;
+                    profile.lastTs = Math.max(profile.lastTs, timestamp);
+                });
+            });
+
+            const locationMap = new Map();
+            profileMap.forEach((profile, address) => {
+                const inferred = inferWalletGeo(address, profile);
+                if (inferred) locationMap.set(address, inferred);
+            });
+            return locationMap;
+        }
+
+        function buildCurvePath(x1, y1, x2, y2) {
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+            const curve = Math.min(90, distance * 0.32);
+            const mx = (x1 + x2) / 2 + (dy / distance) * curve;
+            const my = (y1 + y2) / 2 - (dx / distance) * curve;
+            return `M${x1.toFixed(2)},${y1.toFixed(2)} Q${mx.toFixed(2)},${my.toFixed(2)} ${x2.toFixed(2)},${y2.toFixed(2)}`;
+        }
+
+        async function ensureWorldMapReady() {
+            if (GEO_MAP_STATE.failed) return false;
+            if (GEO_MAP_STATE.initialized) return true;
+            if (GEO_MAP_STATE.initPromise) return GEO_MAP_STATE.initPromise;
+
+            GEO_MAP_STATE.initPromise = (async () => {
+                const layer = document.getElementById('geo-map-layer');
+                if (!layer || !window.d3 || !window.topojson) {
+                    throw new Error('d3/topojson not available');
+                }
+
+                layer.innerHTML = '';
+                const bounds = layer.getBoundingClientRect();
+                const width = Math.max(620, Math.floor(bounds.width || 620));
+                const height = Math.max(360, Math.floor(bounds.height || 360));
+
+                const svg = d3.select(layer)
+                    .append('svg')
+                    .attr('class', 'absolute inset-0 w-full h-full')
+                    .attr('viewBox', `0 0 ${width} ${height}`)
+                    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+                const root = svg.append('g').attr('class', 'geo-pan-root');
+
+                root.append('rect')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('fill', '#090b0d');
+
+                const world = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+                const countries = topojson.feature(world, world.objects.countries).features;
+                const featureCollection = { type: 'FeatureCollection', features: countries };
+
+                const projection = d3.geoNaturalEarth1().fitExtent(
+                    [[18, 18], [width - 18, height - 18]],
+                    featureCollection,
+                );
+                const path = d3.geoPath(projection);
+
+                const graticule = d3.geoGraticule10();
+                root.append('path')
+                    .datum(graticule)
+                    .attr('d', path)
+                    .attr('fill', 'none')
+                    .attr('stroke', 'rgba(148, 163, 184, 0.12)')
+                    .attr('stroke-width', 0.6);
+
+                root.append('g')
+                    .attr('class', 'geo-country-layer')
+                    .selectAll('path')
+                    .data(countries)
+                    .join('path')
+                    .attr('d', path)
+                    .attr('fill', '#171a1f')
+                    .attr('stroke', 'rgba(203, 213, 225, 0.22)')
+                    .attr('stroke-width', 0.65);
+
+                root.append('g').attr('class', 'geo-flow-layer');
+                root.append('g').attr('class', 'geo-node-layer');
+
+                const zoom = d3.zoom()
+                    .scaleExtent([1, 8])
+                    .on('zoom', (event) => {
+                        root.attr('transform', event.transform);
+                    });
+                svg.call(zoom);
+
+                GEO_MAP_STATE.svg = svg;
+                GEO_MAP_STATE.root = root;
+                GEO_MAP_STATE.projection = projection;
+                GEO_MAP_STATE.width = width;
+                GEO_MAP_STATE.height = height;
+                GEO_MAP_STATE.initialized = true;
+                return true;
+            })().catch((error) => {
+                console.error('World map initialization failed:', error);
+                GEO_MAP_STATE.failed = true;
+                return false;
+            });
+
+            return GEO_MAP_STATE.initPromise;
+        }
+
+        function renderWorldMapFallback(txs, locationMap, unresolvedCount, stats = {}) {
+            const layer = document.getElementById('geo-map-layer');
+            const topZonesEl = document.getElementById('geo-top-zones');
+            const lastVectorEl = document.getElementById('geo-last-vector');
+            const geoResolutionEl = document.getElementById('geo-resolution-note');
+            const flaggedSummaryEl = document.getElementById('geo-flagged-summary');
+
+            layer.innerHTML = '';
+            GEO_COUNTRY_POINTS.forEach((country) => {
+                const x = ((country.lon + 180) / 360) * 100;
+                const y = ((90 - country.lat) / 180) * 100;
+                const node = document.createElement('div');
+                node.className = 'absolute rounded-full border border-white/60 bg-white/40';
+                node.style.left = `${x}%`;
+                node.style.top = `${y}%`;
+                node.style.width = '6px';
+                node.style.height = '6px';
+                node.style.transform = 'translate(-50%,-50%)';
+                node.title = country.label;
+                layer.appendChild(node);
+            });
+
+            topZonesEl.innerHTML = '<div class="text-gray-400">Interactive map unavailable. Showing static fallback nodes.</div>';
+            const latest = (txs || []).slice().sort((a, b) => safeNumber(b.timestamp) - safeNumber(a.timestamp))[0];
+            lastVectorEl.textContent = latest && latest.id ? String(latest.id).slice(0, 18).toUpperCase() : 'SYNCING...';
+
+            const inferredCount = locationMap ? locationMap.size : 0;
+            const validated = stats.validatedFlowCount ?? 0;
+            geoResolutionEl.textContent = `Resolved ${inferredCount} wallets from on-chain telemetry. Validated vectors: ${validated}. Unresolved flows: ${unresolvedCount}.`;
+
+            const flaggedWallets = locationMap
+                ? Array.from(locationMap.values()).filter((entry) => entry.flaggedWallet).length
+                : 0;
+            const flaggedTx = (txs || []).filter((tx) => safeNumber(tx.riskScore) >= 0.7).length;
+            flaggedSummaryEl.innerHTML = `
+                <div class="flex justify-between"><span>Flagged Transactions</span><span class="text-[#f87171]">${flaggedTx}</span></div>
+                <div class="flex justify-between"><span>Flagged Wallets</span><span class="text-[#f87171]">${flaggedWallets}</span></div>
+                <div class="flex justify-between"><span>Dropped by Validation Filter</span><span class="text-[#fbbf24]">${stats.droppedByValidation || 0}</span></div>
+            `;
+        }
+
+        function buildTransactionFlows(txs, locationMap, controls) {
+            const corridorMap = new Map();
+            const flows = [];
+            let unresolvedCount = 0;
+            let droppedByValidation = 0;
+            let droppedByWindow = 0;
+
+            const nowTs = Math.floor(Date.now() / 1000);
+
+            const sorted = (txs || [])
+                .slice()
+                .map((tx) => normalizeTxForGeo(tx))
+                .filter((tx) => tx.from && tx.to)
+                .sort((a, b) => safeNumber(b.timestamp) - safeNumber(a.timestamp))
+                .slice(0, 500);
+
+            sorted.forEach((tx) => {
+                const fromAddr = tx.from;
+                const toAddr = tx.to;
+                if (!fromAddr || !toAddr) return;
+
+                const ts = safeNumber(tx.timestamp);
+                if (controls.windowSeconds && ts && ts < (nowTs - controls.windowSeconds)) {
+                    droppedByWindow += 1;
+                    return;
+                }
+
+                const fromGeo = locationMap.get(fromAddr);
+                const toGeo = locationMap.get(toAddr);
+                if (!fromGeo || !toGeo) {
+                    unresolvedCount += 1;
+                    return;
+                }
+
+                const risk = normalizeRiskProbability(tx.riskScore);
+                const txHash = String(tx.transaction_hash || tx.id || '').toLowerCase();
+                const flagged = risk >= 0.7 || fromGeo.flaggedWallet || toGeo.flaggedWallet;
+                const volume = Math.max(0.0001, safeNumber(tx.value));
+
+                const onChainValidated = isValidTxHash(txHash);
+                const minGeoConfidence = Math.min(safeNumber(fromGeo.confidence), safeNumber(toGeo.confidence));
+                const geoValidated = (
+                    fromGeo.validationTier === 'verified'
+                    || toGeo.validationTier === 'verified'
+                    || minGeoConfidence >= controls.minConfidence
+                );
+                const validated = Boolean(onChainValidated && geoValidated);
+                if (controls.onlyValidated && !validated) {
+                    droppedByValidation += 1;
+                    return;
+                }
+                const validationScore = clamp((onChainValidated ? 0.55 : 0.0) + (minGeoConfidence * 0.45), 0, 1);
+
+                const flow = {
+                    txHash: txHash || 'n/a',
+                    fromAddress: fromAddr,
+                    toAddress: toAddr,
+                    fromGeo,
+                    toGeo,
+                    risk,
+                    flagged,
+                    volume,
+                    timestamp: ts,
+                    onChainValidated,
+                    geoValidated,
+                    validated,
+                    validationScore,
+                    minGeoConfidence,
+                };
+                flows.push(flow);
+
+                const corridorKey = `${fromGeo.countryCode}->${toGeo.countryCode}`;
+                if (!corridorMap.has(corridorKey)) {
+                    corridorMap.set(corridorKey, {
+                        key: corridorKey,
+                        fromCode: fromGeo.countryCode,
+                        toCode: toGeo.countryCode,
+                        fromLabel: fromGeo.countryLabel,
+                        toLabel: toGeo.countryLabel,
+                        count: 0,
+                        validatedCount: 0,
+                        flaggedCount: 0,
+                        riskSum: 0,
+                        volumeSum: 0,
+                        confidenceSum: 0,
+                        latestTs: 0,
+                    });
+                }
+
+                const corridor = corridorMap.get(corridorKey);
+                corridor.count += 1;
+                if (validated) corridor.validatedCount += 1;
+                corridor.riskSum += risk;
+                corridor.volumeSum += volume;
+                corridor.confidenceSum += minGeoConfidence;
+                corridor.latestTs = Math.max(corridor.latestTs, flow.timestamp);
+                if (flagged) corridor.flaggedCount += 1;
+            });
+
+            const corridors = Array.from(corridorMap.values()).map((row) => ({
+                ...row,
+                avgRisk: row.count ? row.riskSum / row.count : 0,
+                avgConfidence: row.count ? row.confidenceSum / row.count : 0,
+            })).sort((a, b) => {
+                const aScore = (a.flaggedCount * 2.5) + (a.validatedCount * 1.8) + (a.avgRisk * a.count) + Math.log1p(a.volumeSum);
+                const bScore = (b.flaggedCount * 2.5) + (b.validatedCount * 1.8) + (b.avgRisk * b.count) + Math.log1p(b.volumeSum);
+                return bScore - aScore;
+            });
+
+            const flaggedTxCount = flows.filter((flow) => flow.flagged).length;
+            const validatedFlowCount = flows.filter((flow) => flow.validated).length;
+            const flaggedWalletCount = Array.from(locationMap.values()).filter((entry) => {
+                if (!entry.flaggedWallet) return false;
+                if (!controls.onlyValidated) return true;
+                return entry.validationTier === 'verified' || entry.validated;
+            }).length;
+
+            return {
+                flows,
+                corridors,
+                unresolvedCount,
+                flaggedTxCount,
+                flaggedWalletCount,
+                validatedFlowCount,
+                droppedByValidation,
+                droppedByWindow,
+            };
+        }
+
+        async function renderGeospatialThreatMap(txs) {
+            const geoResolutionEl = document.getElementById('geo-resolution-note');
+            const flaggedSummaryEl = document.getElementById('geo-flagged-summary');
+            const tooltipEl = document.getElementById('geo-tooltip');
+            const topZonesEl = document.getElementById('geo-top-zones');
+            const lastVectorEl = document.getElementById('geo-last-vector');
+            const controls = getGeoControlState();
+            updateGeoControlLabels();
+
+            const normalizedTxs = (txs || []).map((tx) => normalizeTxForGeo(tx)).filter((tx) => tx.from && tx.to);
+            const locationMap = inferWalletLocations(normalizedTxs);
+            const {
+                flows,
+                corridors,
+                unresolvedCount,
+                flaggedTxCount,
+                flaggedWalletCount,
+                validatedFlowCount,
+                droppedByValidation,
+                droppedByWindow,
+            } = buildTransactionFlows(normalizedTxs, locationMap, controls);
+
+            const locationValues = Array.from(locationMap.values());
+            const avgConfidence = locationValues.length
+                ? locationValues.reduce((sum, row) => sum + safeNumber(row.confidence), 0) / locationValues.length
+                : 0;
+
+            const verifiedAnchors = locationValues.filter((row) => row.validationTier === 'verified').length;
+            geoResolutionEl.textContent =
+                `Resolved ${locationValues.length} wallets from on-chain telemetry ` +
+                `(verified anchors ${verifiedAnchors}, avg confidence ${(avgConfidence * 100).toFixed(1)}%, min filter ${(controls.minConfidence * 100).toFixed(0)}%). ` +
+                `Unresolved flows: ${unresolvedCount}.`;
+
+            flaggedSummaryEl.innerHTML = `
+                <div class="flex justify-between"><span>Flagged Transactions</span><span class="text-[#f87171]">${flaggedTxCount}</span></div>
+                <div class="flex justify-between"><span>Flagged Wallets</span><span class="text-[#f87171]">${flaggedWalletCount}</span></div>
+                <div class="flex justify-between"><span>Validated Vectors</span><span class="text-[#a7f3d0]">${validatedFlowCount}</span></div>
+                <div class="flex justify-between"><span>Total Visualized Flows</span><span class="text-[#e5e7eb]">${flows.length}</span></div>
+                <div class="flex justify-between"><span>Dropped (Validation)</span><span class="text-[#fbbf24]">${droppedByValidation}</span></div>
+                <div class="flex justify-between"><span>Dropped (Window)</span><span class="text-[#fbbf24]">${droppedByWindow}</span></div>
+            `;
+
+            const ready = await ensureWorldMapReady();
+            if (!ready) {
+                renderWorldMapFallback(normalizedTxs || [], locationMap, unresolvedCount, {
+                    validatedFlowCount,
+                    droppedByValidation,
+                });
+                return;
+            }
+
+            const projection = GEO_MAP_STATE.projection;
+            const root = GEO_MAP_STATE.root;
+            const flowLayer = root.select('.geo-flow-layer');
+            const nodeLayer = root.select('.geo-node-layer');
+            flowLayer.selectAll('*').remove();
+            nodeLayer.selectAll('*').remove();
+
+            function showTooltip(event, html) {
+                if (!tooltipEl) return;
+                tooltipEl.classList.remove('hidden');
+                tooltipEl.innerHTML = html;
+                const layerRect = document.getElementById('geo-map-layer').getBoundingClientRect();
+                const x = event.clientX - layerRect.left + 14;
+                const y = event.clientY - layerRect.top + 14;
+                tooltipEl.style.left = `${x}px`;
+                tooltipEl.style.top = `${y}px`;
+            }
+
+            function hideTooltip() {
+                if (!tooltipEl) return;
+                tooltipEl.classList.add('hidden');
+            }
+
+            async function openFlowValidation(flow) {
+                const traceId = `${flow.txHash}:${flow.timestamp}:${flow.fromAddress}:${flow.toAddress}`;
+                GEO_RUNTIME_STATE.selectedTraceId = traceId;
+
+                const baseLines = [
+                    `Corridor: ${flow.fromGeo.countryCode} (${flow.fromGeo.countryLabel}) -> ${flow.toGeo.countryCode} (${flow.toGeo.countryLabel})`,
+                    `Risk ${(flow.risk * 100).toFixed(2)}% | Value ${flow.volume.toFixed(5)} ETH`,
+                    `Validation Score ${(flow.validationScore * 100).toFixed(1)}% | Geo Confidence ${(flow.minGeoConfidence * 100).toFixed(1)}%`,
+                    `Geo Method: ${flow.fromGeo.method} / ${flow.toGeo.method}`,
+                    `Flow Time: ${flow.timestamp ? new Date(flow.timestamp * 1000).toLocaleString() : 'n/a'} (${formatRelativeAge(flow.timestamp)})`,
+                    `On-chain proof: ${flow.onChainValidated ? 'yes' : 'missing tx hash'}`,
+                ];
+
+                setGeoValidationTrace({
+                    title: flow.flagged ? 'Validation Trace - Flagged Vector' : 'Validation Trace - Live Vector',
+                    lines: baseLines,
+                    txHash: flow.txHash,
+                });
+
+                if (!flow.onChainValidated) return;
+
+                const details = await fetchTxValidationDetails(flow.txHash);
+                if (GEO_RUNTIME_STATE.selectedTraceId !== traceId) return;
+
+                const detailLines = [...baseLines];
+                if (details) {
+                    detailLines.push(`RPC Validation: ${details.status || 'unknown'} | Block ${details.block ?? 'n/a'}`);
+                    detailLines.push(`Chain From: ${details.from || flow.fromAddress}`);
+                    detailLines.push(`Chain To: ${details.to || flow.toAddress}`);
+                    detailLines.push(`Chain Value: ${safeNumber(details.value, flow.volume).toFixed(6)} ETH`);
+                }
+
+                setGeoValidationTrace({
+                    title: flow.flagged ? 'Validation Trace - Flagged Vector' : 'Validation Trace - Live Vector',
+                    lines: detailLines,
+                    txHash: flow.txHash,
+                });
+            }
+
+            flows.forEach((flow) => {
+                const from = projection([flow.fromGeo.lon, flow.fromGeo.lat]);
+                const to = projection([flow.toGeo.lon, flow.toGeo.lat]);
+                if (!from || !to) return;
+
+                const color = flow.flagged
+                    ? '#ef4444'
+                    : flow.risk >= 0.4
+                        ? '#fbbf24'
+                        : '#38bdf8';
+                const width = flow.flagged
+                    ? 2.6
+                    : 0.85 + Math.min(1.4, Math.log1p(flow.volume));
+                const opacity = flow.flagged ? 0.9 : (flow.validated ? 0.52 : 0.24);
+
+                const path = buildCurvePath(from[0], from[1], to[0], to[1]);
+                flowLayer.append('path')
+                    .attr('d', path)
+                    .attr('fill', 'none')
+                    .attr('stroke', color)
+                    .attr('stroke-width', width)
+                    .attr('stroke-opacity', opacity)
+                    .attr('stroke-dasharray', flow.validated ? null : '6 5')
+                    .on('mousemove', (event) => {
+                        showTooltip(
+                            event,
+                            `<div class="font-mono text-[10px] uppercase text-outline mb-1">${flow.flagged ? 'Flagged Transaction' : 'Transaction Flow'}${flow.validated ? ' • VALIDATED' : ' • INFERENCE'}</div>` +
+                            `<div>${flow.fromGeo.countryCode} (${flow.fromGeo.countryLabel}) -> ${flow.toGeo.countryCode} (${flow.toGeo.countryLabel})</div>` +
+                            `<div>Risk ${(flow.risk * 100).toFixed(1)}% | Value ${flow.volume.toFixed(4)} ETH</div>` +
+                            `<div>Geo Confidence ${(flow.minGeoConfidence * 100).toFixed(1)}% | Validation ${(flow.validationScore * 100).toFixed(1)}%</div>` +
+                            `<div class="truncate">${flow.txHash}</div>`,
+                        );
+                    })
+                    .on('mouseout', hideTooltip)
+                    .on('click', async () => {
+                        await openFlowValidation(flow);
+                    });
+            });
+
+            const countryAgg = new Map();
+            flows.forEach((flow) => {
+                [flow.fromGeo, flow.toGeo].forEach((geo) => {
+                    if (!countryAgg.has(geo.countryCode)) {
+                        countryAgg.set(geo.countryCode, {
+                            ...geo,
+                            flowCount: 0,
+                            flaggedCount: 0,
+                        });
+                    }
+                    const row = countryAgg.get(geo.countryCode);
+                    row.flowCount += 1;
+                    if (flow.flagged) row.flaggedCount += 1;
+                });
+            });
+
+            Array.from(countryAgg.values()).forEach((country) => {
+                const position = projection([country.lon, country.lat]);
+                if (!position) return;
+                const flaggedRatio = country.flowCount ? country.flaggedCount / country.flowCount : 0;
+                const radius = 2.2 + Math.min(8, Math.log1p(country.flowCount) * 2.2);
+                nodeLayer.append('circle')
+                    .attr('cx', position[0])
+                    .attr('cy', position[1])
+                    .attr('r', radius)
+                    .attr('fill', flaggedRatio >= 0.35 ? '#ef4444' : '#e5e7eb')
+                    .attr('fill-opacity', flaggedRatio >= 0.35 ? 0.7 : 0.38)
+                    .attr('stroke', flaggedRatio >= 0.35 ? '#fecaca' : '#94a3b8')
+                    .attr('stroke-width', flaggedRatio >= 0.35 ? 1.6 : 0.8)
+                    .on('mousemove', (event) => {
+                        showTooltip(
+                            event,
+                            `<div class="font-mono text-[10px] uppercase text-outline mb-1">Wallet Cluster</div>` +
+                            `<div>${country.countryCode} ${country.countryLabel}</div>` +
+                            `<div>Flows ${country.flowCount} | Flagged ${(flaggedRatio * 100).toFixed(1)}%</div>` +
+                            `<div>Geo confidence ${(country.confidence * 100).toFixed(1)}% | Method ${country.method}</div>`,
+                        );
+                    })
+                    .on('mouseout', hideTooltip)
+                    .on('click', () => {
+                        const evidence = country.evidence || {};
+                        const proofs = Array.isArray(evidence.txProofs) ? evidence.txProofs.slice(0, 3) : [];
+                        setGeoValidationTrace({
+                            title: `Validation Trace - ${country.countryCode} Wallet Cluster`,
+                            lines: [
+                                `Wallet: ${country.address}`,
+                                `Country: ${country.countryLabel} (${country.countryCode})`,
+                                `Method: ${country.method}`,
+                                `Tier: ${country.validationTier || 'inference'} | Confidence ${(safeNumber(country.confidence) * 100).toFixed(1)}%`,
+                                `Observed tx: ${country.txCount} | Counterparties: ${country.counterparties || 0}`,
+                                `Evidence: ${evidence.rationale || 'No additional rationale provided.'}`,
+                                proofs.length ? `Proof tx sample: ${proofs[0]}` : 'Proof tx sample: unavailable',
+                            ],
+                            txHash: proofs.length ? proofs[0] : null,
+                        });
+                    });
+            });
+
+            const topHotspots = corridors
+                .slice(0, 4)
+                .map((row, index) => {
+                    const flaggedRatio = row.count ? (row.flaggedCount / row.count) * 100 : 0;
+                    const validatedRatio = row.count ? (row.validatedCount / row.count) * 100 : 0;
+                    return `<div class="space-y-0.5 mb-1"><div class="flex items-center justify-between"><span>${index + 1}. ${row.fromCode}->${row.toCode}</span><span class="text-white">${flaggedRatio.toFixed(1)}% flagged</span></div><div class="text-[9px] text-gray-400">${row.count} vectors | ${validatedRatio.toFixed(1)}% validated | avg risk ${(row.avgRisk * 100).toFixed(1)}%</div></div>`;
+                });
+
+            topZonesEl.innerHTML = topHotspots.length
+                ? topHotspots.join('')
+                : '<div class="text-gray-400">No resolved geo corridors available yet.</div>';
+
+            const latestFlagged = flows
+                .slice()
+                .filter((flow) => flow.flagged)
+                .sort((a, b) => b.timestamp - a.timestamp)[0];
+
+            const latestFlow = latestFlagged || flows.slice().sort((a, b) => b.timestamp - a.timestamp)[0];
+
+            if (latestFlow) {
+                lastVectorEl.textContent = `${latestFlow.fromGeo.countryCode}->${latestFlow.toGeo.countryCode} ${latestFlow.flagged ? 'FLAGGED' : 'LIVE'} ${latestFlow.validated ? 'VERIFIED' : 'INFERRED'}`;
+            } else {
+                lastVectorEl.textContent = 'SYNCING...';
+            }
+        }
+
+        function buildDashboardTimeline(txs, wallets) {
+            const BIN_COUNT = 12;
+            const BIN_SECONDS = 300;
+            const now = Math.floor(Date.now() / 1000);
+            const maxTs = (txs || []).reduce((max, tx) => Math.max(max, safeNumber(tx.timestamp, 0)), now);
+            const endTs = Math.max(now, maxTs);
+            const startTs = endTs - (BIN_COUNT * BIN_SECONDS);
+
+            const walletTrustLookup = new Map();
+            (wallets || []).forEach((wallet) => {
+                const address = String(wallet.address || '').toLowerCase();
+                if (!address) return;
+                walletTrustLookup.set(address, safeNumber(wallet.score, NaN));
+            });
+
+            const bins = Array.from({ length: BIN_COUNT }, (_, index) => ({
+                labelTs: startTs + ((index + 1) * BIN_SECONDS),
+                high: 0,
+                medium: 0,
+                low: 0,
+                total: 0,
+                walletSet: new Set(),
+                trustSum: 0,
+                trustCount: 0,
+            }));
+
+            (txs || []).forEach((tx) => {
+                const ts = safeNumber(tx.timestamp, endTs);
+                if (ts < startTs || ts > endTs) return;
+
+                const idx = clamp(Math.floor((ts - startTs) / BIN_SECONDS), 0, BIN_COUNT - 1);
+                const bin = bins[idx];
+                const risk = clamp(safeNumber(tx.riskScore), 0, 1);
+
+                if (risk >= 0.7) bin.high += 1;
+                else if (risk >= 0.4) bin.medium += 1;
+                else bin.low += 1;
+                bin.total += 1;
+
+                const fromAddress = String(tx.from || '').toLowerCase();
+                const toAddress = String(tx.to || '').toLowerCase();
+                if (fromAddress) bin.walletSet.add(fromAddress);
+                if (toAddress) bin.walletSet.add(toAddress);
+
+                let trust = safeNumber(tx.walletScore, NaN);
+                if (!Number.isFinite(trust)) {
+                    trust = walletTrustLookup.get(fromAddress);
+                }
+                if (!Number.isFinite(trust)) {
+                    trust = clamp(1 - risk, 0, 1);
+                }
+                bin.trustSum += (trust * 100);
+                bin.trustCount += 1;
+            });
+
+            return {
+                categories: bins.map((bin) => new Date(bin.labelTs * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
+                high: bins.map((bin) => bin.high),
+                medium: bins.map((bin) => bin.medium),
+                low: bins.map((bin) => bin.low),
+                total: bins.map((bin) => bin.total),
+                activeWallets: bins.map((bin) => bin.walletSet.size),
+                trust: bins.map((bin) => (bin.trustCount ? Number((bin.trustSum / bin.trustCount).toFixed(2)) : 0)),
+            };
+        }
+
+        function renderDashboardTrendCharts(txs, wallets) {
+            const timeline = buildDashboardTimeline(txs || [], wallets || []);
+
+            const txSeries = [
+                { name: 'High Risk', data: timeline.high },
+                { name: 'Medium Risk', data: timeline.medium },
+                { name: 'Low Risk', data: timeline.low },
+            ];
+
+            const txOptions = {
+                chart: {
+                    height: 330,
+                    type: 'bar',
+                    stacked: true,
+                    background: 'transparent',
+                    toolbar: { show: false },
+                    animations: { enabled: true, easing: 'easeinout', speed: 450 },
+                },
+                theme: { mode: 'dark' },
+                colors: ['#ef4444', '#f59e0b', '#22c55e'],
+                dataLabels: { enabled: false },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '55%',
+                        borderRadius: 2,
+                    },
+                },
+                stroke: { width: 0 },
+                xaxis: {
+                    categories: timeline.categories,
+                    labels: { style: { colors: '#94a3b8', fontSize: '11px' } },
+                    axisBorder: { color: '#334155' },
+                    axisTicks: { color: '#334155' },
+                },
+                yaxis: {
+                    min: 0,
+                    title: { text: 'Transactions', style: { color: '#94a3b8' } },
+                    labels: { style: { colors: '#94a3b8' } },
+                    forceNiceScale: true,
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    labels: { colors: '#cbd5e1' },
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    theme: 'dark',
+                },
+                grid: {
+                    borderColor: 'rgba(148, 163, 184, 0.18)',
+                },
+            };
+
+            const walletSeries = [
+                { name: 'Avg Trust %', type: 'line', data: timeline.trust },
+                { name: 'Active Wallets', type: 'column', data: timeline.activeWallets },
+            ];
+
+            const walletOptions = {
+                chart: {
+                    height: 330,
+                    type: 'line',
+                    background: 'transparent',
+                    toolbar: { show: false },
+                    animations: { enabled: true, easing: 'easeinout', speed: 450 },
+                },
+                theme: { mode: 'dark' },
+                colors: ['#e5e7eb', '#38bdf8'],
+                dataLabels: { enabled: false },
+                stroke: { width: [2.8, 0], curve: 'smooth' },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '48%',
+                        borderRadius: 2,
+                    },
+                },
+                xaxis: {
+                    categories: timeline.categories,
+                    labels: { style: { colors: '#94a3b8', fontSize: '11px' } },
+                    axisBorder: { color: '#334155' },
+                    axisTicks: { color: '#334155' },
+                },
+                yaxis: [
+                    {
+                        min: 0,
+                        max: 100,
+                        tickAmount: 5,
+                        title: { text: 'Trust %', style: { color: '#e5e7eb' } },
+                        labels: {
+                            style: { colors: '#e5e7eb' },
+                            formatter: (value) => `${Math.round(value)}%`,
+                        },
+                    },
+                    {
+                        opposite: true,
+                        min: 0,
+                        forceNiceScale: true,
+                        title: { text: 'Active Wallets', style: { color: '#38bdf8' } },
+                        labels: { style: { colors: '#38bdf8' } },
+                    },
+                ],
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    labels: { colors: '#cbd5e1' },
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    theme: 'dark',
+                },
+                grid: {
+                    borderColor: 'rgba(148, 163, 184, 0.18)',
+                },
+                markers: {
+                    size: [3, 0],
+                    strokeWidth: 0,
+                },
+            };
+
+            const txTarget = document.querySelector('#tx-trend-chart');
+            if (txTarget) {
+                if (txTrendChartInstance) {
+                    txTrendChartInstance.updateOptions({ xaxis: txOptions.xaxis, yaxis: txOptions.yaxis, tooltip: txOptions.tooltip }, false, true);
+                    txTrendChartInstance.updateSeries(txSeries, true);
+                } else {
+                    txTrendChartInstance = new ApexCharts(txTarget, { ...txOptions, series: txSeries });
+                    txTrendChartInstance.render();
+                }
+            }
+
+            const walletTarget = document.querySelector('#wallet-trend-chart');
+            if (!walletTarget) return;
+
+            if (walletTrendChartInstance) {
+                walletTrendChartInstance.updateOptions({ xaxis: walletOptions.xaxis, yaxis: walletOptions.yaxis, tooltip: walletOptions.tooltip }, false, true);
+                walletTrendChartInstance.updateSeries(walletSeries, true);
+            } else {
+                walletTrendChartInstance = new ApexCharts(walletTarget, { ...walletOptions, series: walletSeries });
+                walletTrendChartInstance.render();
+            }
+        }
+
+        function wireCommandSearch() {
+            const input = document.getElementById('command-search-input');
+            if (!input) return;
+            input.addEventListener('keydown', (event) => {
+                if (event.key !== 'Enter') return;
+                const query = input.value.trim();
+                if (!query) return;
+                window.location.href = `/live?q=${encodeURIComponent(query)}`;
+            });
+        }
+
+        function wireGeoControls() {
+            if (geoControlsWired) return;
+            geoControlsWired = true;
+
+            const validatedToggle = document.getElementById('geo-only-validated');
+            const confidenceSlider = document.getElementById('geo-min-confidence');
+            const windowSelect = document.getElementById('geo-time-window');
+
+            if (validatedToggle) {
+                validatedToggle.addEventListener('change', () => {
+                    scheduleStatsRefresh();
+                });
+            }
+
+            if (confidenceSlider) {
+                confidenceSlider.addEventListener('input', () => {
+                    updateGeoControlLabels();
+                    scheduleStatsRefresh();
+                });
+            }
+
+            if (windowSelect) {
+                windowSelect.addEventListener('change', () => {
+                    scheduleStatsRefresh();
+                });
+            }
+
+            updateGeoControlLabels();
         }
 
         async function fetchStats() {
             try {
-                const res = await fetch('/transactions?limit=500');
-                const txs = await res.json();
-                
-                const highRisk = txs.filter(t => t.riskScore > 0.7).length;
-                const wallets = new Set(txs.map(t => t.from)).size;
+                const [txResponse, walletResponse] = await Promise.all([
+                    fetch(`/transactions?limit=${CONFIG.TX_LIMIT}&predicted_only=1`),
+                    fetch(`/wallets?limit=${CONFIG.WALLET_LIMIT}&predicted_only=1`),
+                ]);
 
-                document.getElementById('stat-total-tx').innerText = txs.length;
-                document.getElementById('stat-high-tx').innerText = highRisk;
-                document.getElementById('stat-total-wallets').innerText = wallets;
+                const txs = txResponse.ok ? await txResponse.json() : [];
+                const walletPayload = walletResponse.ok ? await walletResponse.json() : [];
+                const wallets = Array.isArray(walletPayload) ? walletPayload : [];
 
-                renderCharts(txs);
-            } catch(e) { 
-                console.error("Stats error", e); 
+                const normalizedTxs = Array.isArray(txs) ? txs.map((tx) => normalizeTxForGeo(tx)).filter((tx) => tx.from && tx.to) : [];
+                const walletCount = wallets.length
+                    ? wallets.length
+                    : new Set(normalizedTxs.flatMap((tx) => [String(tx.from || ''), String(tx.to || '')].filter(Boolean))).size;
+
+                const summary = computeMeshSummary(normalizedTxs, new Array(walletCount).fill(null));
+                summary.walletCount = walletCount;
+                updateCommandMetrics(summary);
+                renderDashboardTrendCharts(normalizedTxs, wallets);
+                await renderGeospatialThreatMap(normalizedTxs);
+            } catch (e) {
+                console.error('Stats error', e);
             }
         }
 
-        function renderCharts(txs) {
-            const chartColors = ['#ef4444', '#f59e0b', '#22c55e'];
-            
-            const risks = [
-                txs.filter(t => t.riskScore > 0.7).length,
-                txs.filter(t => t.riskScore > 0.4 && t.riskScore <= 0.7).length,
-                txs.filter(t => t.riskScore <= 0.4).length
-            ];
-            
-            const trusts = [
-                txs.filter(t => t.walletScore > 0.7).length,
-                txs.filter(t => t.walletScore > 0.4 && t.walletScore <= 0.7).length,
-                txs.filter(t => t.walletScore <= 0.4).length
-            ];
-
-            const commonOptions = {
-                chart: { 
-                    type: 'donut', 
-                    height: 320,
-                    background: 'transparent',
-                    animations: { enabled: true }
-                },
-                theme: { mode: 'dark' },
-                dataLabels: { 
-                    enabled: true,
-                    style: { fontFamily: 'JetBrains Mono', fontSize: '12px', fontWeight: 'bold' },
-                    dropShadow: { enabled: false }
-                },
-                plotOptions: { 
-                    pie: { 
-                        donut: { 
-                            size: '70%',
-                            labels: {
-                                show: true,
-                                name: { show: true, fontFamily: 'Space Grotesk', fontSize: '14px', color: '#a1a1aa' },
-                                value: { show: true, fontFamily: 'Space Grotesk', fontSize: '24px', fontWeight: 'bold', color: '#e4e4e7' },
-                                total: {
-                                    show: true,
-                                    label: 'Total',
-                                    fontSize: '14px',
-                                    color: '#a1a1aa',
-                                    formatter: function (w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                legend: {
-                    position: 'bottom',
-                    fontFamily: 'Space Grotesk',
-                    labels: { colors: '#a1a1aa' },
-                    markers: { width: 10, height: 10, radius: 2 }
-                },
-                stroke: { width: 1, colors: ['#18181b'] },
-                tooltip: { theme: 'dark' }
-            };
-
-            if (riskChartInstance) {
-                riskChartInstance.updateSeries(risks);
-            } else {
-                riskChartInstance = new ApexCharts(document.querySelector("#tx-risk-donut-chart"), {
-                    ...commonOptions,
-                    series: risks,
-                    labels: ['High Risk', 'Medium Risk', 'Low Risk'],
-                    colors: chartColors
-                });
-                riskChartInstance.render();
-            }
-
-            if (trustChartInstance) {
-                trustChartInstance.updateSeries(trusts);
-            } else {
-                trustChartInstance = new ApexCharts(document.querySelector("#wallet-trust-donut-chart"), {
-                    ...commonOptions,
-                    series: trusts,
-                    labels: ['Trusted', 'Neutral', 'Untrusted'],
-                    colors: ['#22c55e', '#f59e0b', '#ef4444'] 
-                });
-                trustChartInstance.render();
-            }
+        function scheduleStatsRefresh() {
+            if (refreshTimer) return;
+            refreshTimer = setTimeout(() => {
+                refreshTimer = null;
+                fetchStats();
+            }, 1200);
         }
 
         function initializeSocket() {
@@ -581,15 +1747,17 @@
             socket.on('connect', () => console.log('Connected to live feed'));
             socket.on('new_transaction', (data) => {
                 updateLiveActivity(data);
-                fetchStats();
+                scheduleStatsRefresh();
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchStats();
-            loadCachedFeed(); // <-- LOAD CACHE ON STARTUP
+            loadCachedFeed();
             initializeSocket();
             initScrollReveal();
+            wireGeoControls();
+            wireCommandSearch();
             setInterval(fetchStats, CONFIG.REFRESH_INTERVAL);
         });
     </script>

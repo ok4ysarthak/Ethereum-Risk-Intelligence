@@ -1,0 +1,953 @@
+{
+  "generated_at_utc": "2026-04-04T21:48:31.801905+00:00",
+  "run_date_utc": "2026-04-04",
+  "base_url": "http://127.0.0.1:5000",
+  "health": {
+    "status_code": 200,
+    "payload": {
+      "graph_ready": true,
+      "model_loaded": true,
+      "status": "ok",
+      "timestamp": 1775339309
+    }
+  },
+  "temporal_tests": [
+    {
+      "name": "low_risk_long_gap_guard",
+      "passed": true,
+      "details": {
+        "delta": 0.206682,
+        "previous": 0.545258,
+        "current": 0.75194,
+        "time_gap_seconds": 19800,
+        "decay": 0.092922,
+        "formula_normalized_score": 0.903601
+      }
+    },
+    {
+      "name": "dormant_spike_detection",
+      "passed": true,
+      "details": {
+        "dormant_spike": true,
+        "time_gap_seconds": 25200,
+        "decay": 0.048606,
+        "adjusted_risk_probability": 1.0
+      }
+    },
+    {
+      "name": "burst_detection",
+      "passed": true,
+      "details": {
+        "burst_detected": true,
+        "tx_count_last_1_min": 4,
+        "decay": 0.998801,
+        "update_alpha": 0.3503
+      }
+    },
+    {
+      "name": "risk_sensitivity_ordering",
+      "passed": true,
+      "details": {
+        "low_risk_probability": 0.0112324059009552,
+        "high_risk_probability": 0.999247670173645,
+        "low_temporal_score": 0.544321,
+        "high_temporal_score": 0.45463
+      }
+    }
+  ],
+  "shap_productivity": {
+    "sample_count": 54,
+    "samples_per_profile": 18,
+    "shap_present_count": 54,
+    "shap_present_rate": 1.0,
+    "average_top_feature_count": 5,
+    "sign_alignment_rate": 1.0,
+    "profile_risk_probability_means": {
+      "benign": 0.002125,
+      "suspicious": 0.986877,
+      "severe": 0.998149
+    },
+    "profile_ordering_pass": true,
+    "pairwise_ordering_rates": {
+      "benign_lt_suspicious": 1.0,
+      "benign_lt_severe": 1.0,
+      "suspicious_lt_severe": 0.907407
+    },
+    "pairwise_macro_ordering_rate": 0.969136,
+    "determinism_rate": 1.0,
+    "latency_ms": {
+      "mean": 29.279,
+      "p95": 32.967,
+      "max": 58.63
+    },
+    "sample_records": [
+      {
+        "profile": "benign",
+        "risk_probability": 0.001217986224219203,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0574,
+        "latency_ms": 28.037
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0011754513252526522,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Number_of_Inputs",
+          "Gas_Complexity"
+        ],
+        "net_top_impact": -5.2246,
+        "latency_ms": 27.785
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0014060107059776783,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.2684,
+        "latency_ms": 27.921
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.001270140870474279,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.3261,
+        "latency_ms": 28.473
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0012623106595128775,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0855,
+        "latency_ms": 27.412
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0013226218288764358,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.2186,
+        "latency_ms": 34.47
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.016207577660679817,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Gas_Complexity",
+          "Number_of_Outputs",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -2.4614,
+        "latency_ms": 58.63
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.001332421088591218,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0867,
+        "latency_ms": 32.776
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.001240763464011252,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0481,
+        "latency_ms": 36.456
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.001638274290598929,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.3707,
+        "latency_ms": 29.111
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0012777852825820446,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0894,
+        "latency_ms": 27.872
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0013543358072638512,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Number_of_Inputs"
+        ],
+        "net_top_impact": -5.177,
+        "latency_ms": 27.904
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0012546470388770103,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0927,
+        "latency_ms": 27.28
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0012140619801357388,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0645,
+        "latency_ms": 28.752
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0012031977530568838,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Number_of_Inputs",
+          "Gas_Complexity"
+        ],
+        "net_top_impact": -5.2697,
+        "latency_ms": 27.494
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.0011593186063691974,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "Number_of_Outputs",
+          "BMax_BMin_per_NT",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0475,
+        "latency_ms": 28.477
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.00143441220279783,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Gas_Complexity"
+        ],
+        "net_top_impact": -5.1611,
+        "latency_ms": 29.137
+      },
+      {
+        "profile": "benign",
+        "risk_probability": 0.001271718181669712,
+        "risk_score": 1,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Number_of_Outputs",
+          "Gas_Complexity",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": -5.0866,
+        "latency_ms": 27.831
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9980217218399048,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.5589,
+        "latency_ms": 27.164
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9938278794288635,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.5713,
+        "latency_ms": 28.864
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.954132080078125,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": 2.9784,
+        "latency_ms": 27.487
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9982243180274963,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.5318,
+        "latency_ms": 27.998
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9812498688697815,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score",
+          "Gas_Price"
+        ],
+        "net_top_impact": 4.1511,
+        "latency_ms": 31.722
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9977573752403259,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.5947,
+        "latency_ms": 29.352
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9627683162689209,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": 2.7779,
+        "latency_ms": 27.542
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9935085773468018,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.4847,
+        "latency_ms": 28.606
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9896777868270874,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 4.9593,
+        "latency_ms": 28.387
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9919799566268921,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 4.926,
+        "latency_ms": 32.967
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9943094253540039,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 4.5938,
+        "latency_ms": 29.071
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9946084022521973,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "BMax_BMin_per_NT",
+          "Gas_Price"
+        ],
+        "net_top_impact": 4.3585,
+        "latency_ms": 28.668
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9938879609107971,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.543,
+        "latency_ms": 28.319
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9980979561805725,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.1916,
+        "latency_ms": 27.051
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9979593753814697,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.6569,
+        "latency_ms": 28.214
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9423189163208008,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score",
+          "Volatility_Age_Interaction"
+        ],
+        "net_top_impact": 3.0066,
+        "latency_ms": 28.702
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9922720193862915,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 4.9528,
+        "latency_ms": 28.417
+      },
+      {
+        "profile": "suspicious",
+        "risk_probability": 0.9891776442527771,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "BMax_BMin_per_NT",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 5.011,
+        "latency_ms": 28.423
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9990731477737427,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 5.724,
+        "latency_ms": 27.741
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.997302770614624,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 5.7773,
+        "latency_ms": 28.279
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9989256262779236,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 5.7431,
+        "latency_ms": 29.048
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9990237951278687,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.167,
+        "latency_ms": 29.056
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9979900121688843,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.0062,
+        "latency_ms": 28.679
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9987665414810181,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.0236,
+        "latency_ms": 27.608
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9975900650024414,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 5.7775,
+        "latency_ms": 28.33
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9988196492195129,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 5.918,
+        "latency_ms": 28.033
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9944300055503845,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "BMax_BMin_per_NT"
+        ],
+        "net_top_impact": 4.2383,
+        "latency_ms": 27.391
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9983848333358765,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.1215,
+        "latency_ms": 27.648
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9981032609939575,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Number_of_Inputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 5.9283,
+        "latency_ms": 29.036
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.998418927192688,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.1194,
+        "latency_ms": 27.807
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9983541965484619,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 6.0953,
+        "latency_ms": 29.301
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9975571632385254,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 5.8034,
+        "latency_ms": 28.34
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9992218017578125,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 5.6181,
+        "latency_ms": 28.195
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.998696506023407,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 5.8325,
+        "latency_ms": 27.66
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9990625977516174,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Number_of_Inputs",
+          "Gas_Complexity",
+          "Gas_Price"
+        ],
+        "net_top_impact": 5.9167,
+        "latency_ms": 28.149
+      },
+      {
+        "profile": "severe",
+        "risk_probability": 0.9969606995582581,
+        "risk_score": 10,
+        "shap_summary_present": true,
+        "top_feature_count": 5,
+        "top_features": [
+          "Number_of_Outputs",
+          "Wallet_Age_Days",
+          "Gas_Complexity",
+          "Gas_Price",
+          "Tx_Frequency_Score"
+        ],
+        "net_top_impact": 5.7003,
+        "latency_ms": 28.008
+      }
+    ]
+  },
+  "temporal_pass_rate": 1.0,
+  "composite_productivity_index": 0.986111,
+  "total_api_calls": 71
+}

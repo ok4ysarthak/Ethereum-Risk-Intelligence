@@ -1,0 +1,1363 @@
+﻿{
+    "generated_at_utc":  "2026-04-04T17:26:11.0265721Z",
+    "source_report":  "oracle_e2e_report_postfix_20260404.json",
+    "selection_rule":  "temporal_state.formula_normalized_score != null and temporal_state.update_alpha != null",
+    "records_in_source":  20,
+    "records_in_strict_report":  15,
+    "stats":  {
+                  "low_risk_count":  13,
+                  "low_risk_nontrivial_drop_count":  0,
+                  "low_risk_nontrivial_drops":  [
+
+                                                ],
+                  "shap_present_count":  15,
+                  "temporal_state_present_count":  15,
+                  "onchain_tx_hash_present_count":  15,
+                  "onchain_wallet_hash_present_count":  15
+              },
+    "predictions":  [
+                        {
+                            "timestamp":  1775323386,
+                            "transaction_hash":  "0x472d241194964aba71bd759b1da23fcee2e4722fb4913325a2e771fac5f8dec1",
+                            "from":  "0x9996422a7c368f635e9f22b3d38448c73127cf48",
+                            "to":  "0xa1f78bed1a79b9aec972e373e0e7f63d8cace4a8",
+                            "fraud_probability":  0.0781,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.538071,
+                            "temporal_score_normalized":  0.538071,
+                            "temporal_score":  5.381,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.080443,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.608774,
+                                                   "formula_raw_score":  0.821845,
+                                                   "rolling_avg_risk":  0.01562,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern, while new wallet partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.5964,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.5964",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  2.4018,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.4018",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.777,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.7770",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6635,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.6635",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6211,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6211",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **long-established history (542 days)**. Supported by **substantial reserves (10.1 ETH)**.",
+                                                     {
+                                                         "drivers":  [
+
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.5747412398623408,
+                                                                                "long-established history (542 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                1.5,
+                                                                                "substantial reserves (10.1 ETH)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.4,
+                                                                                "stable transaction pacing",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "681ab8d765d13163ddbe75d18072992c03d1a84c1c0f815c6ce18aa99427a105",
+                            "onchain_wallet_update":  "aa0f7887639bf2a97157ff5edd11b2867797a9653971e70048f887bc9ff53d1e"
+                        },
+                        {
+                            "timestamp":  1775323382,
+                            "transaction_hash":  "0x669044b636bc2cd20db4c7578033c46e7976553dbe8cc52886ba17eba21cee63",
+                            "from":  "0x8463eaf15bcade3b3484dc17a853aa1135b4482f",
+                            "to":  "0xca11bde05977b3631167028862be2a173976ca11",
+                            "fraud_probability":  0.0647,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.539323,
+                            "temporal_score_normalized":  0.539323,
+                            "temporal_score":  5.393,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.066641,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.612352,
+                                                   "formula_raw_score":  0.826676,
+                                                   "rolling_avg_risk":  0.01294,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by new wallet, while balance volatility pattern partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  1.2353,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "+1.2353",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.0713,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-1.0713",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9206,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.9206",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8762,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.8762",
+                                                          "meaning":  "Gas Complexity"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7815,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "-0.7815",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **consistent accumulation pattern**. Although **high transaction frequency (221 tx/day)** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.9999999999999343,
+                                                                             "high transaction frequency (221 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  4.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "2a2fc438cfaed3b48418dd4b9bc3f8bd1e177744ad187e6fcceefc35cba2879b",
+                            "onchain_wallet_update":  "2f46f2a39a04700f2cdea87a03ab2fe2e7ea764a932f1b4f074791a89d039096"
+                        },
+                        {
+                            "timestamp":  1775323370,
+                            "transaction_hash":  "0x17019d362251215aa0779ce7cdc8e9a209528a5262f9271be0e1aa2a1de66b78",
+                            "from":  "0x35af12026bfdde24f12ebf3ad926fc50c3f96abf",
+                            "to":  "0xf24b03a130a99d8aecfa1c5cbe1a313c884d72b3",
+                            "fraud_probability":  0.0023,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.545155,
+                            "temporal_score_normalized":  0.545155,
+                            "temporal_score":  5.452,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.002369,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.629015,
+                                                   "formula_raw_score":  0.849171,
+                                                   "rolling_avg_risk":  0.00046,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk remains contained because new wallet and mass-distribution output pattern reduce the model output.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.142,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.1420",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9376,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "-0.9376",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8519,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.8519",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7289,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.7289",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7011,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.7011",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **long-established history (1112 days)**. Supported by **substantial reserves (30504.2 ETH)**. Although **significant value transfer (10.0 ETH)** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.5854347403601883,
+                                                                             "significant value transfer (10.0 ETH)",
+                                                                             "risk"
+                                                                         ],
+                                                                         [
+                                                                             1.1999997202712325,
+                                                                             "highly volatile balance history",
+                                                                             "risk"
+                                                                         ],
+                                                                         [
+                                                                             0.5772357775476717,
+                                                                             "high transaction frequency (8 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.619999482635724,
+                                                                                "long-established history (1112 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                1.5,
+                                                                                "substantial reserves (30504.2 ETH)",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  1.77
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "fc03ecaa0a414660451a53cc2b2456560e4238c8a9b728d4003487264294311b",
+                            "onchain_wallet_update":  "7aa4c3e7b7a57d239c1ce6a41afa255609a94afe34bb2fdaf9bcf4bf2a09ab0d"
+                        },
+                        {
+                            "timestamp":  1775323353,
+                            "transaction_hash":  "0x4c205f84abc2cc38df6607e2368fb1d2eb5e52ccecde90e7da9ef757c57bb34e",
+                            "from":  "0x7e4820f9e1860c01ec9f005f1144d6ef22659e31",
+                            "to":  "0x00cd23de42a8bf4774b5f87ab6583b634aff1589",
+                            "fraud_probability":  0.0724,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.538604,
+                            "temporal_score_normalized":  0.538604,
+                            "temporal_score":  5.386,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.074572,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.610296,
+                                                   "formula_raw_score":  0.8239,
+                                                   "rolling_avg_risk":  0.01448,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by new wallet, while mass-distribution output pattern partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  1.2445,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "+1.2445",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.1141,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "-1.1141",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.0101,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-1.0101",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9053,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.9053",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8416,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.8416",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **consistent accumulation pattern**. Although **high transaction frequency (167 tx/day)** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.9999999997703881,
+                                                                             "high transaction frequency (167 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  4.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "74e07a633da15082b5922a25b330147efb40be90e065cfe69748d7dbb2f5be19",
+                            "onchain_wallet_update":  "4015b3627cc5a2ead3770e008c0d7eb56cb5a719bbe3a16c7abc6c7c7e34c5b8"
+                        },
+                        {
+                            "timestamp":  1775323295,
+                            "transaction_hash":  "0x4e7b066aa4c573f7ffa01f032ffab69dfec032f3af43e89e77211b52d2c1677e",
+                            "from":  "0xdf7c9cc44340aaf0d72bc4e7a19e0f4cf83223d9",
+                            "to":  "0x0064c21b0afa7e2df6171379617027794def6b18",
+                            "fraud_probability":  0.0676,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.56,
+                            "wallet_trust_score":  0.670485,
+                            "temporal_score_normalized":  0.670485,
+                            "temporal_score":  6.705,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.069628,
+                                                   "burst_detected":  false,
+                                                   "decay":  0.27369,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.767844,
+                                                   "formula_raw_score":  0.478896,
+                                                   "rolling_avg_risk":  0.01352,
+                                                   "time_gap_seconds":  10798,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.531578
+                                               },
+                            "shap_summary":  "Risk is primarily increased by new wallet, while mass-distribution output pattern partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  1.1929,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "+1.1929",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.1159,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "-1.1159",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.0128,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-1.0128",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9046,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.9046",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8407,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.8407",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **consistent accumulation pattern**. Although **high transaction frequency (72 tx/day)** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.9996652438826574,
+                                                                             "high transaction frequency (72 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  4.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "f082a92b2a2df9e8c9817952f089047c674ff30a36f518449503212b5c5c49bb",
+                            "onchain_wallet_update":  "3cc5d9ea7360b85bf3ec7108f902b8c7a952d4fd8b59ca1b3add42ae6c4f2aa9"
+                        },
+                        {
+                            "timestamp":  1775323267,
+                            "transaction_hash":  "0x022fb78ad64aae1bfe79c70e5884df4577f5d689ed7aaba189252fef95827289",
+                            "from":  "0x1d09fe98819b6f5a46552eff51828e576b0f3b4d",
+                            "to":  "0xfa6419a3d3503a016df3a59f690734862ca2a78d",
+                            "fraud_probability":  0.1162,
+                            "risk_score":  2,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.53451,
+                            "temporal_score_normalized":  0.53451,
+                            "temporal_score":  5.345,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.119686,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.5986,
+                                                   "formula_raw_score":  0.80811,
+                                                   "rolling_avg_risk":  0.02324,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern, while new wallet partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.4764,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.4764",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  2.4642,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.4642",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7569,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.7569",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.661,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.6610",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6098,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6098",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 2/10). The score is suppressed by **long-established history (765 days)**. Supported by **consistent accumulation pattern**. Although **mass-distribution output behavior** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.2,
+                                                                             "mass-distribution output behavior",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.619461018242723,
+                                                                                "long-established history (765 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "575728c4d3f248ef6b068e94082432ade13e1a88f4714b8ce041a788f50f98cb",
+                            "onchain_wallet_update":  "5daa31d9b31b8b7afb963ca9bb3a965a75a07c383a010d9d8ecdb54fa703d00f"
+                        },
+                        {
+                            "timestamp":  1775323264,
+                            "transaction_hash":  "0x25f237cf35846e7eef3435d22173895940d38cadd220600ad69e4435905fbf17",
+                            "from":  "0x2a884e5946cbc367950dc684aff85cdf612d3fee",
+                            "to":  "0xfa6419a3d3503a016df3a59f690734862ca2a78d",
+                            "fraud_probability":  0.1186,
+                            "risk_score":  2,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.534286,
+                            "temporal_score_normalized":  0.534286,
+                            "temporal_score":  5.343,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.122158,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.597959,
+                                                   "formula_raw_score":  0.807245,
+                                                   "rolling_avg_risk":  0.02372,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern, while new wallet partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.478,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.4780",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  2.4576,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.4576",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7803,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.7803",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6647,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.6647",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.61,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6100",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 2/10). The score is suppressed by **long-established history (1002 days)**. Supported by **consistent accumulation pattern**. Although **mass-distribution output behavior** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.2,
+                                                                             "mass-distribution output behavior",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.6199953363791084,
+                                                                                "long-established history (1002 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.4,
+                                                                                "stable transaction pacing",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "1e883844ff07443cacb2a6ed9bcb6a4224cf03ca98a305630efdb2c7a688b1c5",
+                            "onchain_wallet_update":  "2af50747d2a33af90356ad069a632ac64fce77c5ca1d6ab24fa7f9cec3dc5e86"
+                        },
+                        {
+                            "timestamp":  1775323261,
+                            "transaction_hash":  "0xa6d36198263fa7dff32c72aba9bc923afcb151ded05933ddaaec3f04cb1cd5b1",
+                            "from":  "0x6cc9397c3b38739dacbfaa68ead5f5d77ba5f455",
+                            "to":  "0xe7ec6ec7aa8a7c62e1de6a2f02e5c109ac42bf55",
+                            "fraud_probability":  0.0023,
+                            "risk_score":  1,
+                            "wallet_trust_before":  1.0,
+                            "wallet_trust_score":  0.97,
+                            "temporal_score_normalized":  0.97,
+                            "temporal_score":  9.7,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.105369,
+                                                   "burst_detected":  false,
+                                                   "decay":  0.0,
+                                                   "dormant_spike":  true,
+                                                   "formula_normalized_score":  0.894631,
+                                                   "formula_raw_score":  0.313121,
+                                                   "rolling_avg_risk":  0.02046,
+                                                   "time_gap_seconds":  9424338,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.6
+                                               },
+                            "shap_summary":  "Risk remains contained because new wallet and mass-distribution output pattern reduce the model output.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.1537,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.1537",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.944,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "-0.9440",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8227,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.8227",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7351,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.7351",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7067,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.7067",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **long-established history (1385 days)**. Supported by **substantial reserves (5786.3 ETH)**. Although **highly volatile balance history** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.1999999999989517,
+                                                                             "highly volatile balance history",
+                                                                             "risk"
+                                                                         ],
+                                                                         [
+                                                                             0.4728537831895933,
+                                                                             "significant value transfer (2.4 ETH)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.6199999977966002,
+                                                                                "long-established history (1385 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                1.5,
+                                                                                "substantial reserves (5786.3 ETH)",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "956925ff4299ecf1d6a4d703628684454da8c07aaf3b0ba8541877a08ae267f8",
+                            "onchain_wallet_update":  "f660009c6b9c7550aaac8e51dd8d3e1a24742dc24ce8bb5c931f93d3252d23bd"
+                        },
+                        {
+                            "timestamp":  1775323260,
+                            "transaction_hash":  "0x37b715d12ef88390c42dd7e1bcedc3271548d5880d71bd5ae22b2c8d38b894d6",
+                            "from":  "0x94072243e3344ae3d80509f6db2e0cb212adee79",
+                            "to":  "0x7c6a623ec16d436cc4efcf959ed2ef2f71a64654",
+                            "fraud_probability":  0.005,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.544903,
+                            "temporal_score_normalized":  0.544903,
+                            "temporal_score":  5.449,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.00515,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.628294,
+                                                   "formula_raw_score":  0.848197,
+                                                   "rolling_avg_risk":  0.001,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk remains contained because new wallet and balance volatility pattern reduce the model output.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.356,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.3560",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8731,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.8731",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7375,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.7375",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7196,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "-0.7196",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6928,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6928",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **long-established history (566 days)**. Supported by **consistent accumulation pattern**.",
+                                                     {
+                                                         "drivers":  [
+
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.5916790921167148,
+                                                                                "long-established history (566 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.4,
+                                                                                "stable transaction pacing",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "c383bad018ecddff4ac662c457b290ef45d15d7370674d6ae166e3928b692cba",
+                            "onchain_wallet_update":  "cab5bff37afc9ef828a4f8ad47c24330a02ab48fe24e2dcd3e72503c2288973b"
+                        },
+                        {
+                            "timestamp":  1775323255,
+                            "transaction_hash":  "0x520335abfd9865c80930f5ab137972145a3a1fc3b0113791eae019faeccda1d1",
+                            "from":  "0xcfdc739848ebe8a959e943df692fcf6ec91bb56c",
+                            "to":  "0x10c15c29fb208047df6247514c0416c217e6f6e2",
+                            "fraud_probability":  0.789,
+                            "risk_score":  8,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.471628,
+                            "temporal_score_normalized":  0.471628,
+                            "temporal_score":  4.716,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.81267,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.418937,
+                                                   "formula_raw_score":  0.565565,
+                                                   "rolling_avg_risk":  0.1578,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern and new wallet, while balance volatility pattern partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.5859,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.5859",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.2828,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "+1.2828",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9079,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.9079",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8324,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.8324",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.744,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.7440",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Critical Risk** Analysis (Model Score: 8/10). The primary driver is **dust/near-zero balance**. Risk is compounded by **high transaction frequency (1 tx/day)**. While **consistent accumulation pattern** is positive, it does not outweigh the risk factors. (Note: The ML model detects hidden patterns not fully explained by standard heuristics).",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.2,
+                                                                             "dust/near-zero balance",
+                                                                             "risk"
+                                                                         ],
+                                                                         [
+                                                                             0.23824753438178373,
+                                                                             "high transaction frequency (1 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  2.51
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "52fb65a85161aedf0070908eea2f2da4bd2d587640d011b8b2b91db2678d19c1",
+                            "onchain_wallet_update":  "670d35cc1d72494c054d7ba3ca6940e5f471779ac1a84b880396903abea54623"
+                        },
+                        {
+                            "timestamp":  1775323252,
+                            "transaction_hash":  "0x549512ec2a090ceae9b2fcc69ff115362cdb421e36dd32444213ba6daeb0eb1b",
+                            "from":  "0x6bd62fd98dc7bdb0dd357c010cd656cf37399e06",
+                            "to":  "0xfa6419a3d3503a016df3a59f690734862ca2a78d",
+                            "fraud_probability":  0.1173,
+                            "risk_score":  2,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.534407,
+                            "temporal_score_normalized":  0.534407,
+                            "temporal_score":  5.344,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.120819,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.598306,
+                                                   "formula_raw_score":  0.807713,
+                                                   "rolling_avg_risk":  0.02346,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern, while new wallet partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.4756,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.4756",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  2.4753,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.4753",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7552,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.7552",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6618,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.6618",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.61,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6100",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 2/10). The score is suppressed by **long-established history (427 days)**. Supported by **consistent accumulation pattern**. Although **mass-distribution output behavior** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.2,
+                                                                             "mass-distribution output behavior",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.2568998950577128,
+                                                                                "long-established history (427 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.4,
+                                                                                "stable transaction pacing",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "752efdfa7f9a9d33e4aa138b17ca68bdb4082db93df69028b49d648b2e0e1a3c",
+                            "onchain_wallet_update":  "946f4640dee91faa19ac81d4e0838b3a4fbfba444ed89f624a8f305f21a69595"
+                        },
+                        {
+                            "timestamp":  1775323248,
+                            "transaction_hash":  "0x81989a0c06f39cccd57b285baf47e1955b307d0a30ced1f035ab59e300740ca8",
+                            "from":  "0xdac509c5692f73dcc45d70558d1f4d2999d27b8c",
+                            "to":  "0xa1f78bed1a79b9aec972e373e0e7f63d8cace4a8",
+                            "fraud_probability":  0.1207,
+                            "risk_score":  2,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.534089,
+                            "temporal_score_normalized":  0.534089,
+                            "temporal_score":  5.341,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.124321,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.597398,
+                                                   "formula_raw_score":  0.806488,
+                                                   "rolling_avg_risk":  0.02414,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern, while new wallet partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.4805,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.4805",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  2.4766,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.4766",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7528,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.7528",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6639,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.6639",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6102,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6102",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 2/10). The score is suppressed by **long-established history (505 days)**. Supported by **consistent accumulation pattern**.",
+                                                     {
+                                                         "drivers":  [
+
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                1.5286930620963406,
+                                                                                "long-established history (505 days)",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ],
+                                                                            [
+                                                                                0.4,
+                                                                                "stable transaction pacing",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "bea3d6bac437c9a8e71ee463f30caaafa4c052b8bdd09cd6821b884c5a277617",
+                            "onchain_wallet_update":  "e6d69954ad1b4b5ef8cf53d6ea080842631ec55ea091b3de5289d7f582474323"
+                        },
+                        {
+                            "timestamp":  1775323245,
+                            "transaction_hash":  "0x992e2942ba6bc92804439f97a7aff17c9147371e993a988c71c3cf16f9bd2181",
+                            "from":  "0xa11d929e93a159608f05b73f58cf94e3d1d0ad1e",
+                            "to":  "0x4fe3ff7d0a60da5ca44923cd0a8596df54997a82",
+                            "fraud_probability":  0.0817,
+                            "risk_score":  1,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.537734,
+                            "temporal_score_normalized":  0.537734,
+                            "temporal_score":  5.377,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.084151,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.607813,
+                                                   "formula_raw_score":  0.820547,
+                                                   "rolling_avg_risk":  0.01634,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by new wallet, while balance volatility pattern partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  1.236,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "+1.2360",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.0554,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-1.0554",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9272,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.9272",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.861,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.8610",
+                                                          "meaning":  "Gas Complexity"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7571,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Volatility_Age_Interaction",
+                                                          "impact":  "-0.7571",
+                                                          "meaning":  "Volatility Age Interaction"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 1/10). The score is suppressed by **consistent accumulation pattern**. Although **dust/near-zero balance** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             1.2,
+                                                                             "dust/near-zero balance",
+                                                                             "risk"
+                                                                         ],
+                                                                         [
+                                                                             0.22385200700401067,
+                                                                             "high transaction frequency (1 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  2.48
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "9bc7d04fc0352ea5b7ed3044b51d3e3e2a6cf3523941dac98d135407aef4d871",
+                            "onchain_wallet_update":  "18481a7a87aab6b186dc07cf427e5a689c7df62270538c9d4f4ef618bbd367cd"
+                        },
+                        {
+                            "timestamp":  1775323242,
+                            "transaction_hash":  "0xb923a38382bd07329512890c9be1e03d847184441db4ef7563f277fe0149acde",
+                            "from":  "0x9919668888b4ffd3f1b78e2686d2c87454894325",
+                            "to":  "0xa1f78bed1a79b9aec972e373e0e7f63d8cace4a8",
+                            "fraud_probability":  0.1193,
+                            "risk_score":  2,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.53422,
+                            "temporal_score_normalized":  0.53422,
+                            "temporal_score":  5.342,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.122879,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.597772,
+                                                   "formula_raw_score":  0.806992,
+                                                   "rolling_avg_risk":  0.02386,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern, while new wallet partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.4766,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.4766",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  2.4709,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "-2.4709",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7528,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.7528",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6639,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.6639",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.6095,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.6095",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Low Risk** Analysis (Model Score: 2/10). The score is suppressed by **consistent accumulation pattern**. Although **high transaction frequency (0 tx/day)** was detected, it remains within safe tolerances.",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             0.19100731096632198,
+                                                                             "high transaction frequency (0 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "fcc94d06e1b4572e23161c590630e7eefc5ca1ee1c3e17dc6f8c4e70da2e1d20",
+                            "onchain_wallet_update":  "3b9cd0a60d353ea1da2b072468d0713e1f1ee24eef0d9c14e4a83ba6a0338e22"
+                        },
+                        {
+                            "timestamp":  1775323238,
+                            "transaction_hash":  "0x0fb082715ea7716596d9d6aa6ff0d903a15a4105f6cf0f2d87fabe17bc03e4c5",
+                            "from":  "0xfb3eb3f4c936dd0afad452c34d793115a569576e",
+                            "to":  "0xa1f78bed1a79b9aec972e373e0e7f63d8cace4a8",
+                            "fraud_probability":  0.794,
+                            "risk_score":  8,
+                            "wallet_trust_before":  0.5,
+                            "wallet_trust_score":  0.471161,
+                            "temporal_score_normalized":  0.471161,
+                            "temporal_score":  4.712,
+                            "temporal_state":  {
+                                                   "adjusted_risk_probability":  0.81782,
+                                                   "burst_detected":  false,
+                                                   "decay":  1.0,
+                                                   "dormant_spike":  false,
+                                                   "formula_normalized_score":  0.417602,
+                                                   "formula_raw_score":  0.563763,
+                                                   "rolling_avg_risk":  0.1588,
+                                                   "time_gap_seconds":  0,
+                                                   "tx_count_last_1_min":  1,
+                                                   "update_alpha":  0.35
+                                               },
+                            "shap_summary":  "Risk is primarily increased by mass-distribution output pattern and new wallet, while balance volatility pattern partially offsets the risk.",
+                            "shap_top_features":  [
+                                                      {
+                                                          "absolute_impact":  2.583,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Number_of_Outputs",
+                                                          "impact":  "+2.5830",
+                                                          "meaning":  "Mass-distribution output pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  1.2752,
+                                                          "direction":  "increases_risk",
+                                                          "feature":  "Wallet_Age_Days",
+                                                          "impact":  "+1.2752",
+                                                          "meaning":  "New wallet"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.9059,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "BMax_BMin_per_NT",
+                                                          "impact":  "-0.9059",
+                                                          "meaning":  "Balance volatility pattern"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.8323,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Number_of_Inputs",
+                                                          "impact":  "-0.8323",
+                                                          "meaning":  "Complex transaction inputs"
+                                                      },
+                                                      {
+                                                          "absolute_impact":  0.7426,
+                                                          "direction":  "reduces_risk",
+                                                          "feature":  "Gas_Complexity",
+                                                          "impact":  "-0.7426",
+                                                          "meaning":  "Gas Complexity"
+                                                      }
+                                                  ],
+                            "rule_explanation":  [
+                                                     "**Critical Risk** Analysis (Model Score: 8/10). The primary driver is **high transaction frequency (1 tx/day)**. While **consistent accumulation pattern** is positive, it does not outweigh the risk factors. (Note: The ML model detects hidden patterns not fully explained by standard heuristics).",
+                                                     {
+                                                         "drivers":  [
+                                                                         [
+                                                                             0.23503939737103804,
+                                                                             "high transaction frequency (1 tx/day)",
+                                                                             "risk"
+                                                                         ]
+                                                                     ],
+                                                         "mitigators":  [
+                                                                            [
+                                                                                0.5,
+                                                                                "consistent accumulation pattern",
+                                                                                "trust"
+                                                                            ]
+                                                                        ],
+                                                         "rule_score":  0.0
+                                                     }
+                                                 ],
+                            "onchain_tx_update":  "9d58296a84a7635992fa230db2048b5506f21dcdeaf1f65f6d2c148534402a62",
+                            "onchain_wallet_update":  "2af54b3fb79e039338e8474e7c88367c1977e9549dcc453ee21ee3affb0cdba2"
+                        }
+                    ]
+}

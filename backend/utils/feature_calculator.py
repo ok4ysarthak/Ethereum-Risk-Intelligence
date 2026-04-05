@@ -1,6 +1,8 @@
 import time
 import requests
 import logging
+import os
+import threading
 from web3 import Web3
 from typing import Dict, Any, Tuple
 
@@ -37,13 +39,20 @@ class RealTimeFeatureCalculator:
             default_rpc = "https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY"
         else:
             self.chain_id = 11155111  # Sepolia Chain ID
-            default_rpc = "https://eth-sepolia.g.alchemy.com/v2/5bURjldvKPu4glB_tFxWt"
+            default_rpc = "https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY"
 
         if rpc_url is None:
             rpc_url = default_rpc
 
         self.w3 = Web3(Web3.HTTPProvider(rpc_url))
         self.etherscan_api_key = etherscan_api_key
+        self.http = requests.Session()
+
+        self.history_cache_ttl = max(20, int(os.getenv("FEATURE_HISTORY_CACHE_TTL", "120")))
+        self.wallet_stats_cache_ttl = max(20, int(os.getenv("FEATURE_STATS_CACHE_TTL", "90")))
+        self._history_cache = {}
+        self._wallet_stats_cache = {}
+        self._cache_lock = threading.RLock()
         
         # 2. FIX: Use Unified V2 Endpoint for ALL networks
         self.etherscan_base = "https://api.etherscan.io/v2/api"
@@ -71,6 +80,13 @@ class RealTimeFeatureCalculator:
         if not self.etherscan_api_key:
             logger.error("Missing Etherscan API Key")
             return []
+
+        address_key = str(address or "").strip().lower()
+        now = time.time()
+        with self._cache_lock:
+            cached = self._history_cache.get(address_key)
+            if cached and cached.get("expires_at", 0) > now:
+                return cached.get("value", [])
             
         params = {
             "chainid": self.chain_id,
@@ -83,8 +99,7 @@ class RealTimeFeatureCalculator:
             "apikey": self.etherscan_api_key
         }
         try:
-            # logger.info(f"🔍 Querying Etherscan V2 for {address}...")
-            resp = requests.get(self.etherscan_base, params=params, timeout=10).json()
+            resp = self.http.get(self.etherscan_base, params=params, timeout=10).json()
             
             if resp['status'] == '0' and resp['message'] == 'No transactions found':
                 logger.warning(f"Etherscan: No transactions found (New Wallet).")
@@ -95,8 +110,13 @@ class RealTimeFeatureCalculator:
                 return []
                 
             if resp['status'] == '1':
-                # logger.info(f"Etherscan found {len(resp['result'])} transactions.")
-                return resp['result']
+                history = resp['result']
+                with self._cache_lock:
+                    self._history_cache[address_key] = {
+                        "value": history,
+                        "expires_at": now + self.history_cache_ttl,
+                    }
+                return history
             
             return []
         except Exception as e:
@@ -104,11 +124,24 @@ class RealTimeFeatureCalculator:
             return []
 
     def calculate_volatility_and_age(self, address: str, current_balance_eth: float, tx_timestamp: int):
+        stats_key = (str(address or "").strip().lower(), int(tx_timestamp) // 120, round(float(current_balance_eth or 0.0), 6))
+        now = time.time()
+        with self._cache_lock:
+            cached_stats = self._wallet_stats_cache.get(stats_key)
+            if cached_stats and cached_stats.get("expires_at", 0) > now:
+                return cached_stats.get("value")
+
         history = self._fetch_etherscan_history(address)
         
         # FIX: Return 6 values (volatility, age, velocity, b_max, b_min, count)
         if not history:
-            return 0.0, 0.0, 0.0, 0.0, 0.0, 0
+            result = (0.0, 0.0, 0.0, 0.0, 0.0, 0)
+            with self._cache_lock:
+                self._wallet_stats_cache[stats_key] = {
+                    "value": result,
+                    "expires_at": now + self.wallet_stats_cache_ttl,
+                }
+            return result
 
         try:
             first_tx_ts = int(history[0]['timeStamp'])
@@ -144,7 +177,13 @@ class RealTimeFeatureCalculator:
         volatility = (b_max - b_min) / max(tx_count, 1)
 
         # Return extended stats
-        return volatility, age_days, velocity, b_max, b_min, tx_count
+        result = (volatility, age_days, velocity, b_max, b_min, tx_count)
+        with self._cache_lock:
+            self._wallet_stats_cache[stats_key] = {
+                "value": result,
+                "expires_at": now + self.wallet_stats_cache_ttl,
+            }
+        return result
 
     def get_features_for_tx(self, tx_hash: str) -> Dict[str, float]:
         try:

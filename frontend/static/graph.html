@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Graph Intelligence - DeTrust ETH</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/vis-network@9.1.9/dist/vis-network.min.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#91002d",
+                        "surface-bright": "#393939",
+                        "secondary-fixed": "#e2e2e2",
+                        "tertiary-fixed-dim": "#ffb2b8",
+                        "surface-container": "#20201f",
+                        "on-surface-variant": "#c4c7c8",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "error-container": "#93000a",
+                        "surface-tint": "#c6c6c7",
+                        "on-primary": "#2f3131",
+                        "on-tertiary-fixed": "#40000f",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-dim": "#131313",
+                        "outline": "#8e9192",
+                        "tertiary": "#ffffff",
+                        "error": "#ffb4ab",
+                        "primary": "#ffffff",
+                        "on-primary-fixed-variant": "#454747",
+                        "primary-fixed": "#e2e2e2",
+                        "inverse-primary": "#5d5f5f",
+                        "surface-container-high": "#2a2a2a",
+                        "outline-variant": "#444748",
+                        "on-tertiary": "#67001d",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary": "#2f3131",
+                        "surface": "#131313",
+                        "tertiary-container": "#ffdadb",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-container": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#c6c6c7",
+                        "surface-container-highest": "#353535",
+                        "surface-variant": "#353535",
+                        "on-secondary-container": "#b4b5b5",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary-container": "#c90041",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-primary-container": "#636565",
+                        "on-error": "#690005",
+                        "secondary-container": "#454747",
+                        "on-primary-fixed": "#1a1c1c",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift { background-color: #1C1B1B; }
+        .glass-panel { background: rgba(19, 19, 19, 0.7); backdrop-filter: blur(20px); }
+        body { background-color: #131313; color: #e5e2e1; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .node-glow-red { filter: drop-shadow(0 0 8px #ffb4ab); }
+        .node-glow-green { filter: drop-shadow(0 0 8px #c6c6c7); }
+        .node-glow-yellow { filter: drop-shadow(0 0 8px #ffb2b8); }
+        .path-animated { stroke-dasharray: 10; animation: dash 20s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -1000; } }
+        #wallet-network {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 22%, rgba(96,165,250,0.16), transparent 34%),
+                radial-gradient(circle at 78% 68%, rgba(248,113,113,0.14), transparent 32%),
+                linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px),
+                #0c0c0d;
+            background-size: auto, auto, 34px 34px, 34px 34px, auto;
+        }
+        .metric-chip { border: 1px solid rgba(255,255,255,.12); padding: 10px 12px; }
+        .panel-scroll { max-height: 25vh; overflow-y: auto; }
+        .mono-small { font-family: 'Space Grotesk', sans-serif; font-size: 11px; line-height: 1.45; color: #c4c7c8; }
+        .list-item { padding: 10px; border: 1px solid rgba(255,255,255,.1); background: rgba(42,42,42,.35); margin-bottom: 6px; }
+        .badge { padding: 2px 8px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid; }
+        .badge-high { color: #ffb4ab; border-color: #93000a; }
+        .badge-medium { color: #ffb2b8; border-color: #91002d; }
+        .badge-low { color: #c6c6c7; border-color: #454747; }
+        .btn-active { background: #ffffff; color: #131313; }
+    </style>
+</head>
+<body class="flex h-screen w-screen selection:bg-primary selection:text-on-primary">
+<aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-white/5 bg-[#131313] z-50">
+<div class="p-6">
+<div class="font-['Space_Grotesk'] font-bold text-xl text-white tracking-tighter flex items-center gap-3">
+<span class="material-symbols-outlined text-white">shield</span>
+                ChainGuard AI
+            </div>
+<div class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C6C6C7] opacity-60 mt-1">Fraud Intelligence</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-8">
+<a class="flex items-center gap-4 px-4 py-3 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300 cursor-pointer" href="/">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Command</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300 cursor-pointer" href="/shield">
+<span class="material-symbols-outlined">security</span>
+<span>Shield</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-white bg-[#2A2A2A] border-l-2 border-white cursor-pointer" href="/graph">
+<span class="material-symbols-outlined">hub</span>
+<span>Vectors</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] hover:opacity-100 transition-all duration-300 cursor-pointer" href="/live">
+<span class="material-symbols-outlined">analytics</span>
+<span>Intel</span>
+</a>
+</nav>
+<div class="p-4 space-y-2">
+<button class="w-full py-3 bg-white text-on-primary font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-bold active:scale-95 transition-all">
+                Upgrade Node
+            </button>
+<div class="flex items-center gap-4 px-4 py-3 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-[#C6C6C7] opacity-60 hover:bg-[#2A2A2A] transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</div>
+</div>
+</aside>
+
+<main class="flex-1 relative ml-64 overflow-hidden">
+<header class="sticky top-0 z-40 flex justify-between items-center px-8 h-16 w-full border-b border-white/5 bg-[#131313]/80 backdrop-blur-xl">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input id="wallet-search" class="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-white/20 text-[11px] font-['Space_Grotesk'] tracking-widest pl-10 h-10 uppercase text-white placeholder:text-outline/50" placeholder="SEARCH WALLET OR TX HASH..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-white opacity-70 hover:opacity-100 cursor-pointer">sensors</span>
+<span class="material-symbols-outlined text-white opacity-70 hover:opacity-100 cursor-pointer">notifications</span>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-white/10">
+<div class="text-right">
+<div class="text-[10px] font-['Space_Grotesk'] font-bold text-white tracking-widest uppercase leading-none">A. VANCE</div>
+<div class="text-[9px] font-['Space_Grotesk'] text-outline tracking-widest uppercase">L3 ANALYST</div>
+</div>
+<img class="w-8 h-8 grayscale contrast-125 border border-white/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfWpvBnsq1ynnkby7Fc0Bwwi4HZBtcPN55nuzfL5jDUvCTyvZe7fEPD4aXZnRgxgeqlqaoVehjbp40Z2-e14EuXkGRUTdxGEZCQm1gNqliQwdfMnAdOQsDT70dPinGK8axyuDpB8bScMu8U4Stw8FHvYDytZDLIgWxBqoVyG0l-BtqSsk3cRCMtLGjFbkHG8wbW26P8AloePUwb2O_OMH4WEKeJ8M_EcGSekz2wNgPCYsRplUculM1loCtgNoB_0Ts1O3gyEg_Bio"/>
+</div>
+</div>
+</header>
+
+<div class="absolute inset-0 bg-[#0e0e0e] z-0">
+    <div id="wallet-network"></div>
+    <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+</div>
+
+<div class="absolute left-8 bottom-8 flex flex-col gap-2 z-30">
+<div class="glass-panel p-2 flex flex-col gap-1 border border-white/5">
+<button id="btn-overview" class="w-10 h-10 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><span class="material-symbols-outlined text-[20px]">route</span></button>
+<button id="btn-detail" class="w-10 h-10 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><span class="material-symbols-outlined text-[20px]">group_work</span></button>
+</div>
+</div>
+
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-8 z-30">
+<div class="glass-panel p-6 border border-white/5 space-y-4">
+    <div id="status-line" class="text-[10px] font-['Space_Grotesk'] tracking-[0.2em] text-outline uppercase">READY.</div>
+    <div class="grid grid-cols-1 md:grid-cols-8 gap-3 items-end">
+        <div>
+            <label class="text-[10px] text-outline uppercase tracking-widest">Depth</label>
+            <select id="depth" class="w-full bg-surface-container-low border-none text-[11px] uppercase tracking-widest h-10">
+                <option value="1">1 Hop</option>
+                <option value="2" selected>2 Hops</option>
+                <option value="3">3 Hops</option>
+                <option value="4">4 Hops</option>
+            </select>
+        </div>
+        <div>
+            <label class="text-[10px] text-outline uppercase tracking-widest">Window</label>
+            <select id="time-range" class="w-full bg-surface-container-low border-none text-[11px] uppercase tracking-widest h-10">
+                <option value="all">All</option>
+                <option value="1h">1h</option>
+                <option value="24h" selected>24h</option>
+                <option value="7d">7d</option>
+            </select>
+        </div>
+        <div>
+            <label class="text-[10px] text-outline uppercase tracking-widest">Focus</label>
+            <select id="focus-density" class="w-full bg-surface-container-low border-none text-[11px] uppercase tracking-widest h-10">
+                <option value="compact">Compact</option>
+                <option value="balanced" selected>Balanced</option>
+                <option value="full">Full</option>
+            </select>
+        </div>
+        <div class="md:col-span-2">
+            <label class="text-[10px] text-outline uppercase tracking-widest">Risk Threshold <span id="min-risk-label">0.35</span></label>
+            <input id="min-risk" type="range" min="0" max="100" value="35" class="w-full"/>
+        </div>
+        <label class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-outline mb-2">
+            <input id="suspicious-only" type="checkbox" class="accent-white" checked/>
+            Suspicious Only
+        </label>
+        <button id="btn-load" class="h-10 px-3 bg-white text-black text-[10px] font-bold uppercase tracking-widest">Load</button>
+        <button id="btn-trace" class="h-10 px-3 border border-white/30 text-white text-[10px] font-bold uppercase tracking-widest">Trace</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+        <input id="path-from" class="bg-surface-container-low border-none text-[11px] tracking-wider h-10 px-3" placeholder="Path from wallet"/>
+        <input id="path-to" class="bg-surface-container-low border-none text-[11px] tracking-wider h-10 px-3" placeholder="Path to wallet"/>
+        <button id="btn-path" class="h-10 px-3 border border-white/30 text-white text-[10px] font-bold uppercase tracking-widest">Path</button>
+        <button id="btn-high-risk" class="h-10 px-3 border border-white/30 text-white text-[10px] font-bold uppercase tracking-widest">High Risk</button>
+    </div>
+</div>
+</div>
+
+<aside class="absolute right-0 top-16 bottom-0 w-[400px] bg-surface-container-low border-l border-white/5 z-40 flex flex-col">
+<div class="p-8 border-b border-white/5">
+<div class="text-[10px] font-['Space_Grotesk'] tracking-[0.3em] text-outline uppercase mb-2">SELECTED NODE</div>
+<div id="selection-details" class="mono-small panel-scroll">Select a node or edge to inspect graph intelligence.</div>
+</div>
+<div class="p-8 border-b border-white/5">
+    <div class="grid grid-cols-2 gap-2">
+        <div class="metric-chip">
+            <div class="text-[9px] text-outline uppercase tracking-widest">Wallets</div>
+            <div id="stat-wallets" class="text-xl font-['Space_Grotesk']">0</div>
+        </div>
+        <div class="metric-chip">
+            <div class="text-[9px] text-outline uppercase tracking-widest">High Risk</div>
+            <div id="stat-high-risk" class="text-xl font-['Space_Grotesk']">0</div>
+        </div>
+        <div class="metric-chip">
+            <div class="text-[9px] text-outline uppercase tracking-widest">Links</div>
+            <div id="stat-suspicious-links" class="text-xl font-['Space_Grotesk']">0</div>
+        </div>
+        <div class="metric-chip">
+            <div class="text-[9px] text-outline uppercase tracking-widest">Alerts</div>
+            <div id="stat-alerts" class="text-xl font-['Space_Grotesk']">0</div>
+        </div>
+    </div>
+    <div id="insight-summary" class="text-[10px] text-outline mt-3 tracking-wider uppercase">Load a wallet to produce an insight narrative.</div>
+</div>
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+    <div>
+        <div class="text-[10px] font-['Space_Grotesk'] tracking-[0.3em] text-outline uppercase mb-4">RISK PROPAGATION</div>
+        <div id="trace-list" class="panel-scroll"></div>
+    </div>
+    <div>
+        <div class="text-[10px] font-['Space_Grotesk'] tracking-[0.3em] text-outline uppercase mb-4">HIGH RISK WALLETS</div>
+        <div id="high-risk-list" class="panel-scroll"></div>
+    </div>
+</div>
+</aside>
+</main>
+
+    <script>
+        const state = {
+            network: null,
+            nodes: null,
+            edges: null,
+            currentWallet: null,
+            graphPayload: null,
+            highlightedEdges: new Set(),
+            viewMode: 'overview',
+            renderStats: null,
+        };
+
+        const statusEl = document.getElementById('status-line');
+        const detailsEl = document.getElementById('selection-details');
+        const traceListEl = document.getElementById('trace-list');
+        const highRiskListEl = document.getElementById('high-risk-list');
+        const statWalletsEl = document.getElementById('stat-wallets');
+        const statHighRiskEl = document.getElementById('stat-high-risk');
+        const statSuspiciousLinksEl = document.getElementById('stat-suspicious-links');
+        const statAlertsEl = document.getElementById('stat-alerts');
+        const insightSummaryEl = document.getElementById('insight-summary');
+
+        function getFocusDensityMode() {
+            const rawValue = String(document.getElementById('focus-density')?.value || 'balanced').toLowerCase();
+            if (rawValue === 'compact' || rawValue === 'full') return rawValue;
+            return 'balanced';
+        }
+
+        function getOverviewDensityPreset() {
+            const suspiciousOnly = document.getElementById('suspicious-only')?.checked;
+            const minRisk = Number(document.getElementById('min-risk')?.value || 0) / 100;
+            const focusMode = getFocusDensityMode();
+
+            let basePreset = null;
+
+            // Adaptive density keeps graph readable without hiding core risk corridors.
+            if (suspiciousOnly && minRisk >= 0.35) {
+                basePreset = { edgeLimit: 100, nodeLimit: 72, degreeCap: 6, minPriority: 2.1 };
+            } else if (suspiciousOnly || minRisk >= 0.25) {
+                basePreset = { edgeLimit: 132, nodeLimit: 90, degreeCap: 7, minPriority: 1.65 };
+            } else {
+                basePreset = { edgeLimit: 170, nodeLimit: 118, degreeCap: 9, minPriority: 1.25 };
+            }
+
+            if (focusMode === 'compact') {
+                return {
+                    edgeLimit: Math.max(70, Math.round(basePreset.edgeLimit * 0.72)),
+                    nodeLimit: Math.max(54, Math.round(basePreset.nodeLimit * 0.72)),
+                    degreeCap: Math.max(4, basePreset.degreeCap - 2),
+                    minPriority: basePreset.minPriority + 0.35,
+                };
+            }
+
+            if (focusMode === 'full') {
+                return {
+                    edgeLimit: Math.min(260, Math.round(basePreset.edgeLimit * 1.35)),
+                    nodeLimit: Math.min(220, Math.round(basePreset.nodeLimit * 1.35)),
+                    degreeCap: basePreset.degreeCap + 2,
+                    minPriority: Math.max(0.9, basePreset.minPriority - 0.25),
+                };
+            }
+
+            return basePreset;
+        }
+
+        function setStatus(message, isError = false) {
+            statusEl.textContent = message;
+            statusEl.style.color = isError ? '#f87171' : '#a1a1aa';
+        }
+
+        function normalizeWallet(addr) {
+            if (!addr) return null;
+            let value = String(addr).trim().toLowerCase();
+            if (!value.startsWith('0x')) value = '0x' + value;
+            return value;
+        }
+
+        function normalizeTxHash(hash) {
+            if (!hash) return null;
+            let value = String(hash).trim().toLowerCase();
+            if (!value) return null;
+            if (!value.startsWith('0x')) value = `0x${value}`;
+            return /^0x[a-f0-9]{64}$/.test(value) ? value : null;
+        }
+
+        function shortAddress(addr, start = 6, end = 4) {
+            if (!addr) return 'n/a';
+            const value = String(addr);
+            if (value.length <= start + end + 3) return value;
+            return `${value.slice(0, start)}...${value.slice(-end)}`;
+        }
+
+        function riskBadge(score) {
+            if (score >= 0.7) return '<span class="badge badge-high">High</span>';
+            if (score >= 0.4) return '<span class="badge badge-medium">Medium</span>';
+            return '<span class="badge badge-low">Low</span>';
+        }
+
+        function normalizeShapPayload(explanation) {
+            if (explanation == null) return null;
+            if (typeof explanation === 'string') {
+                return { summary: explanation, top_features: [] };
+            }
+            if (Array.isArray(explanation)) {
+                return { summary: '', top_features: explanation };
+            }
+            if (typeof explanation === 'object') {
+                return {
+                    summary: explanation.summary || explanation.overview || '',
+                    top_features: Array.isArray(explanation.top_features)
+                        ? explanation.top_features
+                        : (Array.isArray(explanation.factors) ? explanation.factors : []),
+                };
+            }
+            return { summary: String(explanation), top_features: [] };
+        }
+
+        function renderShapBlock(title, explanation, emptyMessage) {
+            const parsed = normalizeShapPayload(explanation);
+            if (!parsed) {
+                return `<div class="mt-3 border border-white/10 p-3 bg-black/20"><div class="text-[10px] uppercase tracking-widest text-outline mb-2">${title}</div><div class="text-xs text-gray-400">${emptyMessage}</div></div>`;
+            }
+
+            const rows = (parsed.top_features || []).slice(0, 5).map((item) => {
+                const meaning = item.meaning || item.feature || 'factor';
+                const direction = item.direction || (String(item.impact || '').startsWith('-') ? 'reduces_risk' : 'increases_risk');
+                const directionColor = direction === 'reduces_risk' ? '#22c55e' : '#f87171';
+                const impact = item.impact || item.value || 'n/a';
+                return `<div class="flex items-center justify-between gap-3 border-b border-white/5 py-1"><span class="text-[11px] text-gray-300">${meaning}</span><span class="mono-small" style="color:${directionColor}">${impact}</span></div>`;
+            }).join('');
+
+            const summaryText = parsed.summary || 'No summary provided.';
+
+            return `
+                <div class="mt-3 border border-white/10 p-3 bg-black/20">
+                    <div class="text-[10px] uppercase tracking-widest text-outline mb-2">${title}</div>
+                    <div class="text-xs text-gray-300 leading-relaxed">${summaryText}</div>
+                    ${rows ? `<div class="mt-2">${rows}</div>` : '<div class="text-xs text-gray-500 mt-2">No feature-level SHAP factors available.</div>'}
+                </div>
+            `;
+        }
+
+        function updateViewModeButtons() {
+            const overviewBtn = document.getElementById('btn-overview');
+            const detailBtn = document.getElementById('btn-detail');
+
+            if (state.viewMode === 'overview') {
+                overviewBtn.classList.add('btn-active');
+                detailBtn.classList.remove('btn-active');
+            } else {
+                detailBtn.classList.add('btn-active');
+                overviewBtn.classList.remove('btn-active');
+            }
+        }
+
+        function toDisplayDate(value) {
+            if (!value) return 'n/a';
+            const dt = new Date(value);
+            if (Number.isNaN(dt.getTime())) return String(value);
+            return dt.toLocaleString();
+        }
+
+        function computeTimeBounds() {
+            const mode = document.getElementById('time-range').value;
+            if (mode === 'all') {
+                return { fromTs: null, toTs: null };
+            }
+            const now = Date.now();
+            const deltas = {
+                '1h': 3600_000,
+                '24h': 24 * 3600_000,
+                '7d': 7 * 24 * 3600_000,
+            };
+            const delta = deltas[mode] || 0;
+            return {
+                fromTs: Math.floor((now - delta) / 1000),
+                toTs: Math.floor(now / 1000),
+            };
+        }
+
+        async function resolveWalletFromSearchInput(rawInput) {
+            const input = String(rawInput || '').trim();
+            if (!input) return { wallet: null, source: null, txHash: null };
+
+            const txHash = normalizeTxHash(input);
+            if (txHash) {
+                try {
+                    const rows = await fetchJson(`/transactions?limit=1&tx_hash=${encodeURIComponent(txHash)}&predicted_only=1`);
+                    const tx = Array.isArray(rows) && rows.length ? rows[0] : null;
+                    if (tx) {
+                        const wallet = normalizeWallet(tx.from || tx.wallet_address || tx.to);
+                        if (wallet) {
+                            return { wallet, source: 'tx', txHash };
+                        }
+                    }
+                    return { wallet: null, source: 'tx_not_found', txHash };
+                } catch (e) {
+                    return { wallet: null, source: 'tx_not_found', txHash };
+                }
+            }
+
+            const wallet = normalizeWallet(input);
+            return { wallet, source: wallet ? 'wallet' : null, txHash: null };
+        }
+
+        function buildWalletNode(node) {
+            const risk = Number(node.graph_risk_score || node.base_risk_score || 0);
+            const nodeColor = risk >= 0.7 ? '#ef4444' : risk >= 0.4 ? '#f59e0b' : '#22c55e';
+            const riskTier = risk >= 0.7 ? 'HIGH RISK' : risk >= 0.4 ? 'MEDIUM RISK' : 'LOW RISK';
+            const interactions = Number(node.neighbor_count || 0);
+            const label = node.label || shortAddress(node.address || node.id, 8, 6);
+            return {
+                id: node.id,
+                label,
+                shape: 'dot',
+                value: Math.max(12, interactions + 8),
+                size: node.size || (risk >= 0.7 ? 34 : risk >= 0.4 ? 28 : 22),
+                color: {
+                    background: nodeColor,
+                    border: '#0f172a',
+                    highlight: {
+                        background: nodeColor,
+                        border: '#f5f5f5'
+                    },
+                    hover: {
+                        background: nodeColor,
+                        border: '#cbd5e1'
+                    },
+                },
+                borderWidth: 2,
+                borderWidthSelected: 3,
+                shadow: { enabled: true, color: 'rgba(0,0,0,0.45)', size: 16, x: 0, y: 5 },
+                font: { color: '#f4f4f5', size: 12, face: 'JetBrains Mono', strokeWidth: 4, strokeColor: 'rgba(10,10,10,0.65)' },
+                title: node.title || `Wallet ${node.address}\nRisk: ${risk.toFixed(4)} (${riskTier})\nNeighbors: ${interactions}`,
+                data: node,
+            };
+        }
+
+        function buildTxNode(node) {
+            const risk = Number(node.risk_score || 0);
+            const nodeColor = risk >= 0.7 ? '#b91c1c' : risk >= 0.4 ? '#b45309' : '#166534';
+            return {
+                id: node.id,
+                label: shortAddress(node.label || node.tx_hash || node.id, 10, 8),
+                shape: 'diamond',
+                margin: 8,
+                size: risk >= 0.7 ? 26 : 20,
+                color: {
+                    background: nodeColor,
+                    border: '#111827',
+                    highlight: {
+                        background: '#1d4ed8',
+                        border: '#f8fafc'
+                    },
+                    hover: {
+                        background: '#2563eb',
+                        border: '#e2e8f0'
+                    },
+                },
+                borderWidth: 1.6,
+                borderWidthSelected: 2.5,
+                shadow: { enabled: true, color: 'rgba(2,6,23,0.55)', size: 12, x: 0, y: 4 },
+                font: { color: '#f8fafc', size: 10, face: 'JetBrains Mono', strokeWidth: 4, strokeColor: 'rgba(3,7,18,0.75)' },
+                title: node.title || `Transaction ${node.tx_hash}\nRisk: ${risk.toFixed(4)}`,
+                data: node,
+            };
+        }
+
+        function buildEdge(edge) {
+            const type = edge.edge_type || 'TRANSFER';
+            const color = type === 'FUNDING' ? '#f59e0b' : type === 'RELATED' ? '#38bdf8' : '#9ca3af';
+            const width = type === 'FUNDING' ? 3.8 : type === 'RELATED' ? 3.1 : Math.min(4.2, 1.1 + Number(edge.weight || 1) * 0.62);
+            const interactions = Number(edge.metadata?.interactions || edge.metadata?.interaction_count || 0);
+            const edgeLabel = interactions > 1 ? `${type} ${interactions}x` : (type === 'TRANSFER' ? '' : type);
+            const detailTags = [];
+            if (interactions > 0) detailTags.push(`interactions=${interactions}`);
+            if (Array.isArray(edge.metadata?.types) && edge.metadata.types.length) {
+                detailTags.push(`types=${edge.metadata.types.join(',')}`);
+            }
+            return {
+                id: edge.id,
+                from: edge.source,
+                to: edge.target,
+                arrows: { to: { enabled: true, scaleFactor: 0.85 } },
+                width,
+                color: { color, highlight: '#f87171', hover: '#f97316', opacity: 0.9 },
+                dashes: type === 'RELATED',
+                smooth: { enabled: true, type: 'cubicBezier', roundness: 0.24 },
+                label: edgeLabel,
+                font: { align: 'top', color: '#cbd5e1', size: 10, strokeWidth: 4, strokeColor: 'rgba(5,10,20,0.7)' },
+                selectionWidth: 2,
+                hoverWidth: 1.2,
+                data: edge,
+                title: `${type} | w=${Number(edge.weight || 0).toFixed(2)}${detailTags.length ? ` | ${detailTags.join(' | ')}` : ''}`,
+            };
+        }
+
+        function buildOverviewGraph(payload) {
+            const sourceNodes = payload.nodes || [];
+            const sourceEdges = payload.edges || [];
+            const walletNodes = sourceNodes.filter((node) => node.type !== 'transaction');
+            const txNodesHidden = sourceNodes.length - walletNodes.length;
+            const walletNodeIds = new Set(walletNodes.map((node) => node.id));
+            const walletRiskById = new Map(
+                walletNodes.map((node) => [
+                    node.id,
+                    Number(node.graph_risk_score || node.base_risk_score || 0),
+                ])
+            );
+            const txFromWallet = new Map();
+            const txToWallet = new Map();
+            const relationMap = new Map();
+
+            function addRelation(sourceId, targetId, edgeType, weight, timestamp, metadata = {}) {
+                if (!sourceId || !targetId) return;
+                if (!sourceId.startsWith('wallet:') || !targetId.startsWith('wallet:')) return;
+                if (!walletNodeIds.has(sourceId) || !walletNodeIds.has(targetId)) return;
+                if (sourceId === targetId) return;
+
+                const key = `${sourceId}->${targetId}`;
+                if (!relationMap.has(key)) {
+                    relationMap.set(key, {
+                        id: `agg:${key}`,
+                        source: sourceId,
+                        target: targetId,
+                        weight: 0,
+                        interactions: 0,
+                        types: new Set(),
+                        timestamp: timestamp || null,
+                    });
+                }
+
+                const row = relationMap.get(key);
+                row.interactions += 1;
+                row.weight += Number(weight || 1);
+                if (edgeType) row.types.add(edgeType);
+                if (timestamp && (!row.timestamp || timestamp > row.timestamp)) {
+                    row.timestamp = timestamp;
+                }
+                if (metadata?.interaction_count) {
+                    row.interactions = Math.max(row.interactions, Number(metadata.interaction_count));
+                }
+            }
+
+            sourceEdges.forEach((edge) => {
+                const source = edge.source || '';
+                const target = edge.target || '';
+
+                if (source.startsWith('wallet:') && target.startsWith('wallet:')) {
+                    addRelation(source, target, edge.edge_type || 'TRANSFER', edge.weight, edge.timestamp, edge.metadata || {});
+                } else if (source.startsWith('wallet:') && target.startsWith('tx:')) {
+                    txFromWallet.set(target, source);
+                } else if (source.startsWith('tx:') && target.startsWith('wallet:')) {
+                    txToWallet.set(source, target);
+                }
+            });
+
+            txFromWallet.forEach((sourceWalletId, txId) => {
+                const targetWalletId = txToWallet.get(txId);
+                if (!targetWalletId) return;
+                addRelation(sourceWalletId, targetWalletId, 'TRANSFER', 1.0, null, { inferred_from_tx: true });
+            });
+
+            const overviewEdges = Array.from(relationMap.values()).map((row) => {
+                const types = Array.from(row.types);
+                let dominantType = 'TRANSFER';
+                if (types.includes('FUNDING')) dominantType = 'FUNDING';
+                else if (types.includes('RELATED')) dominantType = 'RELATED';
+
+                return {
+                    id: row.id,
+                    source: row.source,
+                    target: row.target,
+                    edge_type: dominantType,
+                    weight: Math.min(6, 1 + Math.log1p(row.weight)),
+                    timestamp: row.timestamp,
+                    metadata: {
+                        interactions: row.interactions,
+                        types,
+                    },
+                };
+            });
+
+            const edgePriority = (edge) => {
+                const typeWeight = edge.edge_type === 'FUNDING' ? 2.4 : edge.edge_type === 'RELATED' ? 1.9 : 1.0;
+                const sourceRisk = Number(walletRiskById.get(edge.source) || 0);
+                const targetRisk = Number(walletRiskById.get(edge.target) || 0);
+                const riskWeight = Math.max(sourceRisk, targetRisk) * 3.0;
+                const interactionWeight = Math.log1p(Number(edge.metadata?.interactions || 1));
+                return Number(edge.weight || 1) * typeWeight + riskWeight + interactionWeight;
+            };
+
+            const preset = getOverviewDensityPreset();
+            const rankedEdges = overviewEdges
+                .slice()
+                .sort((a, b) => edgePriority(b) - edgePriority(a));
+
+            const selectedEdges = [];
+            const degreeMap = new Map();
+
+            rankedEdges.forEach((edge) => {
+                if (selectedEdges.length >= preset.edgeLimit) return;
+                if (edgePriority(edge) < preset.minPriority) return;
+
+                const sourceDegree = Number(degreeMap.get(edge.source) || 0);
+                const targetDegree = Number(degreeMap.get(edge.target) || 0);
+                if (sourceDegree >= preset.degreeCap || targetDegree >= preset.degreeCap) return;
+
+                selectedEdges.push(edge);
+                degreeMap.set(edge.source, sourceDegree + 1);
+                degreeMap.set(edge.target, targetDegree + 1);
+            });
+
+            const minimumContextEdges = Math.min(
+                preset.edgeLimit,
+                Math.max(30, Math.ceil(rankedEdges.length * 0.35))
+            );
+            if (selectedEdges.length < minimumContextEdges) {
+                const selectedIds = new Set(selectedEdges.map((edge) => edge.id));
+                for (const edge of rankedEdges) {
+                    if (selectedEdges.length >= minimumContextEdges) break;
+                    if (selectedIds.has(edge.id)) continue;
+                    selectedEdges.push(edge);
+                    selectedIds.add(edge.id);
+                }
+            }
+
+            const preliminaryNodeIds = new Set();
+            if (payload.center) preliminaryNodeIds.add(payload.center);
+            selectedEdges.forEach((edge) => {
+                preliminaryNodeIds.add(edge.source);
+                preliminaryNodeIds.add(edge.target);
+            });
+
+            const candidateNodes = walletNodes.filter((node) => preliminaryNodeIds.has(node.id));
+            const nodePriority = (node) => {
+                const id = node.id;
+                const risk = Number(walletRiskById.get(id) || 0);
+                const connectivity = Math.log1p(Number(degreeMap.get(id) || 0));
+                const centerBoost = payload.center && id === payload.center ? 4 : 0;
+                return risk * 3 + connectivity + centerBoost;
+            };
+
+            const selectedNodeIds = new Set(
+                candidateNodes
+                    .slice()
+                    .sort((a, b) => nodePriority(b) - nodePriority(a))
+                    .slice(0, preset.nodeLimit)
+                    .map((node) => node.id)
+            );
+            if (payload.center) selectedNodeIds.add(payload.center);
+
+            const trimmedEdges = selectedEdges.filter((edge) => selectedNodeIds.has(edge.source) && selectedNodeIds.has(edge.target));
+            const trimmedNodes = walletNodes.filter((node) => selectedNodeIds.has(node.id));
+
+            const hiddenEdges = Math.max(0, rankedEdges.length - trimmedEdges.length);
+            const hiddenNodes = Math.max(0, walletNodes.length - trimmedNodes.length);
+
+            return {
+                nodes: trimmedNodes,
+                edges: trimmedEdges,
+                hiddenTxNodes: txNodesHidden,
+                hiddenEdges,
+                hiddenNodes,
+            };
+        }
+
+        function renderInsightCards(payload, renderPayload) {
+            const walletNodes = (renderPayload.nodes || []).filter((node) => node.type !== 'transaction');
+            const highRiskCount = walletNodes.filter((node) => Number(node.graph_risk_score || node.base_risk_score || 0) >= 0.7).length;
+            const suspiciousLinks = (renderPayload.edges || []).filter((edge) => {
+                const edgeType = edge.edge_type || 'TRANSFER';
+                return edgeType === 'FUNDING' || edgeType === 'RELATED';
+            }).length;
+            const alerts = payload.alerts || [];
+
+            statWalletsEl.textContent = String(walletNodes.length);
+            statHighRiskEl.textContent = String(highRiskCount);
+            statSuspiciousLinksEl.textContent = String(suspiciousLinks);
+            statAlertsEl.textContent = String(alerts.length);
+
+            const metrics = payload.metrics || {};
+            const graphRisk = Number(metrics.graph_risk_score || 0);
+            const lines = [];
+            if (graphRisk >= 0.7) {
+                lines.push('Wallet is in the high-risk zone and should be monitored continuously.');
+            } else if (graphRisk >= 0.4) {
+                lines.push('Wallet is in a medium-risk zone; monitor suspicious links and frequency spikes.');
+            } else {
+                lines.push('Wallet currently appears low-risk, but keep watching for sudden behavior shifts.');
+            }
+
+            if (alerts.some((entry) => entry.type === 'CIRCULAR')) {
+                lines.push('Circular money flow has been detected in this neighborhood.');
+            }
+            if (alerts.some((entry) => entry.type === 'FUNDING')) {
+                lines.push('Repeated funding links suggest coordinated transfer behavior.');
+            }
+            if (state.viewMode === 'overview' && renderPayload.hiddenTxNodes > 0) {
+                lines.push(`${renderPayload.hiddenTxNodes} transaction nodes are collapsed to keep the network readable.`);
+            }
+            if (state.viewMode === 'overview' && Number(renderPayload.hiddenEdges || 0) > 0) {
+                lines.push(`${renderPayload.hiddenEdges} low-signal links are hidden to focus on strongest relationships.`);
+            }
+            if (state.viewMode === 'overview' && Number(renderPayload.hiddenNodes || 0) > 0) {
+                lines.push(`${renderPayload.hiddenNodes} peripheral wallets are hidden to keep focus on core risk corridors.`);
+            }
+
+            insightSummaryEl.textContent = lines.join(' ');
+        }
+
+        async function fetchJson(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || `HTTP ${response.status}`);
+            }
+            return response.json();
+        }
+
+        function clearHighlights() {
+            state.highlightedEdges.forEach((edgeId) => {
+                const edge = state.edges.get(edgeId);
+                if (!edge) return;
+                const reset = buildEdge(edge.data);
+                state.edges.update(reset);
+            });
+            state.highlightedEdges.clear();
+        }
+
+        function highlightPath(path) {
+            if (!path || path.length < 2) return;
+            for (let i = 0; i < path.length - 1; i += 1) {
+                const source = `wallet:${path[i]}`;
+                const target = `wallet:${path[i + 1]}`;
+
+                const direct = state.edges.get({ filter: (edge) => edge.from === source && edge.to === target });
+                const fallback = state.edges.get({ filter: (edge) => edge.from === target && edge.to === source });
+                const candidates = direct.length ? direct : fallback;
+
+                candidates.forEach((edge) => {
+                    state.edges.update({
+                        id: edge.id,
+                        color: { color: '#f87171', highlight: '#ef4444', opacity: 1 },
+                        width: 4,
+                        dashes: false,
+                    });
+                    state.highlightedEdges.add(edge.id);
+                });
+            }
+        }
+
+        function renderSelectionDetails(text) {
+            detailsEl.innerHTML = text;
+        }
+
+        function renderTraceList(items) {
+            traceListEl.innerHTML = '';
+            if (!items || !items.length) {
+                traceListEl.innerHTML = '<div class="text-xs text-gray-400">No propagation paths found.</div>';
+                return;
+            }
+            items.forEach((item) => {
+                const div = document.createElement('div');
+                div.className = 'list-item cursor-pointer';
+                div.onclick = () => {
+                    clearHighlights();
+                    highlightPath(item.path || []);
+                    setStatus(`Focused on path from ${item.source.slice(0, 8)}... to ${item.target.slice(0, 8)}...`);
+                };
+                const contribution = Number(item.estimated_contribution || 0);
+                div.innerHTML = `
+                    <div class="text-xs text-gray-300 font-mono">${item.source.slice(0, 10)}... -> ${item.target.slice(0, 10)}...</div>
+                    <div class="text-xs text-gray-400 mt-1">Distance: ${item.distance}, Contribution: ${contribution.toFixed(4)}</div>
+                `;
+                traceListEl.appendChild(div);
+            });
+        }
+
+        function renderHighRiskList(items) {
+            highRiskListEl.innerHTML = '';
+            if (!items || !items.length) {
+                highRiskListEl.innerHTML = '<div class="text-xs text-gray-400">No high-risk wallets for current threshold.</div>';
+                return;
+            }
+            items.forEach((item) => {
+                const div = document.createElement('div');
+                div.className = 'list-item cursor-pointer';
+                div.onclick = () => {
+                    document.getElementById('wallet-search').value = item.address;
+                    loadWalletGraph();
+                };
+                div.innerHTML = `
+                    <div class="text-xs text-gray-300 font-mono">${item.address}</div>
+                    <div class="text-xs text-gray-400 mt-1">Graph Risk: ${Number(item.graph_risk_score || 0).toFixed(4)} | Neighbors: ${item.neighbor_count || 0}</div>
+                `;
+                highRiskListEl.appendChild(div);
+            });
+        }
+
+        function ensureNetwork() {
+            if (state.network) return;
+            state.nodes = new vis.DataSet([]);
+            state.edges = new vis.DataSet([]);
+            const container = document.getElementById('wallet-network');
+            state.network = new vis.Network(container, { nodes: state.nodes, edges: state.edges }, {
+                autoResize: true,
+                layout: {
+                    improvedLayout: true,
+                    randomSeed: 17,
+                },
+                interaction: {
+                    hover: true,
+                    hoverConnectedEdges: true,
+                    tooltipDelay: 100,
+                    navigationButtons: true,
+                    keyboard: { enabled: true, speed: { x: 15, y: 15, zoom: 0.03 } },
+                    multiselect: false,
+                    selectConnectedEdges: true,
+                },
+                physics: {
+                    enabled: true,
+                    solver: 'forceAtlas2Based',
+                    stabilization: { enabled: true, fit: true, iterations: 180, updateInterval: 20 },
+                    forceAtlas2Based: {
+                        gravitationalConstant: -90,
+                        centralGravity: 0.01,
+                        springLength: 210,
+                        springConstant: 0.055,
+                        damping: 0.58,
+                        avoidOverlap: 0.42,
+                    },
+                    minVelocity: 0.65,
+                },
+                nodes: {
+                    scaling: { min: 12, max: 44 },
+                },
+                edges: {
+                    smooth: true,
+                    scaling: { min: 1, max: 6 },
+                },
+            });
+
+            state.network.on('stabilizationIterationsDone', () => {
+                state.network.setOptions({ physics: false });
+            });
+
+            state.network.on('click', (params) => {
+                if (params.nodes.length) {
+                    const node = state.nodes.get(params.nodes[0]);
+                    const data = node?.data || {};
+                    if (data.type === 'wallet') {
+                        const walletShap = data.wallet_shap_explanation;
+                        renderSelectionDetails(`
+                            <div class="space-y-2">
+                                <div class="text-sm text-[#fbbf24]">Wallet Node</div>
+                                <div class="mono-small">${data.address}</div>
+                                <div class="text-xs text-gray-300">Graph Risk: ${Number(data.graph_risk_score || 0).toFixed(4)} ${riskBadge(Number(data.graph_risk_score || 0))}</div>
+                                <div class="text-xs text-gray-300">Base Risk: ${Number(data.base_risk_score || 0).toFixed(4)}</div>
+                                <div class="text-xs text-gray-300">Temporal Score: ${Number(data.temporal_score || 0).toFixed(4)}</div>
+                                <div class="text-xs text-gray-400">Neighbors: ${data.neighbor_count || 0}</div>
+                            </div>
+                            ${renderShapBlock('Wallet SHAP Explanation', walletShap, 'Wallet SHAP explanation is not available for this node yet.')}
+                        `);
+                    } else {
+                        const txShap = data.transaction_shap_explanation || data.shap_explanation;
+                        renderSelectionDetails(`
+                            <div class="space-y-2">
+                                <div class="text-sm text-[#fbbf24]">Transaction Node</div>
+                                <div class="mono-small">${data.tx_hash}</div>
+                                <div class="text-xs text-gray-300">From: <span class="mono-small">${data.from || 'n/a'}</span></div>
+                                <div class="text-xs text-gray-300">To: <span class="mono-small">${data.to || 'n/a'}</span></div>
+                                <div class="text-xs text-gray-300">Value: ${Number(data.value || 0).toFixed(6)} ETH</div>
+                                <div class="text-xs text-gray-300">Risk: ${Number(data.risk_score || 0).toFixed(4)} ${riskBadge(Number(data.risk_score || 0))}</div>
+                                <div class="text-xs text-gray-400">Timestamp: ${toDisplayDate(data.timestamp)}</div>
+                            </div>
+                            ${renderShapBlock('Transaction SHAP Explanation', txShap, 'Transaction SHAP explanation is not available for this node yet.')}
+                        `);
+                    }
+                } else if (params.edges.length) {
+                    const edge = state.edges.get(params.edges[0]);
+                    const data = edge?.data || {};
+                    renderSelectionDetails(`
+                        <div class="space-y-2">
+                            <div class="text-sm text-[#fbbf24]">Edge</div>
+                            <div class="text-xs text-gray-300">Type: ${data.edge_type || 'TRANSFER'}</div>
+                            <div class="text-xs text-gray-300">Source: <span class="mono-small">${data.source || edge.from}</span></div>
+                            <div class="text-xs text-gray-300">Target: <span class="mono-small">${data.target || edge.to}</span></div>
+                            <div class="text-xs text-gray-300">Weight: ${Number(data.weight || 0).toFixed(4)}</div>
+                            <div class="text-xs text-gray-400">Timestamp: ${toDisplayDate(data.timestamp)}</div>
+                            <div class="text-xs text-gray-400">Tx: ${data.tx_hash || 'n/a'}</div>
+                        </div>
+                    `);
+                }
+            });
+        }
+
+        function renderGraphPayload(payload) {
+            ensureNetwork();
+            clearHighlights();
+            state.graphPayload = payload;
+
+            const renderPayload = state.viewMode === 'overview'
+                ? buildOverviewGraph(payload)
+                : {
+                    nodes: payload.nodes || [],
+                    edges: payload.edges || [],
+                    hiddenTxNodes: 0,
+                };
+
+            const rawNodes = renderPayload.nodes;
+            const rawEdges = renderPayload.edges;
+
+            const visNodes = rawNodes.map((node) => (node.type === 'transaction' ? buildTxNode(node) : buildWalletNode(node)));
+            const visEdges = rawEdges.map((edge) => buildEdge(edge));
+
+            state.nodes.clear();
+            state.edges.clear();
+            state.nodes.add(visNodes);
+            state.edges.add(visEdges);
+
+            state.network.setOptions({ physics: true });
+
+            if (payload.center && state.nodes.get(payload.center)) {
+                state.network.focus(payload.center, {
+                    scale: 1,
+                    animation: { duration: 500, easingFunction: 'easeInOutCubic' },
+                });
+            } else {
+                state.network.fit({ animation: true });
+            }
+
+            const metrics = payload.metrics || {};
+            const alerts = payload.alerts || [];
+            state.renderStats = {
+                nodes: visNodes.length,
+                edges: visEdges.length,
+                hiddenTxNodes: renderPayload.hiddenTxNodes || 0,
+                hiddenEdges: renderPayload.hiddenEdges || 0,
+                hiddenNodes: renderPayload.hiddenNodes || 0,
+            };
+            renderSelectionDetails(`
+                <div class="space-y-2">
+                    <div class="text-sm text-[#fbbf24]">Wallet Overview</div>
+                    <div class="mono-small">${payload.wallet || 'n/a'}</div>
+                    <div class="text-xs text-gray-300">Base Risk: ${Number(metrics.base_risk_score || 0).toFixed(4)}</div>
+                    <div class="text-xs text-gray-300">Graph Risk: ${Number(metrics.graph_risk_score || 0).toFixed(4)} ${riskBadge(Number(metrics.graph_risk_score || 0))}</div>
+                    <div class="text-xs text-gray-300">Temporal Score: ${Number(metrics.temporal_score || 0).toFixed(4)}</div>
+                    <div class="text-xs text-gray-300">Neighbor Count: ${metrics.neighbor_count || 0}</div>
+                    <div class="text-xs text-gray-300">Tracked Transactions: ${metrics.tx_count || 0}</div>
+                    <div class="text-xs text-gray-300">Mode: ${state.viewMode === 'overview' ? 'Overview (wallet links)' : 'Detailed (wallet + transaction)'}</div>
+                    <div class="text-xs text-gray-400">Recent Alerts: ${alerts.length}</div>
+                </div>
+            `);
+
+            renderInsightCards(payload, renderPayload);
+
+            if (payload.propagation) {
+                renderTraceList(payload.propagation);
+                payload.propagation.forEach((trace) => highlightPath(trace.path));
+            }
+        }
+
+        async function loadWalletGraph() {
+            const inputValue = document.getElementById('wallet-search').value;
+            const resolved = await resolveWalletFromSearchInput(inputValue);
+            const wallet = resolved.wallet;
+            if (!wallet) {
+                if (resolved.source === 'tx_not_found') {
+                    setStatus('Transaction hash was not found in predicted DB records.', true);
+                } else {
+                    setStatus('Please enter a valid wallet address or transaction hash.', true);
+                }
+                return;
+            }
+
+            state.currentWallet = wallet;
+            if (resolved.source === 'tx') {
+                setStatus(`Resolved transaction ${shortAddress(resolved.txHash, 12, 8)} to wallet ${shortAddress(wallet, 10, 8)}. Loading graph...`);
+            } else {
+                setStatus('Loading wallet graph...');
+            }
+
+            const depth = document.getElementById('depth').value;
+            const minRisk = Number(document.getElementById('min-risk').value) / 100;
+            const suspiciousOnly = document.getElementById('suspicious-only').checked;
+            const { fromTs, toTs } = computeTimeBounds();
+
+            const params = new URLSearchParams({
+                depth: String(depth),
+                min_risk: String(minRisk),
+                suspicious_only: suspiciousOnly ? '1' : '0',
+                include_trace: '1',
+            });
+            const focusMode = getFocusDensityMode();
+            const overviewNodeLimit = focusMode === 'compact' ? '190' : focusMode === 'full' ? '320' : '240';
+            params.set('limit_nodes', state.viewMode === 'overview' ? overviewNodeLimit : '380');
+            if (fromTs) params.set('from_ts', String(fromTs));
+            if (toTs) params.set('to_ts', String(toTs));
+
+            try {
+                const payload = await fetchJson(`/graph/wallet/${wallet}?${params.toString()}`);
+                renderGraphPayload(payload);
+                const hidden = state.renderStats?.hiddenTxNodes || 0;
+                const hiddenEdges = state.renderStats?.hiddenEdges || 0;
+                const hiddenNodes = state.renderStats?.hiddenNodes || 0;
+                const modeText = state.viewMode === 'overview' ? 'overview' : 'detailed';
+                setStatus(`Graph loaded in ${modeText} mode (${getFocusDensityMode().toUpperCase()} focus): ${state.renderStats?.nodes || 0} nodes, ${state.renderStats?.edges || 0} edges${hidden ? `, ${hidden} tx nodes collapsed` : ''}${hiddenEdges ? `, ${hiddenEdges} low-signal links hidden` : ''}${hiddenNodes ? `, ${hiddenNodes} peripheral wallets hidden` : ''}.`);
+            } catch (error) {
+                setStatus(`Failed to load graph: ${error.message}`, true);
+            }
+        }
+
+        async function traceWalletRisk() {
+            const wallet = state.currentWallet || normalizeWallet(document.getElementById('wallet-search').value);
+            if (!wallet) {
+                setStatus('Load a wallet graph first.', true);
+                return;
+            }
+
+            setStatus('Computing risk trace...');
+            const depth = document.getElementById('depth').value;
+            try {
+                const payload = await fetchJson(`/graph/trace/${wallet}?depth=${depth}`);
+                if (payload.trace) {
+                    renderGraphPayload({
+                        ...payload.trace,
+                        wallet,
+                        metrics: state.graphPayload?.metrics || {},
+                        propagation: payload.propagation || [],
+                    });
+                }
+                renderTraceList(payload.propagation || []);
+                clearHighlights();
+                (payload.propagation || []).forEach((trace) => highlightPath(trace.path));
+                setStatus(`Trace ready: ${(payload.propagation || []).length} propagation paths in ${state.viewMode} mode.`);
+            } catch (error) {
+                setStatus(`Failed to trace risk: ${error.message}`, true);
+            }
+        }
+
+        async function loadHighRiskNodes() {
+            const threshold = Number(document.getElementById('min-risk').value) / 100;
+            setStatus('Fetching top high-risk wallets...');
+            try {
+                const payload = await fetchJson(`/graph/high-risk?limit=20&min_score=${threshold}`);
+                const nodes = payload.nodes || [];
+                renderHighRiskList(nodes);
+                if (!state.currentWallet && nodes.length) {
+                    const preferred = nodes
+                        .slice()
+                        .sort((a, b) => Number(b.neighbor_count || 0) - Number(a.neighbor_count || 0))[0];
+                    document.getElementById('wallet-search').value = preferred.address;
+                    await loadWalletGraph();
+                    return;
+                }
+                setStatus(`Loaded ${nodes.length} high-risk wallets.`);
+            } catch (error) {
+                setStatus(`Failed to load high-risk wallets: ${error.message}`, true);
+            }
+        }
+
+        async function findShortestPath() {
+            const source = normalizeWallet(document.getElementById('path-from').value);
+            const target = normalizeWallet(document.getElementById('path-to').value);
+            if (!source || !target) {
+                setStatus('Enter both source and target wallets for path tracing.', true);
+                return;
+            }
+
+            setStatus('Calculating shortest path...');
+            try {
+                const response = await fetch(`/graph/path?from=${source}&to=${target}&max_depth=10&directed=1`);
+                const payload = await response.json().catch(() => ({}));
+                if (response.status === 404) {
+                    clearHighlights();
+                    renderSelectionDetails(`
+                        <div class="space-y-2">
+                            <div class="text-sm text-[#fbbf24]">Shortest Path</div>
+                            <div class="text-xs text-gray-300">No relationship path found between the selected wallets.</div>
+                        </div>
+                    `);
+                    setStatus('No path found between selected wallets.', true);
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error(payload.error || `HTTP ${response.status}`);
+                }
+                clearHighlights();
+                highlightPath(payload.path || []);
+                renderSelectionDetails(`
+                    <div class="space-y-2">
+                        <div class="text-sm text-[#fbbf24]">Shortest Path</div>
+                        <div class="text-xs text-gray-300">Hops: ${payload.hops}</div>
+                        <div class="mono-small">${(payload.path || []).join(' -> ')}</div>
+                    </div>
+                `);
+                setStatus(`Path computed with ${payload.hops} hop(s).`);
+            } catch (error) {
+                setStatus(`Path lookup failed: ${error.message}`, true);
+            }
+        }
+
+        document.getElementById('btn-load').addEventListener('click', loadWalletGraph);
+        document.getElementById('btn-trace').addEventListener('click', traceWalletRisk);
+        document.getElementById('btn-high-risk').addEventListener('click', loadHighRiskNodes);
+        document.getElementById('btn-path').addEventListener('click', findShortestPath);
+        document.getElementById('btn-overview').addEventListener('click', () => {
+            state.viewMode = 'overview';
+            updateViewModeButtons();
+            if (state.graphPayload) {
+                renderGraphPayload(state.graphPayload);
+                const hidden = state.renderStats?.hiddenTxNodes || 0;
+                const hiddenEdges = state.renderStats?.hiddenEdges || 0;
+                const hiddenNodes = state.renderStats?.hiddenNodes || 0;
+                setStatus(`Overview mode enabled (${getFocusDensityMode().toUpperCase()} focus). ${hidden} transaction nodes, ${hiddenEdges} low-signal links, and ${hiddenNodes} peripheral wallets collapsed for clarity.`);
+            } else {
+                setStatus('Overview mode enabled. Load a wallet to see simplified relationships.');
+            }
+        });
+        document.getElementById('btn-detail').addEventListener('click', () => {
+            state.viewMode = 'detail';
+            updateViewModeButtons();
+            if (state.graphPayload) {
+                renderGraphPayload(state.graphPayload);
+                setStatus('Detailed mode enabled. Full transaction graph restored.');
+            } else {
+                setStatus('Detailed mode enabled. Load a wallet to inspect transaction-level links.');
+            }
+        });
+
+        document.getElementById('wallet-search').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                loadWalletGraph();
+            }
+        });
+
+        document.getElementById('min-risk').addEventListener('input', (event) => {
+            document.getElementById('min-risk-label').textContent = (Number(event.target.value) / 100).toFixed(2);
+        });
+
+        document.getElementById('focus-density').addEventListener('change', () => {
+            const mode = getFocusDensityMode().toUpperCase();
+            if (!state.graphPayload) {
+                setStatus(`Focus set to ${mode}. Load a wallet graph to apply density controls.`);
+                return;
+            }
+
+            if (state.viewMode === 'overview') {
+                renderGraphPayload(state.graphPayload);
+                const hiddenEdges = state.renderStats?.hiddenEdges || 0;
+                const hiddenNodes = state.renderStats?.hiddenNodes || 0;
+                setStatus(`Focus set to ${mode}. Overview now hides ${hiddenEdges} low-signal links and ${hiddenNodes} peripheral wallets.`);
+                return;
+            }
+
+            setStatus(`Focus set to ${mode}. Switch to overview or reload graph to apply density controls.`);
+        });
+
+        // Warm sidebar with high-risk intelligence on first paint.
+        ensureNetwork();
+        updateViewModeButtons();
+        document.getElementById('min-risk-label').textContent = (Number(document.getElementById('min-risk').value) / 100).toFixed(2);
+        loadHighRiskNodes();
+    </script>
+</body>
+</html>

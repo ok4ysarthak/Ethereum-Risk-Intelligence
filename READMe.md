@@ -1,112 +1,136 @@
-                             DeTrust Protocol — Ethereum Risk Analysis Dashboard
+# DeTrust Protocol
 
-**DeTrust Protocol** is a web application designed to monitor **live Ethereum transactions** and provide **real-time risk analysis**.  
-It assigns **risk scores** to transactions and **trust scores** to wallets, helping users identify potentially fraudulent or suspicious activity.
+DeTrust is a live Ethereum fraud intelligence system. It scores each transaction (risk) and each wallet (trust), then exposes those signals to a real-time dashboard and graph explorer.
 
----
+## What This Solves
 
-Core Features
+- Detects suspicious transaction behavior in near real time.
+- Tracks wallet trust drift over time instead of using one-time static labels.
+- Propagates risk across transfer relationships to expose connected threats.
+- Persists enriched transaction records for analyst review.
 
-- **🔴 Live Transactions:** View a real-time feed of new Ethereum transactions as they occur.  
-- **⚖️ Risk Scoring:** Automatically flags transactions with a calculated risk score (e.g., *High Risk*, *Low Risk*).  
-- **🪙 Wallet Scoring:** Provides a trust score for wallets involved in transactions.  
-- **🔍 Wallet Lookup:** *(Component in place)* Analyze a specific wallet address.  
-- **🔗 Transaction Lookup:** *(Component in place)* Look up the details of a specific transaction hash.  
-- **📜 Contract Info:** *(Component in place)* View information about a smart contract.
+## Active Product Stack
 
----
+- Backend API and realtime stream: Flask + Socket.IO in [backend/app.py](backend/app.py)
+- Live oracle processor and on-chain writer: [backend/oracle.py](backend/oracle.py)
+- Graph intelligence engine: [backend/graph/graph_builder.py](backend/graph/graph_builder.py), [backend/graph/risk_engine.py](backend/graph/risk_engine.py), [backend/graph/graph_api.py](backend/graph/graph_api.py)
+- Frontend currently used in product: static pages in [frontend/static](frontend/static)
 
-Tech Stack
+## Core Routes
 
-**Frontend:** React, React Router, React Bootstrap, Axios  
-**Backend:** Python (Flask / FastAPI)
+- Dashboard: `GET /`
+- Live feed: `GET /live`
+- Shield/analyst view: `GET /shield`
+- Graph console: `GET /graph`
+- Health: `GET /health`
+- Predict transaction risk: `POST /predict/transaction`
+- Read transactions: `GET /transactions`
+- Ingest enriched transaction from oracle: `POST /transactions`
+- Graph subgraph: `GET /graph/wallet/<address>`
+- Graph trace: `GET /graph/trace/<address>`
+- Graph path: `GET /graph/path?from=<wallet>&to=<wallet>`
+- High risk wallets: `GET /graph/high-risk`
 
----
+## Local Run (Business Demo Path)
 
-Getting Started
+### 1) Backend API
 
-This project uses a **separate frontend and backend**, which must be run **simultaneously** in two different terminal windows.
-
----
-
-Prerequisites
-
-Make sure you have the following installed:
-- **Node.js** (v16 or higher)  
-- **Python** (v3.8 or higher)  
-- **npm** *(comes with Node.js)*  
-- **pip** *(comes with Python)*
-
----
-🖥️ Setup Instructions
-
-Backend Setup (Terminal 1)
-
-First, set up and run the Python backend server.
+From repository root:
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-
-
-# 2. Navigate to the backend folder (adjust if your folder structure is different)
-cd path-to-your-backend-folder
-
-# 3. Create and activate a Python virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-
-# 4. Install the required Python packages
-# (Assuming you have a requirements.txt file)
-pip install -r requirements.txt
-
-# 5. Run the backend server
+cd backend
 python app.py
-
-# 6. The server should now be running on:
-# http://localhost:5000
-
 ```
 
-2️⃣ Frontend Setup (Terminal 2)
+Expected: API on `http://127.0.0.1:5000`
 
-Now, in a new terminal window, set up and run the React frontend.
+### 2) Open UI
 
-```
-# 1. Navigate to the frontend folder from the project root
-cd frontend/detrust-frontend  # Based on your project structure
+Use browser directly:
 
-# 2. Install the node modules
-npm install
-```
+- `http://127.0.0.1:5000/`
+- `http://127.0.0.1:5000/live`
+- `http://127.0.0.1:5000/graph`
 
-⚠️ IMPORTANT: Configure the Proxy
-Open the package.json file in this folder and ensure the following line is present inside the main JSON object {}:
-```
+### 3) Start Oracle (optional for live chain ingestion)
 
-"proxy": "http://localhost:5000"
+In a second terminal:
 
-This allows the frontend to communicate with the backend.
-
-3. Run the frontend application
-npm start
-
-Your browser should automatically open at:
-👉 http://localhost:3000
-
-The app will now fetch data from the backend running on port 5000.
+```bash
+cd backend
+python oracle.py
 ```
 
-How It Works
+The oracle watches Sepolia blocks, computes features, requests model prediction, writes on-chain updates, and posts enriched payloads back to backend.
 
-The React development server at http://localhost:3000 serves the user interface.
-The "proxy" setting in package.json forwards unknown API requests (like /transactions) to the backend server at http://localhost:5000
+## Example Prediction Request
 
-You can see the smart contract via: https://eth-sepolia.blockscout.com/address/0x88BA205f0f203d16AF42314168F904bE37a59E40?tab=txs
+```json
+{
+	"wallet_address": "0x1111111111111111111111111111111111111111",
+	"timestamp": 1712300000,
+	"update_state": true,
+	"features": {
+		"Transaction_Value": 2.1,
+		"Transaction_Fees": 0.003,
+		"Number_of_Inputs": 1,
+		"Number_of_Outputs": 2,
+		"Gas_Price": 45,
+		"Wallet_Age_Days": 14,
+		"Wallet_Balance": 3.5,
+		"Transaction_Velocity": 8,
+		"Exchange_Rate": 3100,
+		"Final_Balance": 3.3,
+		"BMax_BMin_per_NT": 0.22
+	}
+}
+```
 
-This setup prevents CORS issues — a standard practice for local development.
+## Graph Intelligence Model
 
+Pipeline:
 
+`New transaction -> DB write -> graph update -> risk propagation -> graph APIs -> graph dashboard`
 
+Graph types:
 
+- Wallet nodes: `wallet:<address>`
+- Transaction nodes: `tx:<hash>`
+- Edge semantics: `INITIATED`, `RECEIVED`, `TRANSFER`, `FUNDING`, `RELATED`
+
+## Environment Variables Used by Runtime
+
+Backend/oracle require values similar to:
+
+- `SEPOLIA_RPC_URL`
+- `ETHERSCAN_API_KEY`
+- `CONTRACT_ADDRESS`
+- `ORACLE_PRIVATE_KEY`
+- `SEPOLIA_PRIVATE_KEY`
+- `DATABASE_URL`
+- `GOOGLE_API_KEY` (optional for AI explanation endpoint)
+
+Optional graph knobs:
+
+- `GRAPH_BOOTSTRAP_LIMIT`
+- `GRAPH_PROPAGATION_DEPTH`
+- `GRAPH_ALPHA`
+- `GRAPH_HOP_DECAY`
+- `GRAPH_FUNDING_THRESHOLD`
+- `GRAPH_RELATED_THRESHOLD`
+
+## Business Demo Checklist
+
+1. Start backend and open `/health`.
+2. Open `/live` and verify incoming rows update in real time.
+3. Open `/graph` and load a wallet subgraph.
+4. Trigger one `POST /predict/transaction` and verify:
+	 - `risk_probability`, `risk_score`
+	 - `temporal_score_normalized`
+	 - `shap_explanation`
+5. Show `/graph/high-risk` output to demonstrate network-level threat surfacing.
+
+## Current Scope Notes
+
+- Product UI in active use is static HTML under [frontend/static](frontend/static).
+- Vite React scaffolding exists in [frontend/vite-project](frontend/vite-project) but is not the primary product surface today.

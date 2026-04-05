@@ -1,0 +1,88 @@
+{
+  "base": "http://127.0.0.1:5000",
+  "serial_benchmark": {
+    "wallet": {
+      "n": 50,
+      "mean_ms": 16.12,
+      "median_ms": 15.52,
+      "p95_ms": 29.88,
+      "p99_ms": 30.67,
+      "max_ms": 32.41,
+      "min_ms": 5.35,
+      "status_counts": {
+        "200": 50
+      },
+      "avg_payload_bytes": 67377
+    },
+    "trace": {
+      "n": 50,
+      "mean_ms": 17.97,
+      "median_ms": 15.83,
+      "p95_ms": 30.12,
+      "p99_ms": 30.38,
+      "max_ms": 30.99,
+      "min_ms": 5.23,
+      "status_counts": {
+        "200": 50
+      },
+      "avg_payload_bytes": 67015
+    },
+    "path": {
+      "n": 50,
+      "mean_ms": 14.84,
+      "median_ms": 15.39,
+      "p95_ms": 26.8,
+      "p99_ms": 27.35,
+      "max_ms": 28.15,
+      "min_ms": 2.99,
+      "status_counts": {
+        "200": 50
+      },
+      "avg_payload_bytes": 1508
+    },
+    "high_risk": {
+      "n": 50,
+      "mean_ms": 14.01,
+      "median_ms": 15.56,
+      "p95_ms": 26.31,
+      "p99_ms": 27.1,
+      "max_ms": 27.57,
+      "min_ms": 4.37,
+      "status_counts": {
+        "200": 50
+      },
+      "avg_payload_bytes": 7303
+    },
+    "transactions": {
+      "n": 50,
+      "mean_ms": 29.12,
+      "median_ms": 31.1,
+      "p95_ms": 37.08,
+      "p99_ms": 38.03,
+      "max_ms": 51.95,
+      "min_ms": 12.28,
+      "status_counts": {
+        "200": 50
+      },
+      "avg_payload_bytes": 237434
+    }
+  },
+  "wallet_stress_benchmark": {
+    "n": 200,
+    "mean_ms": 83.44,
+    "median_ms": 85.71,
+    "p95_ms": 95.93,
+    "p99_ms": 98.58,
+    "max_ms": 99.32,
+    "min_ms": 26.04,
+    "total": 200,
+    "workers": 20,
+    "ok": 200,
+    "errors": 0,
+    "status_codes": [
+      200
+    ],
+    "elapsed_ms": 897.57,
+    "rps": 222.82
+  }
+}

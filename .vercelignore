@@ -1,9 +1,8 @@
 # Ignore dependencies (Vercel installs them automatically)
-node_modules
+
 env
 venv
-__pycache__
-*.pyc
+
 
 # Ignore Hardhat/Blockchain build files (not needed for the website)
 blockchain/artifacts
@@ -14,3 +13,18 @@ cache
 
 # Ignore Git history
 .git
+
+# ignore development artifacts, models & local data
+node_modules/
+ml_models/
+data/
+.env
+.env.*
+*.pyc
+__pycache__/
+tests/
+.vscode/
+README.md
+.DS_Store
+/*.log
+/.vercel/cache/

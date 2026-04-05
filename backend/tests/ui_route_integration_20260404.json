@@ -1,0 +1,202 @@
+{
+  "routes": {
+    "page_/": {
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "ok": true,
+      "json_keys": null,
+      "sample_len": 29837
+    },
+    "page_/activity": {
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "ok": true,
+      "json_keys": null,
+      "sample_len": 65647
+    },
+    "page_/live": {
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "ok": true,
+      "json_keys": null,
+      "sample_len": 32063
+    },
+    "page_/graph": {
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "ok": true,
+      "json_keys": null,
+      "sample_len": 47216
+    },
+    "api_transactions_get": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": null,
+      "sample_len": 96193
+    },
+    "api_wallets_get": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": null,
+      "sample_len": 10923
+    },
+    "api_graph_high_risk": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "count",
+        "limit",
+        "min_score",
+        "nodes"
+      ],
+      "sample_len": 3974
+    },
+    "api_graph_wallet": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "alerts",
+        "center",
+        "edges",
+        "metrics",
+        "neighbors",
+        "nodes",
+        "propagation",
+        "wallet"
+      ],
+      "sample_len": 67377
+    },
+    "api_graph_trace": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "depth",
+        "propagation",
+        "trace",
+        "wallet"
+      ],
+      "sample_len": 67015
+    },
+    "api_graph_path": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "edges",
+        "hops",
+        "nodes",
+        "path"
+      ],
+      "sample_len": 1508
+    },
+    "api_proxy_tx": {
+      "status": 500,
+      "content_type": "application/json",
+      "ok": false,
+      "json_keys": [
+        "error"
+      ],
+      "sample_len": 38
+    },
+    "api_proxy_wallet": {
+      "status": 404,
+      "content_type": "application/json",
+      "ok": false,
+      "json_keys": [
+        "error"
+      ],
+      "sample_len": 29
+    },
+    "api_predict_post": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "explanation",
+        "feature_mapping",
+        "fraud_probability",
+        "is_high_risk",
+        "risk_level",
+        "risk_probability",
+        "risk_score",
+        "shap_explanation",
+        "temporal_previous_score",
+        "temporal_score",
+        "temporal_score_normalized",
+        "temporal_state"
+      ],
+      "sample_len": 2446
+    },
+    "api_transactions_post": {
+      "status": 201,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "graph",
+        "status",
+        "tx_hash"
+      ],
+      "sample_len": 138
+    },
+    "api_explain_post": {
+      "status": 200,
+      "content_type": "application/json",
+      "ok": true,
+      "json_keys": [
+        "explanation"
+      ],
+      "sample_len": 408
+    }
+  },
+  "page_checks": {
+    "/": {
+      "has_sidebar_brand": true,
+      "has_cg_sidebar": true,
+      "has_cg_topbar": true,
+      "has_live_activity_hook": true,
+      "has_stats_hooks": true
+    },
+    "/activity": {
+      "has_sidebar_brand": true,
+      "has_cg_sidebar": true,
+      "has_cg_topbar": true,
+      "has_search_hook": true,
+      "has_tx_table_hook": true,
+      "has_wallet_table_hook": true,
+      "has_tx_modal": true,
+      "has_wallet_modal": true
+    },
+    "/live": {
+      "has_sidebar_brand": true,
+      "has_cg_sidebar": true,
+      "has_cg_topbar": true,
+      "has_main_search": true,
+      "has_live_table_body": true,
+      "has_view_tx": true,
+      "has_view_wallet": true
+    },
+    "/graph": {
+      "has_sidebar_brand": true,
+      "has_cg_sidebar": true,
+      "has_cg_topbar": true,
+      "has_wallet_search": true,
+      "has_btn_overview": true,
+      "has_btn_detail": true,
+      "has_network_container": true
+    }
+  },
+  "route_failures": [
+    [
+      "api_proxy_wallet",
+      404
+    ]
+  ],
+  "missing_hooks": [],
+  "route_failure_count": 1,
+  "missing_hook_count": 0
+}

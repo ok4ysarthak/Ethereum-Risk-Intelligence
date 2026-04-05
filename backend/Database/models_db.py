@@ -46,3 +46,15 @@ class Transaction(Base):
 
     from_wallet = relationship("Wallet", foreign_keys=[from_wallet_id], back_populates="outgoing")
     to_wallet = relationship("Wallet", foreign_keys=[to_wallet_id], back_populates="incoming")
+
+
+class GraphEdge(Base):
+    __tablename__ = "graph_edges"
+
+    id = Column(Integer, primary_key=True, index=True)
+    source_node = Column(String(96), index=True, nullable=False)
+    target_node = Column(String(96), index=True, nullable=False)
+    edge_type = Column(String(32), index=True, nullable=False)
+    weight = Column(Float, nullable=False, default=1.0)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow, index=True)
+    metadata_json = Column(JSON, nullable=True)

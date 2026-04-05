@@ -1,10 +1,3 @@
-"""
-Production-Grade XGBoost Ethereum Fraud Detection Model
-========================================================
-- Tuned for Mainnet/Sepolia generalization
-- Adjusted Scoring: "Uncertain" transactions (30-50% prob) are now Low Risk (Score 3)
-- Fixes "Average 5/10" issue by creating stricter thresholds for Medium/High risk
-"""
 
 import os
 import json
@@ -210,7 +203,7 @@ def train_production_model(csv_path: str, log_dir: str = "training_logs"):
         max_depth=6,
         subsample=0.8,
         colsample_bytree=0.8,
-        scale_pos_weight=ratio, # Uses the dampened ratio
+        scale_pos_weight=ratio, 
         n_jobs=-1,
         random_state=42,
         eval_metric='auc',
